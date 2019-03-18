@@ -103,13 +103,13 @@ SQL;
                     a.gaji_pokok,
                     a.gaji_pokok * 0.005780347 sal_perhour,
                     a.kode_golongan,
-                    a.masa_kerja,
+                    a.mk_peringkat,
                     a.status
                 FROM `{$tbl_join}`  a
 
 
             ) ab
-            ON r.los = ab.masa_kerja
+            ON r.los = ab.mk_peringkat
                 AND r.grade_id = ab.kode_golongan
                 AND YEAR(r.print_dt) >= ab.tahun
             SET

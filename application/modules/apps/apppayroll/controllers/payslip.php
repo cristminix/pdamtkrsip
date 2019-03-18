@@ -54,6 +54,7 @@ class Payslip extends Apppayroll_Frontctl {
     }
 
     public function permanent($id = null, $cur_page = 1, $per_page = 10, $order_by = null, $sort_order = 'asc') {
+        
         $this->rs_field_list='';    
         $tpl         = __FUNCTION__;
         $pdf_preview = md5('pdf-preview' . date('ymd'));
