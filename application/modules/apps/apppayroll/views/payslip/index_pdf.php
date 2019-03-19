@@ -43,7 +43,7 @@ $border_thin_trb   = array(
     'TRB' => $border_style
 );
 $arr             = array(
-    'H' => 'empl_work_day',
+    // 'H' => 'empl_work_day',
     'S' => 'attn_s',
     'I' => 'attn_i',
     'A' => 'attn_a',

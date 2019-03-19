@@ -7,9 +7,9 @@ require_once 'apppayroll_frontmdl' . EXT;
 
 class Employee_Mdl extends Apppayroll_Frontmdl {
 
-    public $tbl                  = 'r_pegawai';
+    public $tbl                  = 'r_pegawai rp';
     public $rs_field_list        = array(
-        '1' => 'nip_baru',
+        '1' => 'rp.nip_baru',
         'nama_pegawai',
         'tgl_terima',
         'los', // length of service
@@ -35,8 +35,12 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
         'Last update',
     );
     public $rs_use_form_filter = 'empl_master_data';
-    public $rs_select = "*, CONCAT(TIMESTAMPDIFF(YEAR, tgl_terima, NOW()), ' thn') as `los`";
+    public $rs_select = "rp.*, MAX(rpg.mk_peringkat) as `los`";
     public $rs_order_by = null;
+    public $rs_joins = [
+        ['r_peg_golongan rpg','rpg.id_pegawai=rp.id_pegawai','left']
+    ];
+    public $rs_group_by = "rp.id_pegawai";
 
     public $rs_common_views = array(
         /* call_user_func */
