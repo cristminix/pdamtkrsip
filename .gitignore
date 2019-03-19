@@ -984,3 +984,4 @@ i.php
 /assets/file/foto/YASIN1.jpg
 /assets/file/foto/ZAINAL2.jpg
 /captcha/*.jpg
+/application/config/database.php
