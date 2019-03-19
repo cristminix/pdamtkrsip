@@ -24,7 +24,7 @@ if (!isset($detail)) {
             </tr>
             <tr>
                 <td><?php echo lang('Length of Service');?></td>
-                <td><?php echo $detail->masa_kerja;?> <?php echo lang('year');?></td>
+                <td><?php echo $detail->mk_peringkat;?> <?php echo lang('year');?></td>
             </tr>
             
             <tr>

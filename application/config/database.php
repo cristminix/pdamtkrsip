@@ -45,35 +45,28 @@
 | the active record class
 */
 
-
 $active_group = 'default';
-$query_builder = TRUE;
+$active_record = TRUE;
 
-$db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	// 'username' => 'zainal',
-	// 'password' => 'Zainal@2018',
-	'username' => 'root',
-	'password' => 'Lu8qf8FmAbKndCzP',
-	'database' => 'db_pdamtkrsip',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
-
+$db['default']['username'] = 'root';
+$db['default']['password'] = 'Lu8qf8FmAbKndCzP';
+//$db['default']['database'] = 'dashboard_pdam';
+//$db['default']['database'] = 'dashboard_kpg';
+$db['default']['database'] = 'db_pdamtkrsip';
+$db['default']['dbdriver'] = 'mysqli';
+$db['default']['dbprefix'] = '';
+$db['default']['pconnect'] = FALSE;
+$db['default']['db_debug'] = TRUE;
+$db['default']['cache_on'] = FALSE;
+$db['default']['cachedir'] = '';
+$db['default']['char_set'] = 'utf8';
+$db['default']['dbcollat'] = 'utf8_general_ci';
+$db['default']['swap_pre'] = '';
+$db['default']['autoinit'] = TRUE;
+$db['default']['stricton'] = FALSE;
 $db['default']['_protect_identifiers']= FALSE;
+
+
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

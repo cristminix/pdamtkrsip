@@ -27,6 +27,8 @@ class Payslip extends Apppayroll_Frontctl {
             if ($id == $pdf_preview) {
 
                 $tpl .= '_pdf';
+                $this->layout = 'layouts/blank';
+                $this->elements_page_wrapper = 'elements/page_wrapper_blank';
             } else {
                 $detail           = $this->{$mdl}->fetch_detail($id);
                 $data             = array('detail' => $detail);
@@ -54,8 +56,7 @@ class Payslip extends Apppayroll_Frontctl {
     }
 
     public function permanent($id = null, $cur_page = 1, $per_page = 10, $order_by = null, $sort_order = 'asc') {
-        
-        $this->rs_field_list='';    
+
         $tpl         = __FUNCTION__;
         $pdf_preview = md5('pdf-preview' . date('ymd'));
 
@@ -66,8 +67,9 @@ class Payslip extends Apppayroll_Frontctl {
         if ($id) {
             if ($id == $pdf_preview) {
                 $tpl .= '_pdf';
+                $this->layout = 'layouts/blank';
+                $this->elements_page_wrapper = 'elements/page_wrapper_blank';
             } else {
-
                 $detail           = $this->{$mdl}->fetch_detail($id);
                 $data             = array('detail' => $detail);
                 $back_url         = $this->session->userdata(md5(__FILE__ . 'back'));
@@ -76,7 +78,6 @@ class Payslip extends Apppayroll_Frontctl {
                 return $this->print_page($tpl . '_detail');
             }
         }
-
         $this->session->set_userdata(md5(__FILE__ . 'back'), base_url(uri_string()));
 
         $this->set_custom_filter($mdl);
@@ -110,6 +111,8 @@ class Payslip extends Apppayroll_Frontctl {
             if ($id == $pdf_preview) {
 
                 $tpl .= '_pdf';
+                $this->layout = 'layouts/blank';
+                $this->elements_page_wrapper = 'elements/page_wrapper_blank';
             } else {
                 $detail           = $this->{$mdl}->fetch_detail($id);
                 $data             = array('detail' => $detail);
@@ -119,7 +122,6 @@ class Payslip extends Apppayroll_Frontctl {
                 return $this->print_page($tpl . '_detail');
             }
         }
-
         $this->session->set_userdata(md5(__FILE__ . 'back'), base_url(uri_string()));
         $this->set_custom_filter($mdl);
 
@@ -136,7 +138,6 @@ class Payslip extends Apppayroll_Frontctl {
 
         $this->set_data(compact('ls'));
         $this->set_rs_action($mdl);
-
         $this->print_page($tpl);
     }
 
@@ -151,6 +152,8 @@ class Payslip extends Apppayroll_Frontctl {
             if ($id == $pdf_preview) {
 
                 $tpl .= '_pdf';
+                $this->layout = 'layouts/blank';
+                $this->elements_page_wrapper = 'elements/page_wrapper_blank';
             } else {
                 $detail           = $this->{$mdl}->fetch_detail($id);
                 $data             = array('detail' => $detail);
@@ -192,6 +195,8 @@ class Payslip extends Apppayroll_Frontctl {
             if ($id == $pdf_preview) {
 
                 $tpl .= '_pdf';
+                $this->layout = 'layouts/blank';
+                $this->elements_page_wrapper = 'elements/page_wrapper_blank';
             } else {
                 $detail           = $this->{$mdl}->fetch_detail($id);
                 $data             = array('detail' => $detail);

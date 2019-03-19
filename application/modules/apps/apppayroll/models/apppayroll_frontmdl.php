@@ -100,7 +100,6 @@ class Apppayroll_Frontmdl extends CI_Model {
         if ($this->rs_reset_cur_page) {
             $cur_page = 1;
         }
-        $this->db->protect_identifiers(FALSE);
         $this->db->from($this->tbl);
         if ($this->rs_joins) {
             foreach ($this->rs_joins as $joins) {
@@ -108,7 +107,7 @@ class Apppayroll_Frontmdl extends CI_Model {
             }
         }
         if (property_exists($this, 'rs_select')) {
-            $this->db->select($this->rs_select, FALSE);
+            $this->db->select($this->rs_select, false);
         }
         if (property_exists($this, 'rs_group_by')) {
             $this->db->group_by($this->rs_group_by);

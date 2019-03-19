@@ -435,7 +435,6 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
             return array();
         }
         $res = $rs->row();
-        // echo $this->db->last_query();
         return $res;
     }
 
@@ -971,7 +970,6 @@ UPDATE;
         }
         $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS MASA_KERJA_PERINGKAT", false);
         $this->db->group_by(array('grade_id', 'los'));
-
         $res = $this->db->get($this->tbl)->result();
         if (!$res) {
             return;

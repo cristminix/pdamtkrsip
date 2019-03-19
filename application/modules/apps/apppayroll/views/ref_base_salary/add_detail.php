@@ -63,7 +63,7 @@ extract($rs_form_input);
 
 
             //name
-            $field_alias      = md5('masa_kerja');
+            $field_alias      = md5('mk_peringkat');
             $input            = array(
                 'field_alias'  => $field_alias,
                 'label'        => lang('Length of Service'),

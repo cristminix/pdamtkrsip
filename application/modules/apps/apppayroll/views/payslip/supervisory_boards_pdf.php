@@ -348,6 +348,5 @@ endforeach;
 
 $this->pr_tcpdf->pdf = $pdf;
 $this->pr_tcpdf->render('file');
-exit();
 
 

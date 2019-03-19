@@ -66,10 +66,10 @@ extract($rs_form_input);
             $field_alias      = md5('mk_peringkat');
             $input            = array(
                 'field_alias'  => $field_alias,
-                'label'        => lang('mk_peringkat'),
+                'label'        => lang('Length of Service'),
                 'empty'        => true,
                 'type'         => 'select',
-                'list_options' => $mk_peringkat_ls,
+                'list_options' => $masa_kerja_ls,
                 'col_lg'       => '2',
                 'col_sm'       => '2',
             );

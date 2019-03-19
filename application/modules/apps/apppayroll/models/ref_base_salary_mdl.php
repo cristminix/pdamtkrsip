@@ -19,7 +19,7 @@ class Ref_Base_Salary_Mdl extends Apppayroll_Frontmdl {
     );
     public $rs_masked_field_list = array(
         '1' => 'Year',
-        'mk_peringkat',
+        'Length of Service',
         'Grade ID',
         'Grade',        
         'Base Salary',

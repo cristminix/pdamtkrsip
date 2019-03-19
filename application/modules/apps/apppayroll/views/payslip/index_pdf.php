@@ -1,10 +1,11 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 $this->load->library('pr_tcpdf');
 $this->pr_tcpdf->_init('A5', 'L');
 $pdf          = $this->pr_tcpdf->pdf;
-$pdf->SetFont('helveticab', '', '9');
+$pdf->SetFont('helvetica', '', '9');
 
 $pdf->setPrintHeader(false);
 $ln           = 0;
@@ -184,7 +185,6 @@ $components = array(
 $curr = lang('#CURRENCY_SYMBOL');
 foreach ($ls as $i => $r):
     $pdf->addPage();
-
     //$pdf->SetFillColor(255, 255, 255);
     /**
      * 
@@ -344,8 +344,9 @@ foreach ($ls as $i => $r):
     $txt = '';
     $pdf->Cell(5, 1, $txt, $border_thin_trb, $ln, 'L', false);
     
-endforeach; 
+endforeach;
 
 $this->pr_tcpdf->pdf = $pdf;
 $this->pr_tcpdf->render('file');
-exit(); 
+
+

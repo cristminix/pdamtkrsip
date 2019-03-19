@@ -51,7 +51,7 @@ if (!isset($detail)) {
                 <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-center alert-info">H</th>
+                            <!-- <th class="text-center alert-info">H</th> -->
                             <th class="text-center">S</th>
                             <th class="text-center alert-warning">I</th>
                             <th class="text-center  alert-danger">A</th>
@@ -61,7 +61,7 @@ if (!isset($detail)) {
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center alert-info"><?php echo $detail->empl_work_day; ?></td>
+                            <!-- <td class="text-center alert-info"><?php echo $detail->empl_work_day; ?></td> -->
                             <td class="text-center"><?php echo $detail->attn_s; ?></td>
                             <td class="text-center alert-warning"><?php echo $detail->attn_i; ?></td>
                             <td class="text-center  alert-danger"><?php echo $detail->attn_a; ?></td>

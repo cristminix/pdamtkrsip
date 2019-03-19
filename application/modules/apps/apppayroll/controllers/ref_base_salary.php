@@ -12,7 +12,7 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
     public $gaji_pokok_mdl = "m_gaji_pokok_mdl";
     public $golongan_mdl   = "m_golongan_mdl";
     public $main_mdl       = "ref_base_salary_mdl";
-    public $mk_peringkat_mdl = "m_masa_kerja_mdl";
+    public $masa_kerja_mdl = "m_masa_kerja_mdl";
     public $r_peg_mdl      = "r_pegawai_mdl";
 
     protected function _do_add_new($mdl) {
@@ -256,6 +256,8 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
         if (!$error) {
             $gaji_pokok_mdl = $this->gaji_pokok_mdl;
             $this->load->model($gaji_pokok_mdl);
+            // echo $mk_peringkat;
+            // die();
             $duplicated     = $this->{$gaji_pokok_mdl}->is_duplicated($kode_golongan, $mk_peringkat, $tahun, $edit_id);
             if ($duplicated) {
                 $error['kode_golongan'] = lang('duplicated'). ': ' . $kode_golongan .' - ' . $nama_pangkat;
@@ -288,13 +290,13 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
 
         if ($id) {
             $golongan_mdl             = $this->golongan_mdl;
-            $mk_peringkat_mdl           = $this->mk_peringkat_mdl;
+            $masa_kerja_mdl           = $this->masa_kerja_mdl;
             $r_peg_mdl                = $this->r_peg_mdl;
             $this->load_mdl($golongan_mdl);
-            $this->load_mdl($mk_peringkat_mdl);
+            $this->load_mdl($masa_kerja_mdl);
             $this->load_mdl($r_peg_mdl);
             $data_ls                  = array();
-            $data_ls['mk_peringkat_ls'] = $this->{$mk_peringkat_mdl}->fetch_masa_kerja();
+            $data_ls['masa_kerja_ls'] = $this->{$masa_kerja_mdl}->fetch_masa_kerja();
             $data_ls['golongan_ls']   = $this->{$golongan_mdl}->fetch_golongan();
             $year_ls                  = range(date('Y') + 1, $this->{$r_peg_mdl}->get_min_tgl_terima_year());
             $data_ls['year_ls']       = array_combine($year_ls, $year_ls);

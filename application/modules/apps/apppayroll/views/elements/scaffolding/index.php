@@ -46,7 +46,7 @@ echo $pagination;
             ?>
             <tr>
 
-                <th>NO</th>
+                <th>#</th>
                 <?php
                 if (isset($rs_action)):
                     printf('<th nowrap="nowrap">%s</th>', lang('Action'));

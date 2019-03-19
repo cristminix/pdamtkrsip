@@ -12,6 +12,10 @@ class Apppayroll_Frontctl extends MX_Controller {
     public $page_data        = array();
     public $page_body        = array();
     public $page_content_tpl = 'index';
+    protected $use_page_header =true;
+    protected $use_page_sidebar =true;
+    protected $elements_page_wrapper = 'elements/page_wrapper';
+
 
     public function __construct() {
         parent::__construct();
@@ -89,7 +93,13 @@ class Apppayroll_Frontctl extends MX_Controller {
     protected function load_page_data() {
         $this->load_page_header();
         $this->load_page_sidebar();
-        $this->page_data['page_body'] = $this->load->view('elements/page_wrapper', $this->page_body, true);
+	if(!$this->use_page_header) {
+            unset($this->page_body['page_header_nav']);
+        }
+        if(!$this->use_page_sidebar) {
+            unset($this->page_body['page_sidebar']);
+        }
+        $this->page_data['page_body'] = $this->load->view($this->elements_page_wrapper, $this->page_body, true);
     }
 
     protected function load_page_header() {
@@ -107,7 +117,6 @@ class Apppayroll_Frontctl extends MX_Controller {
     }
 
     protected function print_page($tpl = false, $content = array()) {
-
         if ($tpl) {
             $this->page_content_tpl = $tpl;
         }
