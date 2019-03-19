@@ -591,8 +591,9 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query    = $this->db->query($sqlstr);
 
         $this->get_update_all_allowance();
-        $this->get_update_all_deduction();
         $this->get_update_all_pph21($tbl, $year, $month, $lastdate);
+       
+        
 
         // Update tax_netto & tax base PKP // penghasilan kena pajak
         $sqlstr   = Payslip_Mdl_Schema::get_update_tax_netto($tbl, $year, $month, $lastdate, 'tax_netto');
@@ -611,6 +612,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
         $query    = $this->db->query($sqlstr);
 
+         $this->get_update_all_deduction();
         //update PTP penghasilan tertinggi pegawai
         $this->_update_ptp($print_dt);
         $this->_update_component($print_dt);
