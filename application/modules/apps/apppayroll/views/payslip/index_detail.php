@@ -164,12 +164,12 @@ if (!isset($detail)) {
                                     <td><?php echo lang('#CURRENCY_SYMBOL');?></td>
                                     <td class="text-right"><?php echo number_format($detail->alw_prf, 0, ",", ".");?></td>
                                 </tr>
-                                <tr>
+                             <!--    <tr>
                                     <td><?php echo lang('SHIFT ALLOWANCE');?></td>
                                     <td>:</td>
                                     <td><?php echo lang('#CURRENCY_SYMBOL');?></td>
                                     <td class="text-right"><?php echo number_format($detail->alw_sh, 0, ",", ".");?></td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td><?php echo lang('VEHICLE RENTAL ALLOWANCE');?></td>
                                     <td>:</td>
@@ -349,3 +349,23 @@ if (!isset($detail)) {
 
 </div>
 <?php debug($detail); ?>
+<script type="text/javascript">
+    // $ =  window.top.jQuery;
+    var detail = <?=json_encode($detail)?>;
+    
+    // console.log(total);
+    var keys = 'base_sal alw_mar alw_ch alw_rc alw_adv alw_wt alw_jt alw_fd alw_rs alw_ot alw_tr alw_prf alw_vhc_rt alw_tpp alw_pph21';
+    keys=keys.split(' ');
+
+    var total = 0.0;
+    var items = '';
+    keys.forEach(function(p,v){
+        var item = detail[p];
+            item = item == null?0:parseFloat(item);
+        total += item;  
+        items += p+':'+ item + ' ' + "\n"; 
+    });
+
+    console.log(items);
+    console.log(total);
+</script>

@@ -59,20 +59,22 @@ class Payslip_Mdl_Schema {
             )
                 SELECT
                     '{$year}-{$month}-{$lastdate}',
-                    id_pegawai,
-                    nip_baru,
-                    nama_pegawai,
-                    gender,
-                    tempat_lahir,
-                    tanggal_lahir,
-                    kelompok_pegawai,
-                    tgl_terima,
-                    YEAR('{$year}-{$month}-{$lastdate}') - YEAR(tgl_terima)- (DATE_FORMAT(tgl_terima, '%m%d') > DATE_FORMAT('{$year}-{$month}-{$lastdate}', '%m%d')),
+                    rp.id_pegawai,
+                    rp.nip_baru,
+                    rp.nama_pegawai,
+                    rp.gender,
+                    rp.tempat_lahir,
+                    rp.tanggal_lahir,
+                    rp.kelompok_pegawai,
+                    rp.tgl_terima,
+                    MAX(IFNULL(rpg.mk_peringkat,0)) mk_peringkat,
                     NOW(),
                     NOW()
-                FROM r_pegawai
-                    WHERE tgl_terima <= '{$year}-{$month}-{$lastdate}'
-                    {$excl_ids_str};
+                FROM r_pegawai rp
+                    LEFT JOIN r_peg_golongan  rpg ON rpg.id_pegawai = rp.id_pegawai
+                    WHERE rp.tgl_terima <= '{$year}-{$month}-{$lastdate}'
+                    {$excl_ids_str}
+                GROUP BY rp.id_pegawai;
 SQL;
     }
 
@@ -115,6 +117,7 @@ SQL;
             SET
                 r.base_sal_id = ab.id_gaji_pokok,
                 r.base_sal = ab.gaji_pokok,
+
                 r.base_sal_perhour = ab.sal_perhour,
                 r.modified = NOW()
             WHERE r.print_dt='{$year}-{$month}-{$lastdate}'

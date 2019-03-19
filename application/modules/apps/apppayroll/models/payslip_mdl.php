@@ -495,7 +495,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
             $excl_ids_str = implode("','", $excl_ids);
         }
         if ($excl_ids_str) {
-            $excl_ids_str = " AND id_pegawai NOT IN ('" . $excl_ids_str . "')";
+            $excl_ids_str = " AND rp.id_pegawai NOT IN ('" . $excl_ids_str . "')";
         }
         //
         $tbl      = $this->tbl;

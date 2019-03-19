@@ -164,12 +164,12 @@ if (!isset($detail)) {
                                     <td><?php echo lang('#CURRENCY_SYMBOL');?></td>
                                     <td class="text-right"><?php echo number_format($detail->alw_prf, 0, ",", ".");?></td>
                                 </tr>
-                                <tr>
+                           <!--      <tr>
                                     <td><?php echo lang('SHIFT ALLOWANCE');?></td>
                                     <td>:</td>
                                     <td><?php echo lang('#CURRENCY_SYMBOL');?></td>
                                     <td class="text-right"><?php echo number_format($detail->alw_sh, 0, ",", ".");?></td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td><?php echo lang('VEHICLE RENTAL ALLOWANCE');?></td>
                                     <td>:</td>
