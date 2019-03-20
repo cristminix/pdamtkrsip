@@ -150,7 +150,7 @@ $components = array(
     ),
     array(
         'l' => array(
-            'alw_sh' => 'SHIFT ALLOWANCE'
+            // 'alw_sh' => 'SHIFT ALLOWANCE'
         ),
         'r' => array(
 //            
