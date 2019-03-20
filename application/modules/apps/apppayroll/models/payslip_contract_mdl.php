@@ -96,7 +96,7 @@ class Payslip_Contract_Mdl extends Apppayroll_Frontmdl
         // 'Ranking Code',
         'Contract',
     );
-    public $rs_select             = "*, IFNULL(alw_pph21, 0) + IFNULL(gross_sal, 0) AS `gross_sal`,  IFNULL(ddc_pph21, 0) + IFNULL(ddc_amt, 0) AS `ddc_amt`,  IFNULL(gross_sal, 0) - IFNULL(ddc_amt, 0 ) AS `net_pay`, CONCAT(los,' Thn') lama_kontrak";
+    public $rs_select             = "*, IFNULL(alw_pph21, 0) + IFNULL(gross_sal, 0) AS `gross_sal`,  IFNULL(ddc_pph21, 0) + IFNULL(ddc_amt, 0) AS `ddc_amt`,  IFNULL(gross_sal, 0) - IFNULL(ddc_amt, 0 ) AS `net_pay`, CONCAT(TIMESTAMPDIFF(YEAR, hire_date, NOW()), ' thn') lama_kontrak";
     public $rs_order_by           = null;
     public $rs_use_form_filter    = 'apr_sv_payslip';
     public $tbl                   = 'apr_sv_payslip';
