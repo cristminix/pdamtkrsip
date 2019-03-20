@@ -948,7 +948,7 @@ UPDATE;
         if ($filter) {
             $this->db->where($filter, null, false);
         }
-        $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS MASA_KERJA_PERINGKAT", false);
+        $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS LAMA_KONTRAK", false);
         $this->db->group_by(array('grade_id', 'los'));
         $res = $this->db->get($this->tbl)->result();
         if (!$res) {
@@ -970,14 +970,14 @@ UPDATE;
         if ($filter) {
             $this->db->where($filter, null, false);
         }
-        $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS MASA_KERJA_PERINGKAT", false);
+        $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS LAMA_KONTRAK", false);
         $this->db->group_by(array('grade_id', 'los'));
         $res = $this->db->get($this->tbl)->result();
         if (!$res) {
             return;
         }
         $flash_message             = array();
-        $flash_message ['warning'] = lang('Missing Base Salary Setup') . ':' .
+        // $flash_message ['warning'] = lang('Missing Base Salary Setup') . ':' .
             str_replace(array('(', 'Array', ')', 'stdClass Object'), array('', '<br>', '<br>', '', '=', " "), print_r($res, true));
         $this->session->set_userdata('flash_message', $flash_message);
 //        die();
