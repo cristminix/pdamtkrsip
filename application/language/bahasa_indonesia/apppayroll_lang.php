@@ -64,6 +64,7 @@ $lang['Choose file']                            = 'Pilih berkas';
 $lang['confirm to save']                        = 'lanjutkan dan simpan';
 $lang['containing']                             = 'dengan isi';
 $lang['Curr. Child Count']                      = 'Jml. Anak Saat ini';
+$lang['Contract']                      = 'Kontrak';
 /* D */
 $lang['days']                                   = 'hari';
 $lang['duplicated']                             = 'duplikasi';
@@ -182,6 +183,7 @@ $lang['Net Pay and Loan of']       = 'Daftar Gaji dan Pinjaman';
 $lang['Net Total']                 = 'Gaji Diterima';
 $lang['NET PAY']                   = 'GAJI DITERIMA';
 $lang['NIP']                       = 'NIP';
+$lang['NIPP']                       = 'NIPP';
 $lang['Not Get']                   = 'Tidak Dapat';
 $lang['NPWP Data Import']          = 'Impor Data NPWP';
 $lang['NPWP Edit']                 = 'Sunting NPWP';

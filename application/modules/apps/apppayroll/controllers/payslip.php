@@ -10,6 +10,8 @@ require_once 'apppayroll_frontctl.php';
 class Payslip extends Apppayroll_Frontctl {
 
     public $main_mdl = "payslip_mdl";
+    public $contract_mdl = "payslip_contract_mdl";
+    public $supervisory_board_mdl = "payslip_supervisory_board_mdl";
     public $dash_mdl = "dashboard_mdl";
 
     public function _do_pdf_preview($alias) {
@@ -103,7 +105,7 @@ class Payslip extends Apppayroll_Frontctl {
     public function contract($id = null, $cur_page = 1, $per_page = 10, $order_by = null, $sort_order = 'asc') {
         $tpl         = __FUNCTION__;
         $pdf_preview = md5('pdf-preview' . date('ymd'));
-
+        $this->main_mdl = $this->contract_mdl;
         $mdl = $this->main_mdl;
         $this->load_mdl($mdl);
 //        $detail = array();
@@ -187,6 +189,7 @@ class Payslip extends Apppayroll_Frontctl {
     public function supervisory_boards($id = null, $cur_page = 1, $per_page = 10, $order_by = null, $sort_order = 'asc') {
         $tpl         = __FUNCTION__;
         $pdf_preview = md5('pdf-preview' . date('ymd'));
+        $this->main_mdl = $this->supervisory_board_mdl;
 
         $mdl = $this->main_mdl;
         $this->load_mdl($mdl);
