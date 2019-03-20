@@ -74,7 +74,6 @@ class Payslip_Mdl_Schema {
                     NOW()
                 FROM r_pegawai rp
                     LEFT JOIN r_peg_golongan  rpg ON rpg.id_pegawai = rp.id_pegawai
-                    WHERE rp.tgl_terima <= '{$year}-{$month}-{$lastdate}'
                     {$excl_ids_str}
                 GROUP BY rp.id_pegawai;
 SQL;
