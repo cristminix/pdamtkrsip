@@ -64,7 +64,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
             'job_unit',
             'job_title',
             'grade',
-            'hire_date',
+            'kode_peringkat',
             'los',
         )
     );
@@ -79,7 +79,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         'job_unit',
         'job_title',
         'grade',
-        'hire_date',
+        'kode_peringkat',
         'los', // length of service
     );
     public $rs_masked_field_list  = array(
@@ -93,7 +93,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         'Job Unit',
         'Job Title',
         'Grade',
-        'Hire Date',
+        'Ranking Code',
         'Length of Service',
     );
     public $rs_select             = "*, IFNULL(alw_pph21, 0) + IFNULL(gross_sal, 0) AS `gross_sal`,  IFNULL(ddc_pph21, 0) + IFNULL(ddc_amt, 0) AS `ddc_amt`,  IFNULL(gross_sal, 0) - IFNULL(ddc_amt, 0 ) AS `net_pay`";

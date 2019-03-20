@@ -9,7 +9,7 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
 
     public $tbl                  = 'r_pegawai rp';
     public $rs_field_list        = array(
-        '1' => 'rp.nip_baru',
+        '1' => 'nip_baru',
         'nama_pegawai',
         'tgl_terima',
         'los', // length of service

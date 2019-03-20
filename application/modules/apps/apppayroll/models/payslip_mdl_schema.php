@@ -54,6 +54,7 @@ class Payslip_Mdl_Schema {
                 empl_gr,
                 hire_date,
                 los,
+                kode_peringkat,
                 created,
                 modified
             )
@@ -68,6 +69,7 @@ class Payslip_Mdl_Schema {
                     rp.kelompok_pegawai,
                     rp.tgl_terima,
                     MAX(IFNULL(rpg.mk_peringkat,0)) mk_peringkat,
+                    rpg.kode_golongan,
                     NOW(),
                     NOW()
                 FROM r_pegawai rp

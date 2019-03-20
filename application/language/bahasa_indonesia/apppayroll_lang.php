@@ -161,6 +161,7 @@ $lang['Latest Status']             = 'Status Terakhir';
 $lang['Leave']                     = 'Cuti';
 $lang['Length of Service']         = 'Masa Kerja Peringkat';
 $lang['Loan']                      = 'Pinjaman';
+$lang['Ranking Code']             = 'Kode Peringkat';
 /* M */
 $lang['Male']                      = 'Laki-laki';
 $lang['Marital']                   = 'Pernikahan';
