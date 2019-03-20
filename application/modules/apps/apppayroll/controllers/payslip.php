@@ -11,6 +11,7 @@ class Payslip extends Apppayroll_Frontctl {
 
     public $main_mdl = "payslip_mdl";
     public $contract_mdl = "payslip_contract_mdl";
+    public $director_mdl = "payslip_director_mdl";
     public $supervisory_board_mdl = "payslip_supervisory_board_mdl";
     public $dash_mdl = "dashboard_mdl";
 
@@ -146,6 +147,7 @@ class Payslip extends Apppayroll_Frontctl {
     public function directors($id = null, $cur_page = 1, $per_page = 10, $order_by = null, $sort_order = 'asc') {
         $tpl         = __FUNCTION__;
         $pdf_preview = md5('pdf-preview' . date('ymd'));
+        $this->main_mdl = $this->director_mdl;
 
         $mdl = $this->main_mdl;
         $this->load_mdl($mdl);

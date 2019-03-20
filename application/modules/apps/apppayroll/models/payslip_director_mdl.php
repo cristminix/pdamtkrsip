@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
 }
 
 require_once 'payslip_mdl'. EXT;;
-class Payslip_Supervisory_Board_Mdl extends Payslip_Mdl
+class Payslip_Director_Mdl extends Payslip_Mdl
 {
 	public $rs_field_list         = array(
         '1' => 'print_dt',
