@@ -55,6 +55,7 @@ class Payslip_Mdl_Schema {
                 hire_date,
                 los,
                 kode_peringkat,
+                grade_id,
                 created,
                 modified
             )
@@ -68,12 +69,14 @@ class Payslip_Mdl_Schema {
                     rp.tanggal_lahir,
                     rp.kelompok_pegawai,
                     rp.tgl_terima,
-                    MAX(IFNULL(rpg.mk_peringkat,0)) mk_peringkat,
-                    rpg.kode_golongan,
+                    ( CASE WHEN rp.status_pegawai = 'Kontrak' THEN 0 ELSE MAX(IFNULL(rpg.mk_peringkat,0)) END ) mk_peringkat,
+                    ( CASE WHEN rp.status_pegawai = 'Kontrak' THEN 97 ELSE rpg.kode_golongan END ) kode_golongan,
+                    ( CASE WHEN rp.status_pegawai = 'Kontrak' THEN 97 ELSE NULL END ) grade_id,
                     NOW(),
                     NOW()
                 FROM r_pegawai rp
                     LEFT JOIN r_peg_golongan  rpg ON rpg.id_pegawai = rp.id_pegawai
+                    WHERE rp.status = ''
                     {$excl_ids_str}
                 GROUP BY rp.id_pegawai;
 SQL;
