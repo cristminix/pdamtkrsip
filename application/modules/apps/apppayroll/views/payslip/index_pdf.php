@@ -148,14 +148,7 @@ $components = array(
             'ddc_wb' => 'WATER-BILL'
         ),
     ),
-    array(
-        'l' => array(
-            // 'alw_sh' => 'SHIFT ALLOWANCE'
-        ),
-        'r' => array(
-//            
-        ),
-    ),
+   
     array(
         'l' => array(
             'alw_vhc_rt' => 'VEHICLE RENTAL ALLOWANCE'
