@@ -237,8 +237,8 @@ class Alw_Common extends Apppayroll_Frontmdl {
     }
 
     public function update_payslip_rc($eff_date, $val, $var=null) {
-
-        $value = "(1+ IFNULL(alw_rc_sp_cnt,0) + IFNULL(alw_rc_ch_cnt,0)) * '{$val}'";
+        $value = "(CASE WHEN empl_stat != 'Kontrak' THEN ( ( 1+ IFNULL( alw_rc_sp_cnt, 0 ) + IFNULL( alw_rc_ch_cnt, 0 ) ) * '{$val}' ) ELSE 0 END )";
+        // $value = "(1+ IFNULL(alw_rc_sp_cnt,0) + IFNULL(alw_rc_ch_cnt,0)) * '{$val}'";
         $this->db->set('alw_rc', $value, false);
         $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
         $this->db->where($where, null, false);

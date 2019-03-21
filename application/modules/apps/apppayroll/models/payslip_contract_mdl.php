@@ -77,53 +77,5 @@ class Payslip_Contract_Mdl extends Payslip_Mdl
     public $rs_select             = "*, IFNULL(alw_pph21, 0) + IFNULL(gross_sal, 0) AS `gross_sal`,  IFNULL(ddc_pph21, 0) + IFNULL(ddc_amt, 0) AS `ddc_amt`,  IFNULL(gross_sal, 0) - IFNULL(ddc_amt, 0 ) AS `net_pay`, CONCAT( (CASE WHEN  TIMESTAMPDIFF( YEAR, hire_date, NOW( ) ) % 2 = 0 THEN 2 ELSE 1 END ), ' thn' ) lama_kontrak";
     
     
-      public function update_base_sal($filter = null)
-    {
-//        debug($this->rs_cf_cur_year);
-//        debug($this->rs_cf_cur_month);
-        $t_date = date('Y-m-t', strtotime(sprintf('%s-%s-01', $this->rs_cf_cur_year, $this->rs_cf_cur_month)));
-
-        $this->db->where('print_dt', $t_date);
-        $this->db->where('lock', 0);
-        $this->db->where('base_sal_id', null);
-        if ($filter) {
-            $this->db->where($filter, null, false);
-        }
-        $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS LAMA_KONTRAK", false);
-        $this->db->group_by(array('grade_id', 'los'));
-        $res = $this->db->get($this->tbl)->result();
-        if (!$res) {
-            return;
-        }
-        // Get Schema
-        require_once realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . basename(__FILE__, EXT) . '_schema' . EXT;
-
-        $lastdate = date('t', strtotime($t_date));
-        $tbl_join = 'm_gaji_pokok';
-        $sqlstr   = Payslip_Contract_Mdl_Schema::get_update_base_salary($this->tbl, $tbl_join, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);
-        // echo $sqlstr;
-        // die();
-        
-        $query    = $this->db->query($sqlstr);
-        $this->get_update_all_allowance();
-        $this->get_update_all_deduction();
-
-        $this->db->where('print_dt', $t_date);
-        $this->db->where('lock', 0);
-        $this->db->where('base_sal_id', null);
-        if ($filter) {
-            $this->db->where($filter, null, false);
-        }
-        $this->db->select("nipp as sample_NIP,empl_id as ID_PEGAWAI,IFNULL(grade_id, 'NULL') AS KODE_PERINGKAT,IFNULL(grade, 'NULL') AS PERINGKAT,los AS LAMA_KONTRAK", false);
-        $this->db->group_by(array('grade_id', 'los'));
-        $res = $this->db->get($this->tbl)->result();
-        if (!$res) {
-            return;
-        }
-        $flash_message             = array();
-        // $flash_message ['warning'] = lang('Missing Base Salary Setup') . ':' .
-            str_replace(array('(', 'Array', ')', 'stdClass Object'), array('', '<br>', '<br>', '', '=', " "), print_r($res, true));
-        $this->session->set_userdata('flash_message', $flash_message);
-//        die();
-    }
+    
 }

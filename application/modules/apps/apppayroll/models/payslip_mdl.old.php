@@ -476,7 +476,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
 
             $query->free_result();
         }
-        
+
         // locked ids to exclude
         $tbl      = $this->tbl;
         $print_dt = $year . '-' . $month . '-' . $lastdate;
@@ -497,22 +497,16 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         if ($excl_ids_str) {
             $excl_ids_str = " AND rp.id_pegawai NOT IN ('" . $excl_ids_str . "')";
         }
-        
         //
         $tbl      = $this->tbl;
-        //$sqlstr   = 
-        $query_list = Payslip_Mdl_Schema::get_init_insert($tbl, $year, $month, $lastdate, $excl_ids_str);
-        foreach ($query_list as $sql) {
-            $this->db->query( $sql);
-        }
-        
-        //$query    = $this->db->query($sqlstr);
+        $sqlstr   = Payslip_Mdl_Schema::get_init_insert($tbl, $year, $month, $lastdate, $excl_ids_str);
+        $query    = $this->db->query($sqlstr);
         //debug($sqlstr);
         // update job unit / jb title
         $tbl_join = 'r_peg_jab';
         $sqlstr   = Payslip_Mdl_Schema::get_update_job_unit_title($tbl, $tbl_join, $year, $month, $lastdate);
         $query    = $this->db->query($sqlstr);
-//return;
+
         // update status kontrak
         $tbl_join  = 'r_peg_kontrak';
         $empl_stat = 'Kontrak';
@@ -559,13 +553,11 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         // update grade
         $tbl_join = 'r_peg_golongan';
         $sqlstr   = Payslip_Mdl_Schema::get_update_grade($tbl, $tbl_join, $year, $month, $lastdate);
-        // // echo $sqlstr;die();
         $query    = $this->db->query($sqlstr);
 
         // update Base Salary
         $tbl_join = 'm_gaji_pokok';
         $sqlstr   = Payslip_Mdl_Schema::get_update_base_salary($tbl, $tbl_join, $year, $month, $lastdate);
-        // echo $sqlstr;die();
         $query    = $this->db->query($sqlstr);
 
         // WC status
@@ -599,7 +591,6 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query    = $this->db->query($sqlstr);
 
         $this->get_update_all_allowance();
-        $this->get_update_all_deduction();
         $this->get_update_all_pph21($tbl, $year, $month, $lastdate);
        
         
@@ -621,9 +612,10 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
         $query    = $this->db->query($sqlstr);
 
+         $this->get_update_all_deduction();
         //update PTP penghasilan tertinggi pegawai
         $this->_update_ptp($print_dt);
-        $this->_update_component('','',$print_dt);
+        $this->_update_component($print_dt);
     }
 
     public function get_component()
@@ -946,8 +938,8 @@ UPDATE;
 
     public function update_base_sal($filter = null)
     {
-
-
+//        debug($this->rs_cf_cur_year);
+//        debug($this->rs_cf_cur_month);
         $t_date = date('Y-m-t', strtotime(sprintf('%s-%s-01', $this->rs_cf_cur_year, $this->rs_cf_cur_month)));
 
         $this->db->where('print_dt', $t_date);
@@ -993,10 +985,6 @@ UPDATE;
 
     public function update_base_sal_dir()
     {
-       //  var_dump($this->rs_cf_cur_year);
-       // var_dump($this->rs_cf_cur_month);
-
-       // die();
         $print_dt = date('Y-m-t', strtotime(sprintf('%s-%s-01', $this->rs_cf_cur_year, $this->rs_cf_cur_month)));
         $md_value  = $this->_update_conf_base_sal_md($print_dt);
         /**

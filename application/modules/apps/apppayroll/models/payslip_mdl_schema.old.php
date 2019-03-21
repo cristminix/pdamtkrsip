@@ -42,8 +42,7 @@ class Payslip_Mdl_Schema {
     }
 
     public static function get_init_insert($tbl, $year, $month, $lastdate, $excl_ids_str) {
-        $sql_truncate =  "TRUNCATE {$tbl};";
-        $sql_non_kontrak = <<<SQL
+        return <<<SQL
         INSERT INTO {$tbl} (
                 print_dt,
                 empl_id,
@@ -56,9 +55,6 @@ class Payslip_Mdl_Schema {
                 hire_date,
                 los,
                 kode_peringkat,
-                grade_id,
-                grade,
-                empl_stat,
                 created,
                 modified
             )
@@ -71,69 +67,16 @@ class Payslip_Mdl_Schema {
                     rp.tempat_lahir,
                     rp.tanggal_lahir,
                     rp.kelompok_pegawai,
-                    IFNULL(rp.tgl_terima,'0000-00-00') tgl_terima,
+                    rp.tgl_terima,
                     MAX(IFNULL(rpg.mk_peringkat,0)) mk_peringkat,
                     rpg.kode_golongan,
-                    rpg.kode_golongan,
-                    rpg.nama_pangkat,
-                    rp.status_pegawai,
                     NOW(),
                     NOW()
                 FROM r_pegawai rp
                     LEFT JOIN r_peg_golongan  rpg ON rpg.id_pegawai = rp.id_pegawai
-                    WHERE rp.status = '' AND rp.status_pegawai <> 'Kontrak'
                     {$excl_ids_str}
                 GROUP BY rp.id_pegawai;
 SQL;
-$sql_kontrak = <<<SQL
-        INSERT INTO {$tbl} (
-                print_dt,
-                empl_id,
-                nipp,
-                empl_name,
-                gender,
-                pob,
-                dob,
-                empl_gr,
-                hire_date,
-                lama_kontrak,
-                los,
-                kode_peringkat,
-                grade_id,
-                grade,
-                empl_stat,
-                created,
-                modified
-            )
-                SELECT
-                    '{$year}-{$month}-{$lastdate}',
-                    rp.id_pegawai,
-                    rp.nip_baru,
-                    rp.nama_pegawai,
-                    rp.gender,
-                    rp.tempat_lahir,
-                    rp.tanggal_lahir,
-                    rp.kelompok_pegawai,
-                    MAX( rpk.tmt_kontrak ) tgl_terima,
-                    (CASE WHEN (CASE WHEN ( TIMESTAMPDIFF( YEAR, rpk.tmt_kontrak, NOW( ) ) ) > 0 THEN ( TIMESTAMPDIFF( YEAR, rpk.tmt_kontrak, NOW( ) ) ) ELSE 1 END ) % 2 = 0 THEN 2 ELSE 1 END) lama_kontrak, 
-                    0,
-                    97,
-                    97,
-                    'Kontrak',
-                    'Kontrak',
-                    NOW(),
-                    NOW()
-                FROM r_pegawai rp    
-                LEFT JOIN r_peg_kontrak AS rpk ON rp.id_pegawai = rpk.id_pegawai 
-                WHERE
-                    rpk.tmt_kontrak IS NOT NULL 
-                    AND rp.status_pegawai = 'Kontrak' 
-                    {$excl_ids_str}
-                GROUP BY rp.id_pegawai;
-SQL;
-        return [
-            $sql_truncate,$sql_non_kontrak,$sql_kontrak
-        ];
     }
 
     public static function get_locked_id($tbl, $print_dt) {
@@ -242,10 +185,9 @@ SQL;
             ON r.empl_id = ab.id_pegawai
             SET
                 r.grade_id = ab.kode_golongan,
-                r.kode_peringkat = ab.kode_golongan,
                 r.grade = ab.nama_pangkat,
                 r.modified = NOW()
-            WHERE r.print_dt='{$year}-{$month}-{$lastdate}' AND r.empl_stat = 'Khusus'
+            WHERE r.print_dt='{$year}-{$month}-{$lastdate}'
                 AND `lock` = '0';
 SQL;
     }
