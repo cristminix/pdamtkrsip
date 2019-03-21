@@ -48,6 +48,7 @@ class Ddc_Bpjs_Kes extends Apppayroll_Frontmdl {
     }
 
     public function update_payslip($eff_date, $val) {
+
         $this->db->set('ddc_bpjs_kes',$val);
         $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
         $where .= "AND (empl_stat = 'Capeg' OR  empl_stat = 'Tetap' )";
@@ -58,7 +59,8 @@ class Ddc_Bpjs_Kes extends Apppayroll_Frontmdl {
         
     }
     public function update_payslip_kontrak($eff_date, $val) {
-        $value = " (base_sal+alw_amt) * {$val}";
+        $value="((IFNULL(alw_pph21, 0)+IFNULL(gross_sal, 0))) * 0.01";
+        // $value = " (base_sal+alw_amt) * {$val}";
         $this->db->set('ddc_bpjs_kes',$value, false);
         $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
         $where .= " AND empl_stat = 'Kontrak' ";        

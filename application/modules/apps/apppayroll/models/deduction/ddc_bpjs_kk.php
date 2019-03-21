@@ -33,7 +33,7 @@ class Ddc_Bpjs_Kk extends Apppayroll_Frontmdl {
     }
 
     public function update_payslip($eff_date, $val) {
-        $value = "((IFNULL(alw_pph21, 0)+IFNULL(gross_sal, 0))-IFNULL(alw_vhc_rt, 0)) * {$val}";
+        $value = "((IFNULL(alw_pph21, 0)+IFNULL(gross_sal, 0))-IFNULL(alw_vhc_rt, 0)) * 0.02";
         $this->db->set('ddc_bpjs_ket',$value, false);
         $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
         $this->db->where($where, null, false);

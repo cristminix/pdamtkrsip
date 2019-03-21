@@ -231,7 +231,7 @@ class Alw_Common extends Apppayroll_Frontmdl {
 //        $where .= " AND attn_i <= 0 ";
 //        $where .= " AND attn_a <= 0 ";
 //        $where .= " AND attn_l <= 0 ";
-        $this->db->where($where, null, false);
+        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'");
         $this->db->update($this->payslip_tbl);
         return $this->db->affected_rows();
     }
@@ -310,7 +310,7 @@ class Alw_Common extends Apppayroll_Frontmdl {
                 $where .= " AND mar_stat = 'Menikah' AND child_cnt >=3 ";
                 break;
         }
-        $this->db->where($where, null, false);
+        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'");
         $this->db->update($this->payslip_tbl);
         return $this->db->affected_rows();
     }

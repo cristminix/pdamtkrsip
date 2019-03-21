@@ -540,7 +540,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
 //        $tbl_join = 'r_peg_perkawinan';
         $tbl_join = 'apr_adm_marstat';
         $sqlstr   = Payslip_Mdl_Schema::get_update_marstat($tbl, $tbl_join, $year, $month, $lastdate);
-//       debug($sqlstr);die();
+      // var_dump($sqlstr);die();
         $query    = $this->db->query($sqlstr);
 
         // update child count
@@ -599,9 +599,9 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query    = $this->db->query($sqlstr);
 
         $this->get_update_all_allowance();
-        $this->get_update_all_deduction();
+        
         $this->get_update_all_pph21($tbl, $year, $month, $lastdate);
-       
+        $this->get_update_all_deduction();
         
 
         // Update tax_netto & tax base PKP // penghasilan kena pajak
