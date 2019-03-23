@@ -1,0 +1,15 @@
+{
+    "name": "sintechba/pdamtkrsip",
+    "description": "Aplikasi Simpeg Dan Payroll PDAMTKR",
+    "type": "project",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Putra",
+            "email": "cristminix@gmail.com"
+        }
+    ],
+    "require": {
+        "phplucidframe/console-table": "^1.2"
+    }
+}
