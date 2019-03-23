@@ -104,8 +104,7 @@ class Artisan extends MX_Controller
         
         $records = [
             $sample
-        ];
-        $records = $this->db->where('empl_stat','Tetap')->get('apr_sv_payslip')->result();
+        ]+ $this->db->where('empl_stat','Tetap')->get('apr_sv_payslip')->result();
 
         // $ptkp = 54000000;
         $table = new LucidFrame\Console\ConsoleTable();
@@ -190,6 +189,11 @@ class Artisan extends MX_Controller
             $ad = 0; $bl = -1;
             $stop = false;
             // $row->alw_fd = $row->alw_tr;
+            foreach ($row as &$item) {
+                if(empty($item)){
+                    $item = 0;
+                }
+            }
             while(!$stop){
 
                 $o  = round($row->base_sal); // GAJI POKOK
@@ -261,20 +265,20 @@ class Artisan extends MX_Controller
                 $bj = ($bh - $bi) > 0 ? ($bh - $bi) : 0; // NILAI KENA PAJAK , =IF(BH4-BI4>0,BH4-BI4,0)
                 
                 $pph_21_calc_nilai_kena_pajak = $bj;
-                $bk = 0;
+                $bk = round(($bj<=0?0:($bj<=50000000?($bj*0.05):($bj>500000000?(($bj-500000000)*0.30)+95000000:($bj>250000000?(($bj-250000000)*0.25)+32500000:($bj>50000000?((($bj-50000000)*0.15)+2500000):0))))),0);
                 //PAJAK SETAHUN
-                if($bj <= 0){
-                    $bk = 0;
-                }else if($bj <= 50000000){
-                    $bk = ($bj * 0.05); 
-                }else if($bj > 50000000 ){
-                    $bk = ( ($bj-500000000) * 0.3 ) + 95000000;
-                }else if($bj > 250000000){
-                    $bk = (($bj-250000000) * 0.25 ) + 32500000;
-                }else if($bj > 50000000){
-                    $bk = ( ($bj-50000000) * 0.15 ) + 2500000;
-                }
-                $bk = round($bk,0);
+                // if($bj <= 0){
+                //     $bk = 0;
+                // }else if($bj <= 50000000){
+                //     $bk = ($bj * 0.05); 
+                // }else if($bj > 50000000 ){
+                //     $bk = ( ($bj-500000000) * 0.3 ) + 95000000;
+                // }else if($bj > 250000000){
+                //     $bk = (($bj-250000000) * 0.25 ) + 32500000;
+                // }else if($bj > 50000000){
+                //     $bk = ( ($bj-50000000) * 0.15 ) + 2500000;
+                // }
+                // $bk = round($bk,0);
 
                 $pph_21_calc_pajak_setahun = $bk;
                 $bl = ($bk / 12); // PAJAK PERBULAN , =BK4/12
