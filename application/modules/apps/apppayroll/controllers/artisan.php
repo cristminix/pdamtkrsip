@@ -265,6 +265,7 @@ class Artisan extends MX_Controller
                 $bj = ($bh - $bi) > 0 ? ($bh - $bi) : 0; // NILAI KENA PAJAK , =IF(BH4-BI4>0,BH4-BI4,0)
                 
                 $pph_21_calc_nilai_kena_pajak = $bj;
+                
                 $bk = round(($bj<=0?0:($bj<=50000000?($bj*0.05):($bj>500000000?(($bj-500000000)*0.30)+95000000:($bj>250000000?(($bj-250000000)*0.25)+32500000:($bj>50000000?((($bj-50000000)*0.15)+2500000):0))))),0);
                 //PAJAK SETAHUN
                 // if($bj <= 0){
