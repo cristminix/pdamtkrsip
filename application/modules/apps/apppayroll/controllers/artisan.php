@@ -84,7 +84,7 @@ class Artisan extends MX_Controller
             'alw_amt'   => 0,                   // TOTAL TUNJANGAN
             'gross_sal' => 0,                   // GAJI KOTOR
             'ddc_pph21' => 0,                   // POT PPH21
-            'ddc_bpjs_kes' => 0,                //     ASKES
+            'ddc_bpjs_kes' => 47250,                //     ASKES
             'ddc_bpjs_ket' => 0,                //     ASTEK
             'ddc_aspen' => 0,                   //     ASPEN
             'ddc_f_kp'  => 0,                   //     FKP
@@ -105,12 +105,14 @@ class Artisan extends MX_Controller
         $records = [
             $sample
         ];
+        $records = $this->db->where('empl_stat','Tetap')->get('apr_sv_payslip')->result();
 
         // $ptkp = 54000000;
         $table = new LucidFrame\Console\ConsoleTable();
         $table_calc = new LucidFrame\Console\ConsoleTable();
 
         //foreach ($select_keys as $field => $caption) {
+        $pph_21_calc = (object)[];
         $table->addHeader('NAMA')
               ->addHeader('GAPOK')
               ->addHeader('TNJ ISTERI')
@@ -184,10 +186,11 @@ class Artisan extends MX_Controller
         // ;
         // print_r($records);
         // exit;
-        foreach ($records as $row) {
+        foreach ($records as &$row) {
             $ad = 0; $bl = -1;
+            $stop = false;
             // $row->alw_fd = $row->alw_tr;
-            while(true){
+            while(!$stop){
 
                 $o  = round($row->base_sal); // GAJI POKOK
                 $p  = round($row->alw_mar); // ISTERI 
@@ -195,7 +198,7 @@ class Artisan extends MX_Controller
                 $r  = round($row->alw_rc); // BERAS
                 $s  = round($row->alw_wt); // AIR
                 $t  = round($row->alw_jt); // JABATAN
-                $u  = round($row->alw_adv); // PRESTASI
+                $u  = round($row->alw_prf); // PRESTASI
                 $v  = round($row->alw_ot); // LEMBUR
                 $w  = round($row->alw_adv); // KHUSUS
                 $x  = round($row->alw_rs); // PERUMAHAN 
@@ -203,24 +206,31 @@ class Artisan extends MX_Controller
                 
                 $z  = round($row->alw_vhc_rt); // TTPP
                 
-                $aa = $y; // MAKAN
+                $aa = round($row->alw_fd); // MAKAN
                 $ab = round($row->alw_sh); // SHIFT
                 $ac = round($row->alw_tpp); // TPP
 
                 $ad = $bl > 0 ? $bl: 0; // PPH21 , BL look at bottom
 
-                
-                
-                $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
-                
-                $ah = $row->ddc_bpjs_kes;  // POTONGAN ASKES
+                // echo "alw_pph21 = $ad <br>";
+                $row->alw_pph21 = $ad;
+                $row->ddc_pph21 = $ad;
                 
                 $ae = $o + $p + $q + $r + $s + $t + $u + $v + $w + $x + $y + $z + $aa + $ab + $ac + $ad  ;  // GAJI KOTOR , =SUM(O4:AD4)
+                // echo "$o + $p + $q + $r + $s + $t + $u + $v + $w + $x + $y + $z + $aa + $ab + $ac + $ad <br>";
+                // echo "gaji_bruto :$ae<br>";
+                $ag = round(($ae - $z) * 0.02);  // POTONGAN ASTEK  , =(AE4-Z4)*2% 
+                $row->ddc_bpjs_ket = $ag;
                 
-                $ag = ($ae - $z) * 0.02;  // POTONGAN ASTEK  , =(AE4-Z4)*2% 
-                 
+                $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
+                $row->ddc_aspen = round($ai);
+
+                $ah = $row->ddc_bpjs_kes;  // POTONGAN ASKES 
                 
                 $ay = $ae; // GAJI BRUTO
+                
+                $row->gross_sal = $ay;
+                $pph_21_calc_gaji_bruto = $ay;
 
                 $az = $ag; // POTONGAN ASTEK
                 $ba = $ai; // POTONGAN ASPEN
@@ -228,34 +238,50 @@ class Artisan extends MX_Controller
                 //    
                 $bc = $ay + $az + $ba + $bb; // PAJAK BRUTO, =SUM(AY4:BB4)
 
+                $pph_21_calc_pajak_bruto = $bc;
+
                 $bd = (0.05 * $bc) <= 500000 ? (0.05 * $bc) : 500000; //BIAYA JABATAN , =IF((5%*BC4)<=500000,BC4*5%,500000) 
-                
+                $pph_21_calc_biaya_jabatan = $bd;
 
                 $be = $az + $ba + $bb; // Astek + Aspen + Askes, =SUM(AZ4:BB4)
+                $pph_21_calc_biaya_astek_askes_aspen = $be;
                 
                 $bf = ($bd + $be); // TOTAL PENGURANG , =SUM(BD4:BE4)
+                $pph_21_calc_total_pengurang = $bf;
 
                 $bg = ($bc - $bf); // PAJAK NETTO , BC4-BF4 
+                $pph_21_calc_pajak_netto = $bg;
 
                 $bh = ($bg * 12); // PAJAK DISTAHUNKAN , BG4*12
+                $pph_21_calc_pajak_disetahunkan = $bh;    
+
                 $bi = round($row->ptkp_tariff); // PTKP
+                $pph_21_calc_ptkp = $bi;
 
                 $bj = ($bh - $bi) > 0 ? ($bh - $bi) : 0; // NILAI KENA PAJAK , =IF(BH4-BI4>0,BH4-BI4,0)
+                
+                $pph_21_calc_nilai_kena_pajak = $bj;
+                $bk = 0;
                 //PAJAK SETAHUN
-                $bk   = $bj <= 0 ? 0 : (
-                                            $bj <= 50000000 ? ($bj * 0.05) : (
-                                                                                $bj > 50000000 ? ((($bj-500000000)*0.3)+95000000) : (
-                                                                                                                                      $bj > 250000000 ?  ((($bj-250000000)*0.25)+32500000) : (
-                                                                                                                                                                                                $bj > 50000000 ? ((($bj-50000000)*0.15)+2500000) : 0
-                                                                                                                                                                                             ) 
+                if($bj <= 0){
+                    $bk = 0;
+                }else if($bj <= 50000000){
+                    $bk = ($bj * 0.05); 
+                }else if($bj > 50000000 ){
+                    $bk = ( ($bj-500000000) * 0.3 ) + 95000000;
+                }else if($bj > 250000000){
+                    $bk = (($bj-250000000) * 0.25 ) + 32500000;
+                }else if($bj > 50000000){
+                    $bk = ( ($bj-50000000) * 0.15 ) + 2500000;
+                }
+                $bk = round($bk,0);
 
-                                                                                                                                    )
-                                                                             )
-                                       );
-
+                $pph_21_calc_pajak_setahun = $bk;
                 $bl = ($bk / 12); // PAJAK PERBULAN , =BK4/12
+                //  echo "pajak_perbulan = $bl <br>";
+                $pph_21_calc_pajak_perbulan = $bl;
 
-                $ad = $bl; // PPH21 
+                // $ad = $bl; // PPH21 
                 $af = $ad; // PPH21
 
                 // $ag = 0;
@@ -263,18 +289,25 @@ class Artisan extends MX_Controller
                 
                 
 
-                $aj = 0; // FKP
-                $ak = 0; // Koperasi
-                $al = 0; // Koperasi Wajib
-                $am = 0; // DM ., Dharma wanita
-                $an = 0; // TPTGR
-                $ao = 0; // REK AER
+                $aj = round($row->ddc_f_kp); // FKP
+                $ak = round($row->ddc_wcl); // Koperasi
+                $al = round($row->ddc_wc); // Koperasi Wajib
+                $am = round($row->ddc_dw); // DM ., Dharma wanita
+                $an = round($row->ddc_tpt); // TPTGR
+                $ao = round($row->ddc_wb); // REK AER
                 $ap = ($ae * 0.025);  // ZAKAT , 2.5%*AE4
-                $aq = 0;  // SHODAQOH
+                
+                $row->ddc_zk = $ap;
+
+                $aq = round($row->ddc_shd);  // SHODAQOH
 
                 $ar   = $af + $ag + $ah + $ai + $aj + $ak + $al + $am + $an + $ao + $ap + $aq; // JUMLAH POTONGAN , =SUM(AF4:AQ4)
-         
+                
+                $row->ddc_amt = $ar;     
+
                 $as   = $ae - $ar; // GAJI DITERIMA
+                
+                $row->net_pay = $as;
 
                 $aw   = 0; // ?
 
@@ -282,33 +315,36 @@ class Artisan extends MX_Controller
 
                 
                 $pph_21_calc = (object)[
-                    'gaji_bruto'    => $row->gross_sal,
+                    'gaji_bruto'    => $pph_21_calc_gaji_bruto,
                     
                     'potongan_astek' => $row->ddc_bpjs_ket,    
                     'potongan_aspen' => $row->ddc_aspen,    
                     'potongan_askes' => $row->ddc_bpjs_kes,  
 
-                    'pajak_bruto'   => $row->tax_bruto,
+                    'pajak_bruto'   => $pph_21_calc_pajak_bruto,
 
-                    'biaya_jabatan' => 0,
+                    'biaya_jabatan' => $pph_21_calc_biaya_jabatan,
                     'biaya_astek_askes_aspen' => ($row->ddc_bpjs_kes + $row->ddc_bpjs_ket + $row->ddc_aspen),
-                    'total_pengurang' => 0,
-                    'pajak_netto'   => 0,
-                    'pajak_disetahunkan' => 0,
-                    'ptkp' => $row->ptkp_tariff,
-                    'nilai_kena_pajak' => 0,
-                    'pajak_setahun' => 0,
-                    'pajak_perbulan' => 0,
-                    'bn' => 0
+                    'total_pengurang' => $pph_21_calc_total_pengurang,
+                    'pajak_netto'   => $pph_21_calc_pajak_netto,
+                    'pajak_disetahunkan' => $pph_21_calc_pajak_disetahunkan,
+                    'ptkp' => $pph_21_calc_ptkp,
+                    'nilai_kena_pajak' => $pph_21_calc_nilai_kena_pajak,
+                    'pajak_setahun' => $pph_21_calc_pajak_setahun,
+                    'pajak_perbulan' =>  $pph_21_calc_pajak_perbulan ,
+                    'bn' => $bn
                 ];    
 
-                if($bl === $ad || $bl == 0){
-                    break;
-                }
-
+                
+                
+                if($bl == $ad || $bl < 0){
+                    $stop = true;
+                    // break;
+                } 
+                // $ad = $bl;
 
             }
-            echo $ad . "\n";
+            //echo $ad . "<br/>";
             $table->addRow();
             // foreach (array_keys($select_keys) as $prop) {
             $table->addColumn($row->empl_name)
