@@ -614,8 +614,8 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query    = $this->db->query($sqlstr);
 
         // Update tax annual
-        $sqlstr   = Payslip_Mdl_Schema::get_update_tax_annual($tbl, $year, $month, $lastdate, 0);
-        $query    = $this->db->query($sqlstr);
+        // $sqlstr   = Payslip_Mdl_Schema::get_update_tax_annual($tbl, $year, $month, $lastdate, 0);
+        // $query    = $this->db->query($sqlstr);
 
         // Update tax ddc ddc_pph21 alw_pph21
         // $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
@@ -643,6 +643,13 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         }
         $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
                             ->where("empl_stat","Kontrak")
+                            ->get('apr_sv_payslip')
+                            ->result();
+        foreach ($records as &$row) {
+            $this->fix_pph21($row);
+        }
+        $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
+                            ->where("empl_stat","Khusus")
                             ->get('apr_sv_payslip')
                             ->result();
         foreach ($records as &$row) {
@@ -1068,29 +1075,66 @@ UPDATE;
 
         // update MD
         $md_identifier      = $this->ref_md_identifier;
-        $filter_base_sal_md = $this->get_filter_ref_payslip($print_dt, $md_identifier);
+
+        echo $md_identifier . "\n";
+
+        $filter_base_sal_md = $this->get_filter_ref_payslip($print_dt, $md_identifier); //'2019-04-24','md_identifier'
+        // print_r($filter_base_sal_md);
+        // exit;
         if ($filter_base_sal_md) {
             //update md base sal
             $conf_name = $this->conf_base_sal_md;
-            $update = $this->get_base_sal_dir($conf_name, $print_dt);
 
+            
+            $update = $this->get_base_sal_dir($conf_name, $print_dt); //'base_sal_md','2019-04-24'
+            /*
+                stdClass Object
+                (
+                    [id] => 26
+                    [print_dt] => 2019-03-31
+                    [value] => 38622837.545925
+                    [lock] => 
+                    [name] => base_sal_md
+                    [text] => 
+                    [annotation] => 
+                    [active_status] => 1
+                    [menu_code] => 
+                    [menu_order] => 
+                    [created] => 2019-03-21 11:54:29
+                    [modified] => 2019-03-24 12:56:03
+                )
+            */
+            // print_r($this->tbl);
+            // exit;
             //        $this->db->flush_cache();
-            $this->db->set('base_sal', $update->value);
+            $this->db->set('base_sal', $update->value); // 38622837.545925
             $this->db->where('print_dt', $print_dt);
             $this->db->where('lock', 0);
-            //        debug($filter_base_sal_md);die();
+            
+            // print_r($filter_base_sal_md);
+            // die();
+            
             if ($filter_base_sal_md) {
-                $this->db->where($filter_base_sal_md, null, false);
+                $this->db->where($filter_base_sal_md, null, false); // ( `job_title` = 'Direktur Utama' )
             }
-            $this->db->update($this->tbl);
+            $this->db->update($this->tbl); // apr_sv_payslip
+
             $affected = $this->db->affected_rows();
 
             if ($affected) {
-                $this->get_update_all_allowance();
-                $this->get_update_all_deduction();
+                // $this->get_update_all_allowance();
+                // $this->get_update_all_deduction();
                 $tbl = $this->tbl;
                 $lastdate  = date('t', strtotime($this->rs_cf_cur_year . '-' . $this->rs_cf_cur_month . '-01'));
-                $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);
+                // $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);\
+                $records = $this->db->where($filter_base_sal_md, null, false)
+                                    ->where('print_dt',$print_dt)
+                                    ->get($this->tbl)
+                                    ->result();
+                foreach ($records as &$row) {
+                    $this->fix_pph21($row,'Khusus');
+                }                    
+                
             }
         }
     }
@@ -1229,6 +1273,10 @@ UPDATE;
             $row->alw_wt = round($row->alw_wt) * 0.8;
             $row->alw_rs = round($row->alw_rs) * 0.8;
         }
+        if($empl_stat == 'Kontrak'){
+            $row->alw_rc = 0;
+            $row->alw_wt = 0;
+        }
         $ad = 0; $bl = -1;
         $stop = false;
         
@@ -1274,8 +1322,8 @@ UPDATE;
             $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
             $row->ddc_aspen = round($ai);
 
-            $ah = $row->ddc_bpjs_kes;  // POTONGAN ASKES 
-            
+            $ah = ($empl_stat != 'Kontrak' ? $row->ddc_bpjs_kes : ($ae * 0.01));  // POTONGAN ASKES 
+            $row->ddc_bpjs_kes = $ah;
             $ay = $ae; // GAJI BRUTO
             
             $row->gross_sal = $ay;
@@ -1374,6 +1422,7 @@ UPDATE;
                 $row->tax_annual = $pph_21_calc_pajak_setahun;
                 $row->pph21_tax  = $pph_21_calc_pajak_perbulan;
                 $row->gross_sal_tax = $pph_21_calc_pajak_bruto;
+                $row->tax_base = $pph_21_calc_pajak_disetahunkan;
                 $stop = true;
             } 
         }
