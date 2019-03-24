@@ -1479,6 +1479,7 @@ UPDATE;
         }
         if($update){
             // $row->lock = 1;
+            // echo json_encode($row) . '<br/>' . "\n";
             $this->db->where('id',$pk)->update('apr_sv_payslip',$row);
         }
     }
