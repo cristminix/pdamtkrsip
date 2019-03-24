@@ -990,6 +990,9 @@ UPDATE;
 
         $this->db->set('alw_adv', $updateset, false);
         $this->db->update($this->tbl);
+
+        // echo "update_alw_dir".$this->db->last_query()."\n";
+
     }
 
     public function update_base_sal($filter = null)
@@ -1140,17 +1143,19 @@ UPDATE;
             if ($affected) {
                 // $this->get_update_all_allowance();
                 // $this->get_update_all_deduction();
+                $this->update_alw_dir();
+
                 $tbl = $this->tbl;
                 $lastdate  = date('t', strtotime($this->rs_cf_cur_year . '-' . $this->rs_cf_cur_month . '-01'));
                 // $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);\
+                //echo "update_base_sal_dir\n";                  
                 $records = $this->db->where($filter_base_sal_md, null, false)
                                     ->where('print_dt',$print_dt)
                                     ->get($this->tbl)
                                     ->result();
                 foreach ($records as &$row) {
                     $this->fix_pph21($row,'Khusus');
-                }                    
-                
+                }  
             }
         }
     }

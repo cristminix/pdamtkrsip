@@ -176,7 +176,7 @@ class Payslip extends Apppayroll_Frontctl {
         $print_dt                     = date('Y-m-t', strtotime($this->{$mdl}->rs_cf_cur_year . '-' . $this->{$mdl}->rs_cf_cur_month . '-01'));
         $this->{$mdl}->rs_index_where = $this->{$this->dash_mdl}->get_filter_by_group('directors', $print_dt);
         $this->{$mdl}->update_base_sal_dir();
-        $this->{$mdl}->update_alw_dir();
+        // $this->{$mdl}->update_alw_dir();
         $this->{$mdl}->update_component($this->{$mdl}->rs_index_where,'directors', $print_dt);
         $ls                           = $this->{$mdl}->fetch_data($cur_page, $per_page, $order_by, $sort_order);
         $period                       = $this->_set_ym_period($this->{$mdl}->rs_cf_cur_year, $this->{$mdl}->rs_cf_cur_month);

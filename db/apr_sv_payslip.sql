@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 24/03/2019 18:10:38
+ Date: 24/03/2019 19:17:57
 */
 
 SET NAMES utf8mb4;
@@ -216,7 +216,7 @@ SET NEW.alw_amt =
 		,
 		NEW.alw_adv =
 		IF(NEW.empl_stat = 'Kontrak', 53731
-			,NULL
+			,NEW.alw_adv
 		)
     
 		
