@@ -244,7 +244,7 @@ class Alw_Common extends Apppayroll_Frontmdl {
         $value = "((1+ IFNULL(alw_rc_sp_cnt,0) + IFNULL(alw_rc_ch_cnt,0)) * '{$val}') ";
 
         $this->db->set('alw_rc', $value, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas' AND (empl_stat = 'Kontrak' OR empl_stat = 'Tetap')";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND empl_stat = 'Tetap'";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
 
@@ -253,7 +253,7 @@ class Alw_Common extends Apppayroll_Frontmdl {
         $value = "((1+ IFNULL(alw_rc_sp_cnt,0) + IFNULL(alw_rc_ch_cnt,0)) * '{$val}') * 0.8 ";
 
         $this->db->set('alw_rc', $value, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas' AND (empl_stat = 'Capeg')";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND empl_stat = 'Capeg'";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
 
@@ -265,21 +265,22 @@ class Alw_Common extends Apppayroll_Frontmdl {
     public function update_payslip_rs($eff_date, $val, $var) {
         // $val = "(CASE WHEN `empl_stat` = 'Capeg' THEN (0.8 * '{$val}') ELSE '{$val}' END)";
         $this->db->set('alw_rs', $val, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas' AND (empl_stat = 'Kontrak' OR empl_stat = 'Tetap' )";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND  (empl_stat = 'Tetap' AND empl_stat = 'Capeg')";
         $where .= " AND job_title = '{$var}' ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
 
         $affected_rows = $this->db->affected_rows();
 
-        $this->db->set('alw_rs', ($val * 0.8), false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas' AND `empl_stat` = 'Capeg'";
-        $where .= " AND job_title = '{$var}' ";
+        // $value = ($val * 0.8);
+        // $this->db->set('alw_rs', $value, false);
+        // $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_stat` = 'Capeg'";
+        // $where .= " AND job_title = '{$var}' ";
 
-        $this->db->where($where, null, false);
-        $this->db->update($this->payslip_tbl);
+        // $this->db->where($where, null, false);
+        // $this->db->update($this->payslip_tbl);
 
-        $affected_rows += $this->db->affected_rows();
+        // $affected_rows += $this->db->affected_rows();
         return $affected_rows;
     }
 
@@ -340,12 +341,12 @@ class Alw_Common extends Apppayroll_Frontmdl {
                 $where .= " AND mar_stat = 'Menikah' AND child_cnt >=3 ";
                 break;
         }
-        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'  AND `empl_gr` <> 'Dewan Pegawas' AND (empl_stat = 'Kontrak' OR empl_stat = 'Tetap')");
+        $this->db->where($where, null, false)->where("empl_stat", 'Tetap');
         $this->db->update($this->payslip_tbl);
         $affected_rows = $this->db->affected_rows();
 
         $this->db->set('alw_wt', ($val * 0.8), false);
-        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'  AND `empl_gr` <> 'Dewan Pegawas' AND `empl_stat` = 'Capeg'");
+        $this->db->where($where, null, false)->where('empl_stat','Capeg');
         $this->db->update($this->payslip_tbl);
         $affected_rows += $this->db->affected_rows();    
         return $affected_rows;
