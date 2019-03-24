@@ -648,28 +648,28 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
                             ->get('apr_sv_payslip')
                             ->result();
         foreach ($records as &$row) {
-            $this->fix_pph21($row);
+            $this->fix_pph21($row,'Tetap');
         }                    
         $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
                             ->where("empl_stat","Capeg")
                             ->get('apr_sv_payslip')
                             ->result();
         foreach ($records as &$row) {
-            $this->fix_pph21($row);
+            $this->fix_pph21($row,'Capeg');
         }
         $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
                             ->where("empl_stat","Kontrak")
                             ->get('apr_sv_payslip')
                             ->result();
         foreach ($records as &$row) {
-            $this->fix_pph21($row);
+            $this->fix_pph21($row,'Kontrak');
         }
         $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
-                            ->where("empl_stat","Khusus")
+                            ->where("empl_gr = 'Direksi' OR empl_gr = 'Dewan Pengawas'",null,false)
                             ->get('apr_sv_payslip')
                             ->result();
         foreach ($records as &$row) {
-            $this->fix_pph21($row);
+            $this->fix_pph21($row,'Khusus');
         }
     }
 
@@ -1302,11 +1302,7 @@ UPDATE;
             // $row->alw_prf = 0;
             // $row->alw_adv = 53731;
         }
-        if($empl_stat == 'Khusus'){
-            //$row->alw_adv = $row->alw_jt;
-           // $row->alw_jt = 0;
-
-        }
+        
         if($row->empl_gr == 'Dewan Pengawas'){
             $row->alw_tr  = 0;
             $row->alw_prf  = 0;

@@ -56,7 +56,7 @@ class Ddc_Bpjs_Kes extends Apppayroll_Frontmdl {
 
         $this->db->set('ddc_bpjs_kes',$val);
         $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
-        $where .= "AND (empl_stat = 'Capeg' OR  empl_stat = 'Tetap' OR empl_stat = 'Khusus') AND `empl_gr` <> 'Dewan Pegawas'";
+        $where .= "AND (empl_stat = 'Capeg' OR  empl_stat = 'Tetap' OR job_unit = 'Direksi') AND `empl_gr` <> 'Dewan Pegawas'";
         
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);

@@ -76,7 +76,7 @@ class Payslip_Mdl_Schema {
                     rpg.kode_golongan,
                     rpg.kode_golongan,
                     rpg.nama_pangkat,
-                    rp.status_pegawai,
+                    NULL,
                     NOW(),
                     NOW()
                 FROM r_pegawai rp
@@ -119,8 +119,8 @@ $sql_kontrak = <<<SQL
                     0,
                     97,
                     97,
-                    'Kontrak',
-                    'Kontrak',
+                    NULL,
+                    NULL,
                     NOW(),
                     NOW()
                 FROM r_pegawai rp    
@@ -245,7 +245,7 @@ SQL;
                 r.kode_peringkat = ab.kode_golongan,
                 r.grade = ab.nama_pangkat,
                 r.modified = NOW()
-            WHERE r.print_dt='{$year}-{$month}-{$lastdate}' AND r.empl_stat = 'Khusus'
+            WHERE r.print_dt='{$year}-{$month}-{$lastdate}' (AND r.empl_gr  = 'Direksi' OR r.empl_gr = 'Dewan Pengawas')
                 AND `lock` = '0';
 SQL;
     }

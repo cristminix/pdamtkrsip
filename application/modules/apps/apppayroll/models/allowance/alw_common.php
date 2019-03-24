@@ -265,7 +265,7 @@ class Alw_Common extends Apppayroll_Frontmdl {
     public function update_payslip_rs($eff_date, $val, $var) {
         // $val = "(CASE WHEN `empl_stat` = 'Capeg' THEN (0.8 * '{$val}') ELSE '{$val}' END)";
         $this->db->set('alw_rs', $val, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas' AND (empl_stat = 'Kontrak' OR empl_stat = 'Tetap')";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas' AND (empl_stat = 'Kontrak' OR empl_stat = 'Tetap' )";
         $where .= " AND job_title = '{$var}' ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
