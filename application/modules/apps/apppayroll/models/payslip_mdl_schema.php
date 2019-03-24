@@ -245,7 +245,7 @@ SQL;
                 r.kode_peringkat = ab.kode_golongan,
                 r.grade = ab.nama_pangkat,
                 r.modified = NOW()
-            WHERE r.print_dt='{$year}-{$month}-{$lastdate}' (AND r.empl_gr  = 'Direksi' OR r.empl_gr = 'Dewan Pengawas')
+            WHERE r.print_dt='{$year}-{$month}-{$lastdate}' AND (r.empl_gr  = 'Direksi' OR r.empl_gr = 'Dewan Pengawas')
                 AND `lock` = '0';
 SQL;
     }

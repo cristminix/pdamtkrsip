@@ -1295,12 +1295,12 @@ UPDATE;
             // $row->alw_rs = round($row->alw_rs) * 0.8;
         }
         if($empl_stat == 'Kontrak'){
-            // $row->alw_rc = 0;
-            // $row->alw_wt = 0;
-            // $row->alw_mar = 0;
-            // $row->alw_ch = 0;
-            // $row->alw_prf = 0;
-            // $row->alw_adv = 53731;
+            $row->alw_rc = 0;
+            $row->alw_wt = 0;
+            $row->alw_mar = 0;
+            $row->alw_ch = 0;
+            $row->alw_prf = 0;
+            $row->alw_adv = 53731;
         }
         
         if($row->empl_gr == 'Dewan Pengawas'){
