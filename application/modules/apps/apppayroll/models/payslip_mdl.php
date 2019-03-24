@@ -157,11 +157,19 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $this->db->update($this->tbl);
         $affected = $this->db->affected_rows();
         if ($affected) {
-            $this->get_update_all_allowance();
-            $this->get_update_all_deduction();
+            // $this->get_update_all_allowance();
+            // $this->get_update_all_deduction();
             $tbl = $this->tbl;
             $lastdate  = date('t', strtotime($this->rs_cf_cur_year . '-' . $this->rs_cf_cur_month . '-01'));
-            $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);
+            // $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);
+
+            $records = $this->db->where($filter_base_sal_dir, null, false)
+                                    ->where('print_dt',$print_dt)
+                                    ->get($this->tbl)
+                                    ->result();
+                foreach ($records as &$row) {
+                    $this->fix_pph21($row,'Khusus');
+                } 
         }
     }
 
@@ -1076,7 +1084,7 @@ UPDATE;
         // update MD
         $md_identifier      = $this->ref_md_identifier;
 
-        echo $md_identifier . "\n";
+        // echo $md_identifier . "\n";
 
         $filter_base_sal_md = $this->get_filter_ref_payslip($print_dt, $md_identifier); //'2019-04-24','md_identifier'
         // print_r($filter_base_sal_md);
