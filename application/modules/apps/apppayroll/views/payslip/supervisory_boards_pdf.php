@@ -57,7 +57,7 @@ $components = array(
             'base_sal' => 'BASE SALARY'
         ),
         'r' => array(
-            'alw_pph21' => 'PPh21'
+            'ddc_pph21' => 'PPh21'
         ),
     ),
     array(
