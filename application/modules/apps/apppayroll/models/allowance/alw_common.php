@@ -112,6 +112,8 @@ class Alw_Common extends Apppayroll_Frontmdl {
         }
 
         foreach ($ls as $row) {
+            // print_r($row);
+            // die();
             $res[$row->id] = $this->update_payslip_rs($row->effective_date, $row->value, $row->variable_name);
         }
         return $res;
@@ -248,6 +250,8 @@ class Alw_Common extends Apppayroll_Frontmdl {
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
 
+        // echo $this->db->last_query() . "\n";
+
         $affected_rows = $this->db->affected_rows();
 
         $value = "((1+ IFNULL(alw_rc_sp_cnt,0) + IFNULL(alw_rc_ch_cnt,0)) * '{$val}') * 0.8 ";
@@ -257,6 +261,8 @@ class Alw_Common extends Apppayroll_Frontmdl {
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
 
+        // echo $this->db->last_query() . "\n";
+
         $affected_rows += $this->db->affected_rows();
 
         return $affected_rows;
@@ -265,22 +271,23 @@ class Alw_Common extends Apppayroll_Frontmdl {
     public function update_payslip_rs($eff_date, $val, $var) {
         // $val = "(CASE WHEN `empl_stat` = 'Capeg' THEN (0.8 * '{$val}') ELSE '{$val}' END)";
         $this->db->set('alw_rs', $val, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND  (empl_stat = 'Tetap' AND empl_stat = 'Capeg')";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND  (empl_stat = 'Tetap' )";
         $where .= " AND job_title = '{$var}' ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
 
         $affected_rows = $this->db->affected_rows();
+        // echo $this->db->last_query() . ";\n";
 
-        // $value = ($val * 0.8);
-        // $this->db->set('alw_rs', $value, false);
-        // $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_stat` = 'Capeg'";
-        // $where .= " AND job_title = '{$var}' ";
+        $value = ($val * 0.8);
+        $this->db->set('alw_rs', $value, false);
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_stat` = 'Capeg'";
+        $where .= " AND job_title = '{$var}' ";
 
-        // $this->db->where($where, null, false);
-        // $this->db->update($this->payslip_tbl);
-
-        // $affected_rows += $this->db->affected_rows();
+        $this->db->where($where, null, false);
+        $this->db->update($this->payslip_tbl);
+        // echo $this->db->last_query() . ";\n";
+        $affected_rows += $this->db->affected_rows();
         return $affected_rows;
     }
 
