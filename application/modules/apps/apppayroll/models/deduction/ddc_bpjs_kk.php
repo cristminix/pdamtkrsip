@@ -14,6 +14,7 @@ class Ddc_Bpjs_Kk extends Apppayroll_Frontmdl {
 
     public function get_bpjs_kk() {
         $res = array();
+        return $res;
         $rs_deduction_data = $this->ddc_var_mdl->rs_deduction_data;
         
         if(!$rs_deduction_data){

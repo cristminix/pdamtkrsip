@@ -14,6 +14,7 @@ class Ddc_Bpjs_Kes extends Apppayroll_Frontmdl {
 
     public function get_bpjs_kes_knt() {
         $res = array();
+        // return $res;
         $rs_deduction_data = $this->ddc_var_mdl->rs_deduction_data;
         if(!$rs_deduction_data){
             return $res;
@@ -31,6 +32,7 @@ class Ddc_Bpjs_Kes extends Apppayroll_Frontmdl {
     }
     public function get_bpjs_kes_peg() {
         $res = array();
+        // return $res;
         $rs_deduction_data = $this->ddc_var_mdl->rs_deduction_data;
         if(!$rs_deduction_data){
             return $res;
@@ -51,7 +53,7 @@ class Ddc_Bpjs_Kes extends Apppayroll_Frontmdl {
 
         $this->db->set('ddc_bpjs_kes',$val);
         $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
-        $where .= "AND (empl_stat = 'Capeg' OR  empl_stat = 'Tetap' )";
+        $where .= "AND (empl_stat = 'Capeg' OR  empl_stat = 'Tetap' ) AND `empl_gr` <> 'Dewan Pegawas'";
         
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);

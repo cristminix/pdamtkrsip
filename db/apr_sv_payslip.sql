@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 24/03/2019 15:07:04
+ Date: 24/03/2019 18:10:38
 */
 
 SET NAMES utf8mb4;
@@ -181,7 +181,7 @@ SET NEW.alw_amt =
   ,
   NEW.alw_fd = 
     IF(
-      NEW.alw_fd_set = 1
+      NEW.alw_fd_set = 1 AND NEW.empl_gr <> 'Dewan Pengawas'
       ,((IFNULL(NEW.work_day,0) - 
         (IFNULL(NEW.attn_i, 0) + 
           IFNULL(NEW.attn_a, 0) +
@@ -193,7 +193,7 @@ SET NEW.alw_amt =
     )
   ,
     NEW.alw_tr = 
-    IF(NEW.alw_tr_set =1
+    IF(NEW.alw_tr_set =1 AND NEW.empl_gr <> 'Dewan Pengawas'
       ,((IFNULL(NEW.work_day,0) - 
         (IFNULL(NEW.attn_i, 0) + 
           IFNULL(NEW.attn_a, 0) +
@@ -204,7 +204,7 @@ SET NEW.alw_amt =
      )
    ,
     NEW.alw_prf = 
-     IF(NEW.alw_prf_set = 1 
+     IF(NEW.alw_prf_set = 1 AND NEW.empl_gr <> 'Dewan Pengawas'  AND NEW.empl_stat <> 'Kontrak'
        ,((IFNULL(NEW.work_day,0) - 
         (IFNULL(NEW.attn_i, 0) + 
           IFNULL(NEW.attn_a, 0) +
@@ -213,7 +213,14 @@ SET NEW.alw_amt =
         * NEW.alw_prf_perday)
        ,NULL
     )
-    ,
+		,
+		NEW.alw_adv =
+		IF(NEW.empl_stat = 'Kontrak', 53731
+			,NULL
+		)
+    
+		
+		,
     NEW.gross_sal = 
         IFNULL(NEW.base_sal, 0) + 
         IFNULL(NEW.alw_amt, 0)

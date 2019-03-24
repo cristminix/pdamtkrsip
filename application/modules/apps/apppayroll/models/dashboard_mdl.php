@@ -56,7 +56,7 @@ class dashboard_mdl extends Apppayroll_Frontmdl {
         }
         $filters = $this->get_filter_by_group($group_name, $print_dt);
         $tbl     = 'apr_sv_payslip';
-        $this->db->select('SUM(gross_sal+alw_pph21) sum_gross_sal');
+        $this->db->select('SUM(gross_sal) sum_gross_sal');
         
         
         $this->db->where($filters,null, false);

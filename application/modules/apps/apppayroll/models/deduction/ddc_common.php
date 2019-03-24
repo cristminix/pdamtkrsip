@@ -31,6 +31,7 @@ class Ddc_Common extends Apppayroll_Frontmdl {
 
     public function get_ddc_aspen() {
         $res = array();
+        return $res;
         $ls  = $this->get_ddc();
         if (!$ls) {
             return $res;
@@ -55,6 +56,7 @@ class Ddc_Common extends Apppayroll_Frontmdl {
     
     public function get_ddc_zk() {
         $res = array();
+        return $res;
         $ls  = $this->get_ddc();
         if (!$ls) {
             return $res;
@@ -68,7 +70,7 @@ class Ddc_Common extends Apppayroll_Frontmdl {
     public function update_payslip_aspen($eff_date, $val) {
         $value = " (IFNULL(`base_sal`,0)+IFNULL(`alw_mar`,0)+IFNULL(`alw_ch`+`alw_rs`,0)) * {$val} ";
         $this->db->set('ddc_aspen', $value, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas'";
         $where .= " AND child_cnt > 0 ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
@@ -77,7 +79,7 @@ class Ddc_Common extends Apppayroll_Frontmdl {
 
     public function update_payslip_fkp($eff_date, $val) {
         $this->db->set('ddc_f_kp', $val, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas'";
         $where .= " AND empl_fkp=1 ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);
@@ -87,7 +89,7 @@ class Ddc_Common extends Apppayroll_Frontmdl {
     public function update_payslip_zk($eff_date, $val) {
         $value = " (IFNULL(base_sal, 0) + IFNULL(alw_amt, 0)) * {$val} ";
         $this->db->set('ddc_zk', $value, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas'";
         $where .= " AND empl_zk=1 ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);

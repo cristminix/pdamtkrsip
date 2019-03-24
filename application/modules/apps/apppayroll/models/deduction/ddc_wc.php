@@ -44,7 +44,7 @@ class Ddc_Wc extends Apppayroll_Frontmdl {
     
     public function update_payslip_wc_od($eff_date, $val) {
         $this->db->set('ddc_wc', $val, false);
-        $where = "print_dt >= '{$eff_date}' AND `lock`=0 ";
+        $where = "print_dt >= '{$eff_date}' AND `lock`=0  AND `empl_gr` <> 'Dewan Pegawas'";
         $where .= " AND empl_wc=1 ";
         $this->db->where($where, null, false);
         $this->db->update($this->payslip_tbl);

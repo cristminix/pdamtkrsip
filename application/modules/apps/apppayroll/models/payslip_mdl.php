@@ -1285,17 +1285,37 @@ UPDATE;
         $row->alw_sh = 0;
 
         if($empl_stat == 'Capeg'){
-            $row->alw_rc = round($row->alw_rc) * 0.8;
-            $row->alw_wt = round($row->alw_wt) * 0.8;
-            $row->alw_rs = round($row->alw_rs) * 0.8;
+            // $row->alw_rc = round($row->alw_rc) * 0.8;
+            // $row->alw_wt = round($row->alw_wt) * 0.8;
+            // $row->alw_rs = round($row->alw_rs) * 0.8;
         }
         if($empl_stat == 'Kontrak'){
-            $row->alw_rc = 0;
-            $row->alw_wt = 0;
+            // $row->alw_rc = 0;
+            // $row->alw_wt = 0;
+            // $row->alw_mar = 0;
+            // $row->alw_ch = 0;
+            // $row->alw_prf = 0;
+            // $row->alw_adv = 53731;
         }
         if($empl_stat == 'Khusus'){
             //$row->alw_adv = $row->alw_jt;
            // $row->alw_jt = 0;
+
+        }
+        if($row->empl_gr == 'Dewan Pengawas'){
+            $row->alw_tr  = 0;
+            $row->alw_prf  = 0;
+            $row->alw_mar = 0;
+            $row->alw_ch = 0;
+            $row->alw_fd = 0;
+            $row->alw_rc  = 0;
+            $row->alw_adv = 0;
+            $row->alw_wt = 0;
+            $row->alw_jt = 0;
+            $row->alw_rs = 0;
+            $row->alw_ot = 0;
+            $row->alw_tpp = 0;
+            $row->alw_vhc_rt = 0;
         }
         $ad = 0; $bl = -1;
         $stop = false;
@@ -1337,12 +1357,21 @@ UPDATE;
             // echo "$o + $p + $q + $r + $s + $t + $u + $v + $w + $x + $y + $z + $aa + $ab + $ac + $ad <br>";
             // echo "gaji_bruto :$ae<br>";
             $ag = round(($ae - $z) * 0.02);  // POTONGAN ASTEK  , =(AE4-Z4)*2% 
-            $row->ddc_bpjs_ket = $ag;
+            
             
             $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
-            $row->ddc_aspen = round($ai);
-
+            if($empl_stat == 'Kontrak'){
+                $ai = 0;
+            }
             $ah = ($empl_stat != 'Kontrak' ? $row->ddc_bpjs_kes : ($ae * 0.01));  // POTONGAN ASKES 
+            if($row->empl_gr == 'Dewan Pengawas'){
+                $ai = 0;
+                $ag = 0;
+                $ah = 0;
+            }
+
+            $row->ddc_bpjs_ket = $ag;
+            $row->ddc_aspen = round($ai);
             $row->ddc_bpjs_kes = $ah;
             $ay = $ae; // GAJI BRUTO
             
@@ -1396,7 +1425,9 @@ UPDATE;
             $an = round($row->ddc_tpt); // TPTGR
             $ao = round($row->ddc_wb); // REK AER
             $ap = ($ae * 0.025);  // ZAKAT , 2.5%*AE4
-            
+            if($row->empl_gr == 'Dewan Pengawas'){
+                $ap = 0;
+            }
             $row->ddc_zk = $ap;
 
             $aq = round($row->ddc_shd);  // SHODAQOH
@@ -1447,7 +1478,7 @@ UPDATE;
             } 
         }
         if($update){
-
+            // $row->lock = 1;
             $this->db->where('id',$pk)->update('apr_sv_payslip',$row);
         }
     }
