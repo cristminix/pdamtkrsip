@@ -536,16 +536,16 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query     = $this->db->query($sqlstr);
 
         // update status capeg
-        // $tbl_join  = 'r_peg_capeg';
-        // $empl_stat = 'Capeg';
-        // $sqlstr    = Payslip_Mdl_Schema::get_update_status($tbl, $tbl_join, $year, $month, $lastdate, $empl_stat);
-        // $query     = $this->db->query($sqlstr);
+        $tbl_join  = 'r_peg_capeg';
+        $empl_stat = 'Capeg';
+        $sqlstr    = Payslip_Mdl_Schema::get_update_status($tbl, $tbl_join, $year, $month, $lastdate, $empl_stat);
+        $query     = $this->db->query($sqlstr);
 
-        // // update status kontrak
-        // $tbl_join  = 'r_peg_tetap';
-        // $empl_stat = 'Tetap';
-        // $sqlstr    = Payslip_Mdl_Schema::get_update_status($tbl, $tbl_join, $year, $month, $lastdate, $empl_stat);
-        // $query     = $this->db->query($sqlstr);
+        // update status kontrak
+        $tbl_join  = 'r_peg_tetap';
+        $empl_stat = 'Tetap';
+        $sqlstr    = Payslip_Mdl_Schema::get_update_status($tbl, $tbl_join, $year, $month, $lastdate, $empl_stat);
+        $query     = $this->db->query($sqlstr);
 
         // update work day
         $tbl_join = 'apr_adm_work_day';
