@@ -96,7 +96,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         'Ranking Code',
         'Length of Service',
     );
-    public $rs_select             = "*, IFNULL(alw_pph21, 0) + IFNULL(gross_sal, 0) AS `gross_sal`,  IFNULL(ddc_pph21, 0) + IFNULL(ddc_amt, 0) AS `ddc_amt`,  IFNULL(gross_sal, 0) - IFNULL(ddc_amt, 0 ) AS `net_pay`";
+    public $rs_select             = "*";
     public $rs_order_by           = null;
     public $rs_use_form_filter    = 'apr_sv_payslip';
     public $tbl                   = 'apr_sv_payslip';
@@ -605,8 +605,8 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         
 
         // Update tax_netto & tax base PKP // penghasilan kena pajak
-        $sqlstr   = Payslip_Mdl_Schema::get_update_tax_netto($tbl, $year, $month, $lastdate, 'tax_netto');
-        $query    = $this->db->query($sqlstr);
+        // $sqlstr   = Payslip_Mdl_Schema::get_update_tax_netto($tbl, $year, $month, $lastdate, 'tax_netto');
+        // $query    = $this->db->query($sqlstr);
 
         // Update pph21 tarif
         $tbl_join = 'apr_ref_pph21_tariff';
@@ -618,12 +618,36 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query    = $this->db->query($sqlstr);
 
         // Update tax ddc ddc_pph21 alw_pph21
-        $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
-        $query    = $this->db->query($sqlstr);
+        // $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
+        // $query    = $this->db->query($sqlstr);
 
         //update PTP penghasilan tertinggi pegawai
         $this->_update_ptp($print_dt);
         $this->_update_component('','',$print_dt);
+
+        //
+        // die('IA HERE');
+        $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
+                            ->where("empl_stat","Tetap")
+                            ->get('apr_sv_payslip')
+                            ->result();
+        foreach ($records as &$row) {
+            $this->fix_pph21($row);
+        }                    
+        $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
+                            ->where("empl_stat","Capeg")
+                            ->get('apr_sv_payslip')
+                            ->result();
+        foreach ($records as &$row) {
+            $this->fix_pph21($row);
+        }
+        $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
+                            ->where("empl_stat","Kontrak")
+                            ->get('apr_sv_payslip')
+                            ->result();
+        foreach ($records as &$row) {
+            $this->fix_pph21($row);
+        }
     }
 
     public function get_component()
@@ -877,12 +901,13 @@ WHERE active_status=1 ORDER BY `menu_order` ";
         $query    = $this->db->query($sqlstr);
 
         // Update tax annual
-        $sqlstr   = Payslip_Mdl_Schema::get_update_tax_annual($tbl, $year, $month, $lastdate, 0);
-        $query    = $this->db->query($sqlstr);
+        // $sqlstr   = Payslip_Mdl_Schema::get_update_tax_annual($tbl, $year, $month, $lastdate, 0);
+        // $query    = $this->db->query($sqlstr);
 
         // Update tax ddc ddc_pph21 alw_pph21
-        $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
-        $query    = $this->db->query($sqlstr);
+        // $sqlstr   = Payslip_Mdl_Schema::get_update_ddc_pph21($tbl, $year, $month, $lastdate, 0);
+        // $query    = $this->db->query($sqlstr);
+        
     }
 
     public function handle_custom_filter($input = array())
@@ -1189,5 +1214,172 @@ UPDATE;
     public function get_base_sal_dir($conf_name, $print_dt, $lock = 0)
     {
         return $this->get_base_sal_conf($conf_name, $print_dt, $lock);
+    }
+
+    public function fix_pph21(&$row,$empl_stat,$update=true)
+    {
+        // SAVE PK
+        $pk = $row->id;
+        unset($row->id);
+        // REMOVE TUNJANGAN SHIFT 
+        $row->alw_sh = 0;
+
+        if($empl_stat == 'Capeg'){
+            $row->alw_rc = round($row->alw_rc) * 0.8;
+            $row->alw_wt = round($row->alw_wt) * 0.8;
+            $row->alw_rs = round($row->alw_rs) * 0.8;
+        }
+        $ad = 0; $bl = -1;
+        $stop = false;
+        
+        // $row->alw_fd = $row->alw_tr;
+
+        foreach ($row as &$item) {
+            if(empty($item)){
+                $item = 0;
+            }
+        }
+        while(!$stop){
+
+            $o  = round($row->base_sal); // GAJI POKOK
+            $p  = round($row->alw_mar); // ISTERI 
+            $q  = round($row->alw_ch); // ANAK
+            $r  = round($row->alw_rc); // BERAS
+            $s  = round($row->alw_wt); // AIR
+            $t  = round($row->alw_jt); // JABATAN
+            $u  = round($row->alw_prf); // PRESTASI
+            $v  = round($row->alw_ot); // LEMBUR
+            $w  = round($row->alw_adv); // KHUSUS
+            $x  = round($row->alw_rs); // PERUMAHAN 
+            $y  = round($row->alw_tr); // TRANSPORT 
+            
+            $z  = round($row->alw_vhc_rt); // TTPP
+            
+            $aa = round($row->alw_fd); // MAKAN
+            $ab = round($row->alw_sh); // SHIFT
+            $ac = round($row->alw_tpp); // TPP
+
+            $ad = $bl > 0 ? $bl: 0; // PPH21 , BL look at bottom
+
+            // echo "alw_pph21 = $ad <br>";
+            $row->alw_pph21 = $ad;
+            $row->ddc_pph21 = $ad;
+            
+            $ae = $o + $p + $q + $r + $s + $t + $u + $v + $w + $x + $y + $z + $aa + $ab + $ac + $ad  ;  // GAJI KOTOR , =SUM(O4:AD4)
+            // echo "$o + $p + $q + $r + $s + $t + $u + $v + $w + $x + $y + $z + $aa + $ab + $ac + $ad <br>";
+            // echo "gaji_bruto :$ae<br>";
+            $ag = round(($ae - $z) * 0.02);  // POTONGAN ASTEK  , =(AE4-Z4)*2% 
+            $row->ddc_bpjs_ket = $ag;
+            
+            $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
+            $row->ddc_aspen = round($ai);
+
+            $ah = $row->ddc_bpjs_kes;  // POTONGAN ASKES 
+            
+            $ay = $ae; // GAJI BRUTO
+            
+            $row->gross_sal = $ay;
+            $pph_21_calc_gaji_bruto = $ay;
+
+            $az = $ag; // POTONGAN ASTEK
+            $ba = $ai; // POTONGAN ASPEN
+            $bb = $ah; // POTONGAN ASKES
+            //    
+            $bc = $ay + $az + $ba + $bb; // PAJAK BRUTO, =SUM(AY4:BB4)
+
+            $pph_21_calc_pajak_bruto = $bc;
+
+            $bd = (0.05 * $bc) <= 500000 ? (0.05 * $bc) : 500000; //BIAYA JABATAN , =IF((5%*BC4)<=500000,BC4*5%,500000) 
+            $pph_21_calc_biaya_jabatan = $bd;
+
+            $be = $az + $ba + $bb; // Astek + Aspen + Askes, =SUM(AZ4:BB4)
+            $pph_21_calc_biaya_astek_askes_aspen = $be;
+            
+            $bf = ($bd + $be); // TOTAL PENGURANG , =SUM(BD4:BE4)
+            $pph_21_calc_total_pengurang = $bf;
+
+            $bg = ($bc - $bf); // PAJAK NETTO , BC4-BF4 
+            $pph_21_calc_pajak_netto = $bg;
+
+            $bh = ($bg * 12); // PAJAK DISTAHUNKAN , BG4*12
+            $pph_21_calc_pajak_disetahunkan = $bh;    
+
+            $bi = round($row->ptkp_tariff); // PTKP
+            $pph_21_calc_ptkp = $bi;
+
+            $bj = ($bh - $bi) > 0 ? ($bh - $bi) : 0; // NILAI KENA PAJAK , =IF(BH4-BI4>0,BH4-BI4,0)
+            
+            $pph_21_calc_nilai_kena_pajak = $bj;
+            //PAJAK SETAHUN
+            $bk = round(($bj<=0?0:($bj<=50000000?($bj*0.05):($bj>500000000?(($bj-500000000)*0.30)+95000000:($bj>250000000?(($bj-250000000)*0.25)+32500000:($bj>50000000?((($bj-50000000)*0.15)+2500000):0))))),0);
+            
+
+            $pph_21_calc_pajak_setahun = $bk;
+            $bl = ($bk / 12); // PAJAK PERBULAN , =BK4/12
+            //  echo "pajak_perbulan = $bl <br>";
+            $pph_21_calc_pajak_perbulan = $bl;
+
+            $af = $ad; // PPH21
+
+            $aj = round($row->ddc_f_kp); // FKP
+            $ak = round($row->ddc_wcl); // Koperasi
+            $al = round($row->ddc_wc); // Koperasi Wajib
+            $am = round($row->ddc_dw); // DM ., Dharma wanita
+            $an = round($row->ddc_tpt); // TPTGR
+            $ao = round($row->ddc_wb); // REK AER
+            $ap = ($ae * 0.025);  // ZAKAT , 2.5%*AE4
+            
+            $row->ddc_zk = $ap;
+
+            $aq = round($row->ddc_shd);  // SHODAQOH
+
+            $ar   = $af + $ag + $ah + $ai + $aj + $ak + $al + $am + $an + $ao + $ap + $aq; // JUMLAH POTONGAN , =SUM(AF4:AQ4)
+            
+            $row->ddc_amt = $ar;     
+
+            $as   = $ae - $ar; // GAJI DITERIMA
+            
+            $row->net_pay = $as;
+
+            $aw   = 0; // ?
+
+            $bn   = $as - $aw;
+
+            
+            $pph_21_calc = (object)[
+                'gaji_bruto'    => $pph_21_calc_gaji_bruto,
+                
+                'potongan_astek' => $row->ddc_bpjs_ket,    
+                'potongan_aspen' => $row->ddc_aspen,    
+                'potongan_askes' => $row->ddc_bpjs_kes,  
+
+                'pajak_bruto'   => $pph_21_calc_pajak_bruto,
+
+                'biaya_jabatan' => $pph_21_calc_biaya_jabatan,
+                'biaya_astek_askes_aspen' => ($row->ddc_bpjs_kes + $row->ddc_bpjs_ket + $row->ddc_aspen),
+                'total_pengurang' => $pph_21_calc_total_pengurang,
+                'pajak_netto'   => $pph_21_calc_pajak_netto,
+                'pajak_disetahunkan' => $pph_21_calc_pajak_disetahunkan,
+                'ptkp' => $pph_21_calc_ptkp,
+                'nilai_kena_pajak' => $pph_21_calc_nilai_kena_pajak,
+                'pajak_setahun' => $pph_21_calc_pajak_setahun,
+                'pajak_perbulan' =>  $pph_21_calc_pajak_perbulan ,
+                // 'bn' => $bn
+            ];    
+            
+
+
+            if($bl == $ad || $bl <= 0){
+                $row->tax_netto  = $pph_21_calc_pajak_netto;
+                $row->tax_annual = $pph_21_calc_pajak_setahun;
+                $row->pph21_tax  = $pph_21_calc_pajak_perbulan;
+                $row->gross_sal_tax = $pph_21_calc_pajak_bruto;
+                $stop = true;
+            } 
+        }
+        if($update){
+
+            $this->db->where('id',$pk)->update('apr_sv_payslip',$row);
+        }
     }
 }
