@@ -573,10 +573,10 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $query    = $this->db->query($sqlstr);
 
         // update grade
-        $tbl_join = 'r_peg_golongan';
-        $sqlstr   = Payslip_Mdl_Schema::get_update_grade($tbl, $tbl_join, $year, $month, $lastdate);
-        // // echo $sqlstr;die();
-        $query    = $this->db->query($sqlstr);
+        // $tbl_join = 'r_peg_golongan';
+        // $sqlstr   = Payslip_Mdl_Schema::get_update_grade($tbl, $tbl_join, $year, $month, $lastdate);
+        // // // echo $sqlstr;die();
+        // $query    = $this->db->query($sqlstr);
 
         // update Base Salary
         $tbl_join = 'm_gaji_pokok';
