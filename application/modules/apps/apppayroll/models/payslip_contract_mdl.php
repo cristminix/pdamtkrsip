@@ -74,7 +74,7 @@ class Payslip_Contract_Mdl extends Payslip_Mdl
         // 'Ranking Code',
         'Contract',
     );
-    public $rs_select             = "*, IFNULL(alw_pph21, 0) + IFNULL(gross_sal, 0) AS `gross_sal`,  IFNULL(ddc_pph21, 0) + IFNULL(ddc_amt, 0) AS `ddc_amt`,  IFNULL(gross_sal, 0) - IFNULL(ddc_amt, 0 ) AS `net_pay`, CONCAT( (CASE WHEN  TIMESTAMPDIFF( YEAR, hire_date, NOW( ) ) % 2 = 0 THEN 2 ELSE 1 END ), ' thn' ) lama_kontrak";
+    public $rs_select             = "*, CONCAT( (CASE WHEN  TIMESTAMPDIFF( YEAR, hire_date, NOW( ) ) % 2 = 0 THEN 2 ELSE 1 END ), ' thn' ) lama_kontrak";
     
     
     

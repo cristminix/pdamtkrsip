@@ -218,11 +218,19 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
             $this->db->update($this->tbl);
             $affected = $this->db->affected_rows();
             if ($affected) {
-                $this->get_update_all_allowance();
-                $this->get_update_all_deduction();
+                // $this->get_update_all_allowance();
+                // $this->get_update_all_deduction();
                 $tbl = $this->tbl;
                 $lastdate  = date('t', strtotime($this->rs_cf_cur_year . '-' . $this->rs_cf_cur_month . '-01'));
-                $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);
+                // $this->get_update_all_pph21($tbl, $this->rs_cf_cur_year, $this->rs_cf_cur_month, $lastdate);
+
+                $records = $this->db->where($filter_alias_spv, null, false)
+                                    ->where('print_dt',$print_dt)
+                                    ->get($this->tbl)
+                                    ->result();
+                foreach ($records as &$row) {
+                    $this->fix_pph21($row,'Khusus');
+                }    
             } else {
                 // NOTE: add warning
                 $warning[] = lang('Employee not found') . ': ' . $filter_alias_spv;
@@ -980,7 +988,7 @@ WHERE active_status=1 ORDER BY `menu_order` ";
         '{$dir_alw_var}' * empl_work_day * `base_sal`
 UPDATE;
 
-        $this->db->set('alw_jt', $updateset, false);
+        $this->db->set('alw_adv', $updateset, false);
         $this->db->update($this->tbl);
     }
 
@@ -1285,6 +1293,10 @@ UPDATE;
             $row->alw_rc = 0;
             $row->alw_wt = 0;
         }
+        if($empl_stat == 'Khusus'){
+            //$row->alw_adv = $row->alw_jt;
+           // $row->alw_jt = 0;
+        }
         $ad = 0; $bl = -1;
         $stop = false;
         
@@ -1334,7 +1346,7 @@ UPDATE;
             $row->ddc_bpjs_kes = $ah;
             $ay = $ae; // GAJI BRUTO
             
-            $row->gross_sal = $ay;
+            // $row->gross_sal = $ay;
             $pph_21_calc_gaji_bruto = $ay;
 
             $az = $ag; // POTONGAN ASTEK
@@ -1391,7 +1403,7 @@ UPDATE;
 
             $ar   = $af + $ag + $ah + $ai + $aj + $ak + $al + $am + $an + $ao + $ap + $aq; // JUMLAH POTONGAN , =SUM(AF4:AQ4)
             
-            $row->ddc_amt = $ar;     
+            // $row->ddc_amt = $ar;     
 
             $as   = $ae - $ar; // GAJI DITERIMA
             

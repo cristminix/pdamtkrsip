@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 20/03/2019 10:21:17
+ Date: 24/03/2019 15:07:04
 */
 
 SET NAMES utf8mb4;
@@ -118,6 +118,7 @@ CREATE TABLE `apr_sv_payslip`  (
   `created` datetime(0) NULL DEFAULT NULL,
   `modified` datetime(0) NULL DEFAULT NULL,
   `kode_peringkat` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `lama_kontrak` int(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `print_dt`(`print_dt`) USING BTREE,
   INDEX `empl_id`(`empl_id`) USING BTREE,
@@ -132,6 +133,7 @@ DROP TRIGGER IF EXISTS `payslip_total`;
 delimiter ;;
 CREATE TRIGGER `payslip_total` BEFORE UPDATE ON `apr_sv_payslip` FOR EACH ROW BEGIN
 SET NEW.alw_amt = 
+  IFNULL(NEW.alw_pph21, 0) +
   IFNULL(NEW.alw_mar, 0) +
   IFNULL(NEW.alw_ch, 0) +
   IFNULL(NEW.alw_rc, 0) +
@@ -148,6 +150,7 @@ SET NEW.alw_amt =
   IFNULL(NEW.alw_tpp, 0)
   ,
   NEW.ddc_amt = 
+  IFNULL(NEW.ddc_pph21, 0) +
   IFNULL(NEW.ddc_bpjs_ket, 0) +
   IFNULL(NEW.ddc_bpjs_kes, 0) +
   IFNULL(NEW.ddc_aspen, 0) +
@@ -214,7 +217,10 @@ SET NEW.alw_amt =
     NEW.gross_sal = 
         IFNULL(NEW.base_sal, 0) + 
         IFNULL(NEW.alw_amt, 0)
-    
+    ,
+    NEW.net_pay = 
+        IFNULL(NEW.gross_sal, 0) - 
+        IFNULL(NEW.ddc_amt, 0)
 ;
 END
 ;;
