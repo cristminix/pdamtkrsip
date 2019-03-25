@@ -638,7 +638,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         // $query    = $this->db->query($sqlstr);
 
         //update PTP penghasilan tertinggi pegawai
-        $this->_update_ptp($print_dt);
+        
         $this->_update_component('','',$print_dt);
 
         //
@@ -664,6 +664,8 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         foreach ($records as &$row) {
             $this->fix_pph21($row,'Kontrak');
         }
+        $this->_update_ptp($print_dt);
+
         $records = $this->db->where("print_dt","{$year}-{$month}-{$lastdate}")
                             ->where("empl_gr = 'Direksi' OR empl_gr = 'Dewan Pengawas'",null,false)
                             ->get('apr_sv_payslip')
@@ -671,6 +673,8 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         foreach ($records as &$row) {
             $this->fix_pph21($row,'Khusus');
         }
+
+
     }
 
     public function get_component()
@@ -1290,7 +1294,7 @@ UPDATE;
         $row->alw_sh = 0;
 
         if($empl_stat == 'Capeg'){
-            $row->alw_rs = 350000*0.8;//80round($row->alw_rc) * 0.8;
+           // $row->alw_rs = 350000*0.8;//80round($row->alw_rc) * 0.8;
             // $row->alw_wt = round($row->alw_wt) * 0.8;
             // $row->alw_rs = round($row->alw_rs) * 0.8;
         }
@@ -1361,10 +1365,11 @@ UPDATE;
             
             
             $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
-            if($empl_stat == 'Kontrak'){
+            if($empl_stat == 'Kontrak' || $empl_stat == 'Capeg'){
                 $ai = 0;
             }
             $ah = ($empl_stat != 'Kontrak' ? $row->ddc_bpjs_kes : ($ae * 0.01));  // POTONGAN ASKES 
+           
             if($row->empl_gr == 'Dewan Pengawas'){
                 $ai = 0;
                 $ag = 0;
@@ -1482,6 +1487,7 @@ UPDATE;
             // $row->lock = 1;
             // echo json_encode($row) . '<br/>' . "\n";
             $this->db->where('id',$pk)->update('apr_sv_payslip',$row);
+
         }
     }
 }

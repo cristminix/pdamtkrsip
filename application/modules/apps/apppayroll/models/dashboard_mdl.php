@@ -22,14 +22,18 @@ class dashboard_mdl extends Apppayroll_Frontmdl {
             $print_dt = date('Y-m-t');
         }
         $filters = $this->get_filter_by_group($group_name, $print_dt);
+
         $tbl     = 'apr_sv_payslip';
-        $this->db->select('print_dt, max(IFNULL(gross_sal,0)-IFNULL(ddc_amt,0)) ptp', false);
+        $this->db->select('print_dt,(base_sal+alw_amt-alw_pph21) ptp', false);
 //        debug($filters);die();
         $this->db->where($filters,null, false);
         $this->db->group_by('print_dt');
         $this->db->from($tbl);
 
         $res = $this->db->get()->result();
+        // $res[0]->ptp = round($res[0]->gross_sal) - round($res[0]->alw_pph21);
+        // echo json_encode($res) . "\n";
+        // exit();
         return $res[0];
     }
 
