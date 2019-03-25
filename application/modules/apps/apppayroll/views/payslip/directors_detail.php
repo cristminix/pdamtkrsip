@@ -198,7 +198,7 @@ if (!isset($detail)) {
                                     <td width="50%"><?php echo lang('PPh21');?></td>
                                     <td width="10">:</td>
                                     <td><?php echo lang('#CURRENCY_SYMBOL');?></td>
-                                    <td class="text-right"><?php echo number_format($detail->pph21, 0, ",", ".");?></td>
+                                    <td class="text-right"><?php echo number_format($detail->ddc_pph21, 0, ",", ".");?></td>
                                 </tr>
                                 <tr>
                                     <td width="50%"><?php echo lang('BPJS KETENAGAKERJAAN');?></td>
