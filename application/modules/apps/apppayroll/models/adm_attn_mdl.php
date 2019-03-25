@@ -4,6 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 require_once 'apppayroll_frontmdl' . EXT;
+require_once 'payslip_mdl' . EXT;
 
 class Adm_Attn_Mdl extends Apppayroll_Frontmdl {
 
@@ -167,6 +168,8 @@ class Adm_Attn_Mdl extends Apppayroll_Frontmdl {
     public function generate_sv_data($year, $month) {
         $this->load->model($this->payslip_mdl_inst);
         $this->{$this->payslip_mdl_inst}->generate_sv_data($year, $month);
+
+
     }
 
     public function get_custom_filter_config() {
@@ -314,6 +317,22 @@ class Adm_Attn_Mdl extends Apppayroll_Frontmdl {
 
     public function update_batch_attn($data, $key) {
         $this->db->update_batch($this->tbl, $data, $key);
+        
+        $this->load->model('payslip_mdl');
+        
+        foreach($data as $item){
+            
+
+            $row = $this->db->where('empl_id', $item['empl_id'])->get('apr_sv_payslip')->row();
+            echo json_encode($row) . "\n";
+            if(!empty($row)){
+                $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+            }
+            
+
+            
+        }
+        // die('-------------------------');
         return $this->db->affected_rows();
     }
     
@@ -328,6 +347,8 @@ class Adm_Attn_Mdl extends Apppayroll_Frontmdl {
         $this->db->where('id', $id);
         $this->db->where('lock', 0);
         $this->db->update($this->tbl);
+
+
 
         return $this->db->affected_rows();
     }

@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 24/03/2019 22:13:28
+ Date: 26/03/2019 00:20:39
 */
 
 SET NAMES utf8mb4;
@@ -185,7 +185,8 @@ SET NEW.alw_amt =
       ,((IFNULL(NEW.work_day,0) - 
         (IFNULL(NEW.attn_i, 0) + 
           IFNULL(NEW.attn_a, 0) +
-          IFNULL(NEW.attn_l, 0) 
+          IFNULL(NEW.attn_l, 0) +
+					IFNULL(NEW.attn_s, 0) 
         ))
         * NEW.alw_fd_perday
         )
@@ -197,7 +198,8 @@ SET NEW.alw_amt =
       ,((IFNULL(NEW.work_day,0) - 
         (IFNULL(NEW.attn_i, 0) + 
           IFNULL(NEW.attn_a, 0) +
-          IFNULL(NEW.attn_l, 0) 
+          IFNULL(NEW.attn_l, 0) +
+					IFNULL(NEW.attn_s, 0) 
         ))
         * NEW.alw_tr_perday)
        ,NULL

@@ -411,4 +411,8 @@ class Artisan extends MX_Controller
         $table->display();
         $table_calc->display();
     }
+    public function test($value='')
+    {
+      echo md5('confirm-upload');
+    }
 }
