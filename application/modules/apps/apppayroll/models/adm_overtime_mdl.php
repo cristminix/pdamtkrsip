@@ -4,6 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 require_once 'apppayroll_frontmdl' . EXT;
+require_once 'payslip_mdl' . EXT;
 
 class Adm_Overtime_Mdl extends Apppayroll_Frontmdl {
 
@@ -277,6 +278,10 @@ class Adm_Overtime_Mdl extends Apppayroll_Frontmdl {
         $this->db->where('lock', 0);
         $this->db->update($this->tbl);
 
+        $this->load->model('payslip_mdl');
+
+        $row = $this->db->where('id', $id)->get('apr_sv_payslip')->row();
+        $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
         return $this->db->affected_rows();
     }
 
