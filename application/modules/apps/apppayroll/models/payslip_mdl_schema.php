@@ -81,7 +81,7 @@ class Payslip_Mdl_Schema {
     NOW( ) 
 FROM
     r_pegawai rp
-    INNER JOIN (
+    LEFT JOIN (
     SELECT
         a.sk_tanggal,
         a.id_pegawai,
