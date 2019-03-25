@@ -324,7 +324,7 @@ class Adm_Attn_Mdl extends Apppayroll_Frontmdl {
             
 
             $row = $this->db->where('empl_id', $item['empl_id'])->get('apr_sv_payslip')->row();
-            echo json_encode($row) . "\n";
+            //echo json_encode($row) . "\n";
             if(!empty($row)){
                 $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
             }
