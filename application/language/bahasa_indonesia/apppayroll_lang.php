@@ -289,7 +289,7 @@ $lang['upload']              = 'Unggah';
 
 /* V */
 $lang['Value']                    = 'Nilai';
-$lang['VEHICLE RENTAL ALLOWANCE'] = 'TUNJ. SEWA KENDARAAN';
+$lang['VEHICLE RENTAL ALLOWANCE'] = 'TUNJANGAN KENDARAAN';
 
 /* W */
 $lang['Warning']                              = 'Peringatan';

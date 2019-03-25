@@ -3,9 +3,9 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 $this->load->library('pr_tcpdf');
-$this->pr_tcpdf->_init();
+$this->pr_tcpdf->_init('A4', 'P');
 $pdf          = $this->pr_tcpdf->pdf;
-$pdf->SetFont('helveticab', '', '9');
+$pdf->SetFont('helvetica', '', '9');
 
 $pdf->setPrintHeader(false);
 $ln           = 0;
