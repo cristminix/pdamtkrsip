@@ -60,30 +60,66 @@ class Payslip_Mdl_Schema {
                 grade,
                 empl_stat,
                 created,
-                modified
+                modified 
             )
                 SELECT
                     '{$year}-{$month}-{$lastdate}',
                     rp.id_pegawai,
-                    rp.nip_baru,
-                    rp.nama_pegawai,
-                    rp.gender,
-                    rp.tempat_lahir,
-                    rp.tanggal_lahir,
-                    rp.kelompok_pegawai,
-                    IFNULL(rp.tgl_terima,'0000-00-00') tgl_terima,
-                    MAX(IFNULL(rpg.mk_peringkat,0)) mk_peringkat,
-                    MAX(rpg.kode_golongan) kode_golongan,
-                    MAX(rpg.kode_golongan) kode_golongan,
-                    rpg.nama_pangkat,
-                    rp.status_pegawai,
-                    NOW(),
-                    NOW()
-                FROM r_pegawai rp
-                    LEFT JOIN r_peg_golongan  rpg ON rpg.id_pegawai = rp.id_pegawai
-                    WHERE rp.status = '' AND rp.status_pegawai <> 'Kontrak'
-                    {$excl_ids_str}
-                GROUP BY rp.id_pegawai;
+    rp.nip_baru,
+    rp.nama_pegawai,
+    rp.gender,
+    rp.tempat_lahir,
+    rp.tanggal_lahir,
+    rp.kelompok_pegawai,
+    IFNULL( rp.tgl_terima, '0000-00-00' ) tgl_terima,
+    IFNULL( rpg.mk_peringkat, 0 ) mk_peringkat,
+    IFNULL( rpg.kode_golongan, 0 ) kode_golongan,
+    IFNULL( rpg.kode_golongan, 0 ) kode_golongan,
+    rpg.nama_pangkat,
+    rp.status_pegawai,
+    NOW( ),
+    NOW( ) 
+FROM
+    r_pegawai rp
+    INNER JOIN (
+    SELECT
+        a.sk_tanggal,
+        a.id_pegawai,
+        a.kode_golongan,
+        a.mk_peringkat ,
+        a.nama_pangkat
+    FROM
+        r_peg_golongan a
+        INNER JOIN (
+        SELECT
+            id_pegawai,
+            count( id_pegawai ) cnt,
+            sk_tanggal,
+            max( sk_tanggal ) maxsk 
+        FROM
+            r_peg_golongan 
+        WHERE
+    
+                            sk_tanggal <= '{$year}-{$month}-{$lastdate}'
+                        GROUP BY
+            id_pegawai 
+        ORDER BY
+            id_pegawai,
+            sk_tanggal DESC 
+        ) b ON a.id_pegawai = b.id_pegawai 
+        AND a.sk_tanggal = b.maxsk
+                        AND
+                        a.sk_tanggal <= '{$year}-{$month}-{$lastdate}'
+                    ORDER BY
+        a.id_pegawai,
+        a.sk_tanggal DESC 
+    ) rpg ON rp.id_pegawai = rpg.id_pegawai 
+WHERE
+    rp.STATUS = '' 
+    AND rp.status_pegawai <> 'Kontrak'
+    {$excl_ids_str}
+GROUP BY
+    rp.id_pegawai;
 SQL;
 $sql_kontrak = <<<SQL
         INSERT INTO {$tbl} (
