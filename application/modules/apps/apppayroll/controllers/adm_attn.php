@@ -6,6 +6,7 @@ if (!defined('BASEPATH'))
 //$dirname = dirname(__FILE__);
 //require_once $dirname.'/apppayroll_frontctl.php';
 require_once 'apppayroll_frontctl.php';
+// require_once 'payslip_mdl.php';
 
 class Adm_Attn extends Apppayroll_Frontctl {
 
@@ -176,10 +177,27 @@ class Adm_Attn extends Apppayroll_Frontctl {
         }
 
         $do_update = $this->{$mdl}->update_batch_attn($data, 'id');
+        // var_dump($do_update);
         if ($do_update) {
             $flash_message['success'] = lang('Data has been saved') . sprintf(' (%d)', $do_update);
             $this->session->set_userdata('flash_message', $flash_message);
             $back_url                 = $this->session->userdata(md5(__FILE__ . 'back'));
+
+            // $this->load->model('payslip_mdl');
+        
+            // foreach($data as $item){
+                
+
+            //     $row = $this->db->where('empl_id', $item['empl_id'])->get('apr_sv_payslip')->row();
+            //     //echo json_encode($row) . "\n";
+            //     if(!empty($row)){
+            //         $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+            //     }
+                
+
+                
+            // }
+
             return redirect($back_url);
         }
         $flash_message['error'] = lang('error_saving');
@@ -275,6 +293,12 @@ class Adm_Attn extends Apppayroll_Frontctl {
                 $flash_message['success'] = lang('Data has been saved');
                 $this->session->set_userdata('flash_message', $flash_message);
                 $r_url                    = base_url($this->router->fetch_module() . '/' . $this->router->fetch_class() . '/' . $this->router->fetch_method() . '/%s');
+                $row = $this->db->where('empl_id', $edit_id)->get('apr_sv_payslip')->row();
+                // echo json_encode($row) . "\n";
+                if(!empty($row)){
+                    $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+                }
+
                 return redirect(sprintf($r_url, $edit_id));
             }
         }
