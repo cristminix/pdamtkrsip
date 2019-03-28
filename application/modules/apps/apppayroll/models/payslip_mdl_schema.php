@@ -396,7 +396,7 @@ SQL;
                 WHERE
                     eff_date <= '{$year}-{$month}-{$lastdate}'
                     AND IF(term_date IS NULL, TRUE, term_date  >= '{$year}-{$month}-{$lastdate}')
-                    AND alw_ch_cnt=1 AND active_status=1
+                     active_status=1
                     {$q_empl_id}
                 GROUP BY empl_id
                 ORDER BY
