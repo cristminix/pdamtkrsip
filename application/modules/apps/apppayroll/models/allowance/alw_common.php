@@ -236,9 +236,23 @@ class Alw_Common extends Apppayroll_Frontmdl {
 //        $where .= " AND attn_i <= 0 ";
 //        $where .= " AND attn_a <= 0 ";
 //        $where .= " AND attn_l <= 0 ";
-        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'  AND `empl_gr` <> 'Dewan Pegawas' ");
+        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'  AND `empl_gr` <> 'Dewan Pegawas'  AND empl_stat='Tetap'");
         $this->db->update($this->payslip_tbl);
-        return $this->db->affected_rows();
+        
+        $affected_rows  += $this->db->affected_rows();
+
+        $value = " `base_sal` * '{$val}' * 0.8 ";
+        $this->db->set('alw_prf_perday', $value, false);
+//        $this->db->set('work_day', $var, false);
+        $where = " print_dt >= '{$eff_date}' AND `lock`=0 ";
+//        $where .= " AND attn_i <= 0 ";
+//        $where .= " AND attn_a <= 0 ";
+//        $where .= " AND attn_l <= 0 ";
+        $this->db->where($where, null, false)->where("empl_stat <> 'Kontrak'  AND `empl_gr` <> 'Dewan Pegawas' AND empl_stat='Capeg'");
+        $this->db->update($this->payslip_tbl);
+        $affected_rows  += $this->db->affected_rows();
+
+        return $affected_rows;
     }
 
     public function update_payslip_rc($eff_date, $val, $var=null) {

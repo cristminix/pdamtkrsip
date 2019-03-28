@@ -382,7 +382,10 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $this->db->update($tbl);
 //        debug($this->db->last_query());die();
     }
-
+    public function update_ptp($print_dt)
+    {
+        $this->_update_ptp($print_dt);
+    }
     protected function _update_ptp($print_dt)
     {
         $group_name = 'permanent';
@@ -1095,7 +1098,7 @@ UPDATE;
         if ($md_value) {
             $this->_update_base_sal_dir($md_value, $print_dt);
         }
-
+        $this->update_ptp($print_dt);
         // update MD
         $md_identifier      = $this->ref_md_identifier;
 
@@ -1167,6 +1170,8 @@ UPDATE;
     public function update_base_sal_spv()
     {
         $print_dt = date('Y-m-t', strtotime(sprintf('%s-%s-01', $this->rs_cf_cur_year, $this->rs_cf_cur_month)));
+        // $this->update_ptp($print_dt);
+        
         $md_value  = $this->_update_conf_base_sal_md($print_dt);
         $this->_update_conf_base_sal_spv($print_dt);
         $this->_update_base_sal_spv($print_dt);
