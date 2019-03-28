@@ -210,7 +210,7 @@ SQL;
                 AND YEAR(r.print_dt) >= ab.tahun
             SET
                 r.base_sal_id = ab.id_gaji_pokok,
-                r.base_sal = (CASE WHEN r.empl_stat = 'Capeg' THEN (ab.gaji_pokok * 0.8) ELSE ab.gaji_pokok END),
+                r.base_sal = ab.gaji_pokok,
 
                 r.base_sal_perhour = ab.sal_perhour,
                 r.modified = NOW()
