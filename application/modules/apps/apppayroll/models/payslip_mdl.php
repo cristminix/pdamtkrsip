@@ -1171,7 +1171,7 @@ UPDATE;
     {
         $print_dt = date('Y-m-t', strtotime(sprintf('%s-%s-01', $this->rs_cf_cur_year, $this->rs_cf_cur_month)));
         // $this->update_ptp($print_dt);
-        
+
         $md_value  = $this->_update_conf_base_sal_md($print_dt);
         $this->_update_conf_base_sal_spv($print_dt);
         $this->_update_base_sal_spv($print_dt);
@@ -1300,8 +1300,11 @@ UPDATE;
 
         if($empl_stat == 'Capeg'){
            // $row->alw_rs = 350000*0.8;//80round($row->alw_rc) * 0.8;
-            // $row->alw_wt = round($row->alw_wt) * 0.8;
-            $row->base_sal = round($row->base_sal) * 0.8;
+            
+            // $row->base_sal = round($row->base_sal) * 0.8;
+            // $row->alw_prf = round($row->alw_wt) * 0.8;
+
+            // echo "\n;"
         }
         if($empl_stat == 'Kontrak'){
             $row->alw_rc = 0;

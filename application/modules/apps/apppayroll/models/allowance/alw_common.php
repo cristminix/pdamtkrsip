@@ -252,6 +252,9 @@ class Alw_Common extends Apppayroll_Frontmdl {
         $this->db->update($this->payslip_tbl);
         $affected_rows  += $this->db->affected_rows();
 
+            // echo "Alw_Common\n;";
+
+
         return $affected_rows;
     }
 
