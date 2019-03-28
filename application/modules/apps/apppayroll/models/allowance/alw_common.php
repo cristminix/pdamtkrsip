@@ -241,7 +241,7 @@ class Alw_Common extends Apppayroll_Frontmdl {
         
         $affected_rows  += $this->db->affected_rows();
 
-        $value = " `base_sal` * '{$val}' * 0.8 ";
+        $value = " `base_sal_tmp` * '{$val}'";
         $this->db->set('alw_prf_perday', $value, false);
 //        $this->db->set('work_day', $var, false);
         $where = " print_dt >= '{$eff_date}' AND `lock`=0 ";
