@@ -10,6 +10,7 @@ class Artisan extends MX_Controller
     	if(!defined('CLI_APP')){
     		// redirect(base_url());
     	}
+
         parent::__construct();
     }
     public function index($value='')
@@ -414,5 +415,74 @@ class Artisan extends MX_Controller
     public function test($value='')
     {
       echo md5('confirm-upload');
+    }
+    public function get_pegawai()
+    {
+       $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+      // header('content-type:text/plain');
+      $post_keys = 'hal:1,batas:999999999,cari,pns:all,kode,pkt,jbt,gender,agama,status,jenjang';
+      $post_keys = explode(',', $post_keys);
+      foreach ($post_keys as $key => $value) {
+        $post_kv = explode(':', $value);
+        if(count($post_kv)==2){
+          $_POST[$post_kv[0]]=$post_kv[1];
+        }else{
+          $_POST[$value] = '';
+        }
+      }
+      $r = Modules::run("appbkpp/pegawai/getaktif");
+      $r = trim($r);
+      $r = json_decode($r);
+      unset($r->pager);
+
+      $table = new LucidFrame\Console\ConsoleTable();
+      $props = ['nip_baru','status_peg'];
+      $props = array_keys((array)$r->hslquery[0]);
+      
+           
+      $unset_props =  ['id','nomor_telepon','tmt_cpns','tmt_pns','id_pangkat',
+                       'kode_golongan','nama_golongan','kode_pangkat','nama_pangkat',
+                       'tmt_pangkat','mk_gol_tahun','mk_gol_bulan','id_unor',
+                       'kode_unor','nama_unor','jab_type','nomenklatur_jabatan','nomenklatur_pada',
+                       'tugas_tambahan','tmt_jabatan','tmt_ese','id_pendidikan',
+                       'nama_pendidikan','pend_jurusan', 'nama_sekolah', 'nama_jenjang', 'nama_jenjang_rumpun', 'tanggal_lulus', 'tahun_lulus', 'nama_diklat_struk', 
+                       'tanggal_sttpl_diklat_struk', 'tmt_kontrak', 'tmt_capeg', 'tmt_tetap', 'bup','status_peg'
+      ];
+
+
+      // print_r($props);
+      $table->addHeader('NO');
+      foreach ($props as $prop) {
+        if(!in_array($prop, $unset_props)){
+            $table->addHeader($prop);
+        }
+        
+      }
+      $this->db->query("TRUNCATE apr_r_pegawai;");
+      $no = 1;
+      foreach($r->hslquery as $row){
+        $table->addRow()->addColumn($no++);
+        foreach ($props as $prop) {
+           $keys =  (array_keys((array)$row));
+           echo "'" . implode(",'", $keys) . "';\n\n";
+           if(empty($row->{$prop})){
+            $row->{$prop} = '';
+          }
+          if(in_array($prop, $unset_props)){
+              unset($row->{$prop});
+          }
+          else{
+            $table->addColumn($row->{$prop});
+          }
+        }
+
+         $this->db->insert('apr_r_pegawai',$row);
+
+
+
+        
+      }
+      $table->display();
+      exit();
     }
 }

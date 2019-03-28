@@ -1296,7 +1296,7 @@ UPDATE;
         if($empl_stat == 'Capeg'){
            // $row->alw_rs = 350000*0.8;//80round($row->alw_rc) * 0.8;
             // $row->alw_wt = round($row->alw_wt) * 0.8;
-            // $row->alw_rs = round($row->alw_rs) * 0.8;
+            $row->base_sal = round($row->base_sal) * 0.8;
         }
         if($empl_stat == 'Kontrak'){
             $row->alw_rc = 0;
