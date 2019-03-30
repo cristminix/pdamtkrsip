@@ -81,6 +81,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         'grade',
         'kode_peringkat',
         'los', // length of service
+        'empl_stat'
     );
     public $rs_masked_field_list  = array(
         '1' => 'Print Date',
@@ -95,6 +96,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         'Grade',
         'Ranking Code',
         'Length of Service',
+        'Employee Status'
     );
     public $rs_select             = "*";
     public $rs_order_by           = null;

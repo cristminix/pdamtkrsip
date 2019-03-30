@@ -109,6 +109,7 @@ $lang['Dharma Wanita Member Edit']              = 'Sunting Aggota Dharma Wanita'
 $lang['Edit Spouse']                          = 'Sunting Pasangan';
 $lang['Effective Date']                       = 'Tanggal Berlaku';
 $lang['Employee Master Data']                 = 'Data Induk Pegawai';
+$lang['Employee Status']                 = 'Status Karyawan';
 $lang['Employee Maximum Netpay (EMN)']        = 'Penghasilan Tertinggi Pegawai (PTP)';
 $lang['Employee Payslip']                     = 'Slip Gaji Pegawai';
 $lang["Employees's Worker Cooperative Loans"] = 'Daftar Pinjaman Koperasi Pegawai';
