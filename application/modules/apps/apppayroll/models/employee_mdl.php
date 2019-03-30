@@ -22,7 +22,16 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
         'last_updated',
     );
     public $rs_masked_search_fields = [
-        '1'=> 'rp.nip_baru'
+        '1'=> 'rp.nip_baru',
+         'rp.nama_pegawai',
+         'rp.tgl_terima',
+         'rp.los',
+         'rp.gender',
+         'rp.tempat_lahir',
+         'rp.agama',
+         'rp.status_pegawai',
+         'rp.status_perkawinan',
+         'rp.last_updated',
     ];
     public $rs_masked_field_list = array(
         '1' => 'NIPP',
