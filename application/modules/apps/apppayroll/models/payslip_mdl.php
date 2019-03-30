@@ -456,9 +456,86 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $res = $rs->row();
         return $res;
     }
+    public function _update_ch()
+    {
+      $rs = $this->db->select("r.*,rpa.status_anak,rpa.tanggal_lahir_anak,rpa.nama_anak,rpa.status_anak,rpa.gender_anak,rpa.keterangan_tunjangan") 
+                      ->join('r_peg_anak rpa','rpa.id_pegawai=r.id_pegawai','left')
+                      // ->where('rpa.keterangan_tunjangan','Dapat')
+                      ->group_by('rpa.id_peg_anak')
+                      ->get("rekap_peg r")
+                      ->result() ;
+      foreach ($rs as $r) {
+        $cond = [
+          'empl_id'=>$r->id_pegawai,
+          'text' => $r->nama_anak,
+          'relatives'=>$r->status_anak,
+          'gender'=>$r->gender_anak
+
+        ];
+        $check = $this->db->where($cond)->get('apr_adm_dependent')->num_rows();
+        if($check > 0){
+          // echo "$check : DEL\n";
+
+          $check = $this->db->where($cond)->delete('apr_adm_dependent');
+        }
+        if($r->keterangan_tunjangan == 'Dapat'){
+          $apr_adm_dependent = [
+            'empl_id' => $r->id_pegawai,
+            'nipp'=>$r->nip_baru,
+            'eff_date'=>$r->tanggal_lahir_anak,
+            'gender'=>$r->gender_anak,
+            'alw_rc_ch_cnt'=>1,
+            'alw_ch_cnt'=>1,
+            'dependent_status'=>1,
+            'relatives'=> $r->status_anak,
+            'name' => $r->nama_pegawai,
+            'text' =>$r->nama_anak,
+            'active_status'=>1,
+            'created'=>date('Y:m:d H:i:s')
+          ];
+
+          // echo "insert\n";
+          $this->db->insert('apr_adm_dependent',$apr_adm_dependent);
+
+        }
+      }
+    }
+    protected function _update_marstat()
+    {
+       $rs = $this->db->select("r.*,rpkw.tanggal_menikah,rpkw.nama_suris nama_pasangan") 
+                      ->join('r_peg_perkawinan rpkw','rpkw.id_pegawai=r.id_pegawai','left')
+                      ->group_by('rpkw.id_peg_perkawinan')
+                      ->get("rekap_peg r")
+                      ->result() ;
+      foreach ($rs as $r) {
+          $adm_mar_stat = [
+            'empl_id' => $r->id_pegawai,
+            'nipp' => $r->nip_baru,
+            'eff_date' => $r->tanggal_menikah,
+            'alw_rc_sp_cnt' => 1,
+            'mar_stat' => 'Menikah',
+            'name' => $r->nama_pegawai,
+            'text' => $r->nama_pasangan,
+            'active_status' => 1,
+            'created' => date('Y:m:d H:i:s')
+
+          ];
+          $check = $this->db->where(['empl_id'=>$r->id_pegawai])->get('apr_adm_marstat');
+          $marstat_exist = $check->num_rows();
+          if( $marstat_exist > 0){
+            // echo $marstat_exist . "\n";
+            $this->db->where(['empl_id'=>$r->id_pegawai])->delete('apr_adm_marstat');
+          }
+          // echo "insert Marstat\n";
+          $this->db->insert('apr_adm_marstat',$adm_mar_stat);
+          // echo $r->status_perkawinan . "\n";
+      } 
+    }
 
     public function generate_sv_data($year, $month, $skip_check = false)
     {
+        
+
         if (!$skip_check) {
             $this->db->from($this->tbl);
             $this->db->where('YEAR(print_dt)', $year, false);
@@ -470,7 +547,8 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
                 return true;
             }
         }
-
+        $this->_update_ch();
+        $this->_update_marstat();
         // Get Schema
         require_once realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . basename(__FILE__, EXT) . '_schema' . EXT;
 
