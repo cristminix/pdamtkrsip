@@ -64,13 +64,14 @@ class Payslip_Mdl_Schema {
             )
                 SELECT
                     '{$year}-{$month}-{$lastdate}',
-                    rp.id_pegawai,
-    rp.nip_baru,
-    rp.nama_pegawai,
-    rp.gender,
-    rp.tempat_lahir,
-    rp.tanggal_lahir,
-    rp.kelompok_pegawai,
+                  
+    rkp.id_pegawai,
+    rkp.nip_baru,
+    rkp.nama_pegawai,
+    rkp.gender,
+    rkp.tempat_lahir,
+    rkp.tanggal_lahir,
+    rkp.kelompok_pegawai,
     IFNULL( rp.tgl_terima, '0000-00-00' ) tgl_terima,
     IFNULL( rpg.mk_peringkat, 0 ) mk_peringkat,
     IFNULL( rpg.kode_golongan, 0 ) kode_golongan,
@@ -81,6 +82,7 @@ class Payslip_Mdl_Schema {
     NOW( ) 
 FROM
     r_pegawai rp
+    RIGHT JOIN rekap_peg AS rkp ON rkp.id_pegawai = rp.id_pegawai
     LEFT JOIN (
     SELECT
         a.sk_tanggal,
@@ -90,6 +92,7 @@ FROM
         a.nama_pangkat
     FROM
         r_peg_golongan a
+                
         INNER JOIN (
         SELECT
             id_pegawai,
@@ -114,12 +117,10 @@ FROM
         a.id_pegawai,
         a.sk_tanggal DESC 
     ) rpg ON rp.id_pegawai = rpg.id_pegawai 
-WHERE
-    rp.STATUS = '' 
-    AND rp.status_pegawai <> 'Kontrak'
-    {$excl_ids_str}
+        WHERE rkp.status_pegawai <> 'Kontrak'
+
 GROUP BY
-    rp.id_pegawai;
+    rkp.id_pegawai;
 SQL;
 $sql_kontrak = <<<SQL
         INSERT INTO {$tbl} (
@@ -143,13 +144,13 @@ $sql_kontrak = <<<SQL
             )
                 SELECT
                     '{$year}-{$month}-{$lastdate}',
-                    rp.id_pegawai,
-                    rp.nip_baru,
-                    rp.nama_pegawai,
-                    rp.gender,
-                    rp.tempat_lahir,
-                    rp.tanggal_lahir,
-                    rp.kelompok_pegawai,
+                    rkp.id_pegawai,
+                    rkp.nip_baru,
+                    rkp.nama_pegawai,
+                    rkp.gender,
+                    rkp.tempat_lahir,
+                    rkp.tanggal_lahir,
+                    rkp.kelompok_pegawai,
                     MAX( rpk.tmt_kontrak ) tgl_terima,
                     (CASE WHEN (CASE WHEN ( TIMESTAMPDIFF( YEAR, rpk.tmt_kontrak, NOW( ) ) ) > 0 THEN ( TIMESTAMPDIFF( YEAR, rpk.tmt_kontrak, NOW( ) ) ) ELSE 1 END ) % 2 = 0 THEN 2 ELSE 1 END) lama_kontrak, 
                     0,
@@ -159,16 +160,17 @@ $sql_kontrak = <<<SQL
                     'Kontrak',
                     NOW(),
                     NOW()
-                FROM r_pegawai rp    
-                LEFT JOIN r_peg_kontrak AS rpk ON rp.id_pegawai = rpk.id_pegawai 
-                WHERE
-                    rpk.tmt_kontrak IS NOT NULL 
-                    AND rp.status_pegawai = 'Kontrak' 
-                    {$excl_ids_str}
-                GROUP BY rp.id_pegawai;
+                FROM r_pegawai rp  
+                LEFT JOIN r_peg_kontrak AS rpk ON rp.id_pegawai = rpk.id_pegawai   
+                RIGHT JOIN rekap_peg AS rkp ON rkp.id_pegawai = rp.id_pegawai
+                WHERE rkp.status_pegawai = 'Kontrak' 
+                   
+                GROUP BY rkp.id_pegawai;
 SQL;
+
+
         return [
-            $sql_truncate,$sql_non_kontrak,$sql_kontrak
+            $sql_non_kontrak,$sql_kontrak
         ];
     }
 
