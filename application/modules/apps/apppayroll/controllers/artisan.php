@@ -437,6 +437,57 @@ class Artisan extends MX_Controller
 
       $table = new LucidFrame\Console\ConsoleTable();
       $props = ['nip_baru','status_peg'];
+      
+      $records = $r->hslquery;
+
+      echo "Jumlah Pegawai aktif: " .count($r->hslquery) . "\n";
+
+      $t_kontrak = 0;
+      $t_capeg = 0;
+      $t_tetap = 0;
+      $t_khusus = 0;
+      $t_nyelip = 0;
+
+      foreach ($records as $r) {
+          if(preg_match('/kontrak/i',$r->status_peg)){
+            $t_kontrak += 1;
+          }
+          if(preg_match('/capeg/i',$r->status_peg)){
+            $t_tetap += 1;
+          }
+          if(preg_match('/tetap/i',$r->status_peg)){
+            $t_tetap += 1;
+          }
+          if(preg_match('/khusus/i',$r->status_peg)){
+            $t_khusus += 1;
+          }
+          if(!preg_match('/^(kontrak|capeg|tetap|khusus)/i',$r->status_peg)){
+            $t_nyelip += 1;
+            echo json_encode($r). "\n";
+          }
+
+      }  
+
+      $total = $t_kontrak + $t_capeg + $t_tetap + $t_khusus;
+
+      echo "Jumlah Pegawai kontrak :\t" . $t_kontrak . "\n";
+      echo "Jumlah Pegawai aktif Capeg :\t" . $t_capeg . "\n";
+      echo "Jumlah Pegawai aktif tetap :\t" . $t_tetap . "\n";
+      echo "Jumlah Pegawai aktif khusus :\t" . $t_khusus . "\n";
+      echo "Jumlah Pegawai aktif nyelip :\t" . $t_nyelip. "\n";
+      echo "Jumlah Pegawai aktif Total Filtered :\t" . $total . "\n";
+      exit;
+
+
+
+
+
+
+
+
+
+
+
       $props = array_keys((array)$r->hslquery[0]);
       
            
@@ -477,12 +528,52 @@ class Artisan extends MX_Controller
         }
 
          // $this->db->insert('apr_r_pegawai',$row);
-
-
-
         
       }
       $table->display();
       exit();
+    }
+
+    public function rekap_peg()
+    {
+      // error_reporting(1);
+      $total = 0;
+      $rs_capeg = $this->db->select("r.*")->where('status_pegawai','Capeg')
+                      ->get("rekap_peg r");
+      $t_capeg = $rs_capeg->num_rows();
+      $total += $t_capeg;
+      echo "JUMLAH Pegawai Capeg :\t".$t_capeg  . "\n";
+
+      $rs_tetap = $this->db->select("r.*")
+                      
+                      ->where('status_pegawai','Tetap')
+                      ->get("rekap_peg r") ;
+      $t_tetap =  $rs_tetap->num_rows();
+      $total += $t_tetap;
+
+      echo "JUMLAH Pegawai Tetap :\t".$t_tetap . "\n";
+
+      $rs_kontrak = $this->db->select("r.*")
+                      
+                      ->where('status_pegawai','Kontrak')
+                      ->get("rekap_peg r") ;
+      $t_kontrak =  $rs_kontrak->num_rows();
+      $total += $t_kontrak;
+
+      echo "JUMLAH Pegawai Kontrak :\t".$t_kontrak. "\n";  
+
+      $rs_khusus = $this->db->select("r.*")->where('status_pegawai','Khusus')
+                      ->get("rekap_peg r") ;
+      $t_khusus = $rs_khusus->num_rows();
+      $total += $t_khusus;
+      echo "JUMLAH Pegawai Khusus :\t". $t_khusus . "\n";   
+
+      echo "JUMLAH Pegawai Total :\t" . $total;  
+      // $rs_khusus = $this->db->select("r.*")
+      //                  ->get("rekap_peg r")
+      //                  ->join("r_peg_jab")
+      //                  ->where('status_pegawai','Khusus')
+      //                  ->get();
+      // echo "JUMLAH Pegawai Khusus".$rs_khusus->num_rows() . "\n";               
     }
 }
