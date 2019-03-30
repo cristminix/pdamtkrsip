@@ -440,14 +440,14 @@ class Artisan extends MX_Controller
       $props = array_keys((array)$r->hslquery[0]);
       
            
-      $unset_props =  ['id','nomor_telepon','tmt_cpns','tmt_pns','id_pangkat',
+      $unset_props = [];/* ['id','nomor_telepon','tmt_cpns','tmt_pns','id_pangkat',
                        'kode_golongan','nama_golongan','kode_pangkat','nama_pangkat',
                        'tmt_pangkat','mk_gol_tahun','mk_gol_bulan','id_unor',
                        'kode_unor','nama_unor','jab_type','nomenklatur_jabatan','nomenklatur_pada',
                        'tugas_tambahan','tmt_jabatan','tmt_ese','id_pendidikan',
                        'nama_pendidikan','pend_jurusan', 'nama_sekolah', 'nama_jenjang', 'nama_jenjang_rumpun', 'tanggal_lulus', 'tahun_lulus', 'nama_diklat_struk', 
                        'tanggal_sttpl_diklat_struk', 'tmt_kontrak', 'tmt_capeg', 'tmt_tetap', 'bup','status_peg'
-      ];
+      ];*/
 
 
       // print_r($props);
@@ -458,13 +458,13 @@ class Artisan extends MX_Controller
         }
         
       }
-      $this->db->query("TRUNCATE apr_r_pegawai;");
+      // $this->db->query("TRUNCATE apr_r_pegawai;");
       $no = 1;
       foreach($r->hslquery as $row){
         $table->addRow()->addColumn($no++);
         foreach ($props as $prop) {
            $keys =  (array_keys((array)$row));
-           echo "'" . implode(",'", $keys) . "';\n\n";
+           // echo "'" . implode(",'", $keys) . "';\n\n";
            if(empty($row->{$prop})){
             $row->{$prop} = '';
           }
@@ -476,7 +476,7 @@ class Artisan extends MX_Controller
           }
         }
 
-         $this->db->insert('apr_r_pegawai',$row);
+         // $this->db->insert('apr_r_pegawai',$row);
 
 
 
