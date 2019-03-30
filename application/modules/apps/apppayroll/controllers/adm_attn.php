@@ -6,8 +6,9 @@ if (!defined('BASEPATH'))
 //$dirname = dirname(__FILE__);
 //require_once $dirname.'/apppayroll_frontctl.php';
 require_once 'apppayroll_frontctl.php';
-// require_once 'payslip_mdl.php';
-
+// require_once '../models/payslip_mdl.php';
+require_once (APPPATH.'modules/apps/apppayroll/models/payslip_mdl.php');
+// die();
 class Adm_Attn extends Apppayroll_Frontctl {
 
     public $main_mdl   = "adm_attn_mdl";
@@ -294,11 +295,11 @@ class Adm_Attn extends Apppayroll_Frontctl {
                 $this->session->set_userdata('flash_message', $flash_message);
                 $r_url                    = base_url($this->router->fetch_module() . '/' . $this->router->fetch_class() . '/' . $this->router->fetch_method() . '/%s');
                 $row = $this->db->where('empl_id', $edit_id)->get('apr_sv_payslip')->row();
-                // echo json_encode($row) . "\n";
-                if(!empty($row)){
+                $this->load->model('payslip_mdl');            
+                  if(!empty($row)){
                     $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
                 }
-
+echo json_encode($row) . "\n";
                 return redirect(sprintf($r_url, $edit_id));
             }
         }
