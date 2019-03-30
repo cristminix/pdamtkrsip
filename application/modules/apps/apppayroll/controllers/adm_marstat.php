@@ -244,7 +244,7 @@ class Adm_Marstat extends Apppayroll_Frontctl {
         $this->set_pagination($mdl);
 
         $this->set_data(compact('ls', 'detail'));
-        $this->set_rs_action($mdl);
+        // $this->set_rs_action($mdl);
         $this->print_page($tpl);
     }
 
