@@ -47,12 +47,50 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
         'Last update',
     );
     public $rs_use_form_filter = 'empl_master_data';
-    public $rs_select = "rp.*, MAX(rpg.mk_peringkat) as `los`";
+    public $rs_select = "rkp.*, rpg.mk_peringkat as `los`";
     public $rs_order_by = null;
     public $rs_joins = [
-        ['r_peg_golongan rpg','rpg.id_pegawai=rp.id_pegawai','left']
+        
+        ['rekap_peg rkp','rkp.id_pegawai=rp.id_pegawai','right'],
+        ["(
+    SELECT
+        a.sk_tanggal,
+        a.id_pegawai,
+        a.kode_golongan,
+        a.nama_golongan,
+        a.mk_peringkat ,
+        a.nama_pangkat
+    FROM
+        r_peg_golongan a
+                
+        INNER JOIN (
+        SELECT
+            id_pegawai,
+            count( id_pegawai ) cnt,
+            sk_tanggal,
+            max( sk_tanggal ) maxsk 
+        FROM
+            r_peg_golongan 
+        WHERE
+    
+            sk_tanggal <= LAST_DAY(NOW())
+            GROUP BY
+            id_pegawai 
+        ORDER BY
+            id_pegawai,
+            sk_tanggal DESC 
+        ) b ON a.id_pegawai = b.id_pegawai 
+        AND a.sk_tanggal = b.maxsk
+            AND
+             a.sk_tanggal <= LAST_DAY(NOW())
+        ORDER BY
+        a.id_pegawai,
+        a.sk_tanggal DESC 
+    ) rpg",'rpg.id_pegawai=rp.id_pegawai','left']
+
+
     ];
-    public $rs_group_by = "rp.id_pegawai";
+    public $rs_group_by = "rkp.id_pegawai";
 
     public $rs_common_views = array(
         /* call_user_func */
