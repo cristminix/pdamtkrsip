@@ -11,7 +11,7 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
     public $rs_field_list        = array(
         '1' => 'nip_baru',
         'nama_pegawai',
-        'tgl_terima',
+        'kode_golongan',
         'los', // length of service
         'gender',
         'tempat_lahir',
@@ -23,20 +23,20 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
     );
     public $rs_masked_search_fields = [
         '1'=> 'rp.nip_baru',
-         'rp.nama_pegawai',
-         'rp.tgl_terima',
-         'rp.los',
-         'rp.gender',
-         'rp.tempat_lahir',
-         'rp.agama',
-         'rp.status_pegawai',
-         'rp.status_perkawinan',
-         'rp.last_updated',
+         'rkp.nama_pegawai',
+         'rpg.kode_golongan',
+         'rpg.los',
+         'rkp.gender',
+         'rkp.tempat_lahir',
+         'rkp.agama',
+         'rkp.status_pegawai',
+         'rkp.status_perkawinan',
+         'rkp.last_updated',
     ];
     public $rs_masked_field_list = array(
         '1' => 'NIPP',
         'Name',
-        'Hire Date',
+        'Ranking Code',
         'Length of Service',
         'Gender',
         'Birth Place',
