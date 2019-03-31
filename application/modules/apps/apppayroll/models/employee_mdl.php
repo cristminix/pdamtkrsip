@@ -25,7 +25,7 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
         '1'=> 'rp.nip_baru',
          'rkp.nama_pegawai',
          'rpg.kode_golongan',
-         'rpg.los',
+         'los',
          'rkp.gender',
          'rkp.tempat_lahir',
          'rkp.agama',
@@ -47,7 +47,7 @@ class Employee_Mdl extends Apppayroll_Frontmdl {
         'Last update',
     );
     public $rs_use_form_filter = 'empl_master_data';
-    public $rs_select = "rkp.*, rpg.mk_peringkat as `los`";
+    public $rs_select = "rkp.*, rpg.mk_peringkat as `los`,rpg.kode_golongan";
     public $rs_order_by = null;
     public $rs_joins = [
         

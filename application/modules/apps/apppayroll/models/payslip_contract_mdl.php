@@ -43,7 +43,7 @@ class Payslip_Contract_Mdl extends Payslip_Mdl
             'job_title',
             'grade',
             // 'kode_peringkat',
-            'lama_kontrak',
+            // 'lama_kontrak',
         )
     );
     public $rs_field_list         = array(

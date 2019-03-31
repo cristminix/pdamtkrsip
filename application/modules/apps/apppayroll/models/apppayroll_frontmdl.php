@@ -107,6 +107,7 @@ class Apppayroll_Frontmdl extends CI_Model {
             }
         }
         if (property_exists($this, 'rs_select')) {
+
             $this->db->select($this->rs_select, false);
         }
         if (property_exists($this, 'rs_group_by')) {
@@ -121,6 +122,7 @@ class Apppayroll_Frontmdl extends CI_Model {
         }
         if(property_exists($this, 'rs_first_list_orders')){
             $list_orders = $this->rs_first_list_orders;
+
             if($list_orders){
                 foreach($list_orders as $ls_order){
                     if(!$ls_order){
@@ -137,6 +139,8 @@ class Apppayroll_Frontmdl extends CI_Model {
             }
         }
         if ($order_by) {
+            // echo "$order_by";
+            // die();
             $order_by = isset($this->rs_field_list[$order_by]) ? $order_by : null;
         }
         if ($order_by) {
@@ -145,7 +149,11 @@ class Apppayroll_Frontmdl extends CI_Model {
             if (in_array($this->rs_field_list[$order_by], $this->rs_sort_natural)) {
                 $order_by_col = $this->rs_field_list[$order_by] . '+0';
             }
+            if(isset($this->rs_masked_search_fields[$order_by])){
+                $order_by_col = $this->rs_masked_search_fields[$order_by];
+            }
             $this->db->order_by($order_by_col, $sort_order, false);
+
             $this->rs_sort_order = $sort_order;
             $this->rs_order_by   = $order_by;
         }
