@@ -41,7 +41,7 @@ class Payslip_Contract_Mdl extends Payslip_Mdl
             'net_pay',
             'job_unit',
             'job_title',
-            'grade',
+            // 'grade',
             // 'kode_peringkat',
             // 'lama_kontrak',
         )
@@ -58,7 +58,7 @@ class Payslip_Contract_Mdl extends Payslip_Mdl
         'job_title',
         // 'grade',
         // 'kode_peringkat',
-        'lama_kontrak', // length of service
+        // 'lama_kontrak', // length of service
     );
     public $rs_masked_field_list  = array(
         '1' => 'Print Date',
@@ -72,7 +72,7 @@ class Payslip_Contract_Mdl extends Payslip_Mdl
         'Job Title',
         // 'Grade',
         // 'Ranking Code',
-        'Contract',
+        // 'Contract',
     );
     public $rs_select             = "*, CONCAT( (CASE WHEN  TIMESTAMPDIFF( YEAR, hire_date, NOW( ) ) % 2 = 0 THEN 2 ELSE 1 END ), ' thn' ) lama_kontrak";
     
