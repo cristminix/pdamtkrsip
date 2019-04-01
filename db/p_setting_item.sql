@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 01/04/2019 12:25:11
+ Date: 01/04/2019 12:30:22
 */
 
 SET NAMES utf8mb4;
@@ -30,7 +30,7 @@ CREATE TABLE `p_setting_item`  (
   `meta_value` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id_item`) USING BTREE,
   INDEX `id_setting`(`id_setting`, `nama_item`, `id_parent`, `urutan`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 975 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 977 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of p_setting_item
@@ -568,5 +568,7 @@ INSERT INTO `p_setting_item` VALUES (910, 2, 'Dashboard', 0, 33, '{\"path_menu\"
 INSERT INTO `p_setting_item` VALUES (912, 3, '', 0, 0, '{\"id_menu\":\"910\",\"group_id\":\"828\"}');
 INSERT INTO `p_setting_item` VALUES (973, 2, 'Laporan Payslip', 658, 2, '{\"path_menu\":\"apppayroll/report/payslip\",\"icon_menu\":\"fa fa-bar-chart\",\"keterangan\":\"Menu Laporan Payslip\"}');
 INSERT INTO `p_setting_item` VALUES (974, 3, '', 0, 0, '{\"id_menu\":\"973\",\"group_id\":\"828\"}');
+INSERT INTO `p_setting_item` VALUES (975, 2, 'Rekap Payslip', 658, 3, '{\"path_menu\":\"apppayroll/report/payslip/rekap\",\"icon_menu\":\"fa fa-file-pdf-o\",\"keterangan\":\"Laporan Rekapitulasi Payslip\"}');
+INSERT INTO `p_setting_item` VALUES (976, 3, '', 0, 0, '{\"id_menu\":\"975\",\"group_id\":\"828\"}');
 
 SET FOREIGN_KEY_CHECKS = 1;
