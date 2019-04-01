@@ -38,14 +38,20 @@ class Report extends Apppayroll_Frontctl {
     
     public function payslip()
     {
+        $proses = $this->input->post('proses');
+        $button_pressed = false;
         $tpl = __FUNCTION__;
         $mdl = $this->ibl_bjb_mdl_name;
         $this->load_mdl($mdl);
 
         $this->set_page_title("Laporan Payslip");
-        
-        $data = [
+            
+        if($proses == 'yes'){
+            $button_pressed = true;
+        }    
 
+        $data = [
+            'button_pressed' => $button_pressed
         ];    
         $this->set_data($data);
         $this->print_page($tpl);
