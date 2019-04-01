@@ -21,7 +21,7 @@ $base_theme = 'admin_payroll';
         endif;
         ?>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/themes/'.$base_theme.'/smartmenus-1.0.0/css/sm-simple/sm-simple-clean.css'); ?>" />
-         
+           <script type="text/javascript" src="<?php echo base_url('assets/themes/'.$base_theme.'/bootstrap-3.3.5-dist/js/jquery.min.js'); ?>"></script>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
         <script type="text/javascript" src="<?php echo base_url('assets/themes/'.$base_theme.'/bootstrap-3.3.5-dist/js/html5shiv.min.js'); ?>"></script>
@@ -43,7 +43,7 @@ $base_theme = 'admin_payroll';
         <?php echo $page_body; ?>      
 
         
-    <script type="text/javascript" src="<?php echo base_url('assets/themes/'.$base_theme.'/bootstrap-3.3.5-dist/js/jquery.min.js'); ?>"></script>
+  
     <script type="text/javascript" src="<?php echo base_url('assets/themes/'.$base_theme.'/bootstrap-3.3.5-dist/js/bootstrap.min.js'); ?>"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/themes/'.$base_theme.'/bootstrap-3.3.5-dist/js/ie10-viewport-bug-workaround.js'); ?>"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/themes/'.$base_theme.'/bootstrap-3.3.5-dist/js/bootstrap-toggle.min.js'); ?>"></script>
