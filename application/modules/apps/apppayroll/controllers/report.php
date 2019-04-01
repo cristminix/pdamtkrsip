@@ -36,5 +36,18 @@ class Report extends Apppayroll_Frontctl {
         $this->print_page($tpl);
     }
     
-    
+    public function payslip()
+    {
+        $tpl = __FUNCTION__;
+        $mdl = $this->ibl_bjb_mdl_name;
+        $this->load_mdl($mdl);
+
+        $this->set_page_title("Laporan Payslip");
+        
+        $data = [
+            
+        ];    
+        $this->set_data($data);
+        $this->print_page($tpl);
+    }
 }
