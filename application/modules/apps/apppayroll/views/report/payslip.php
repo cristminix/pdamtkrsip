@@ -1,23 +1,23 @@
 <script type="text/javascript" src=""></script>
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-<div class="col-lg-12">
-	<div class="row">
-		<div class="col-md-2">
-			<form action="<?=site_url('apppayroll/report/payslip')?>" method="post">
-				<div class="form-group">
-					<label for="pa">Periode:</label>
-					<input name="pa" type="text" class="form-control" id="pa" role="datepicker" value="<?=date('m/Y')?>">
-				</div>
-				<div class="form-group">
-					<label for="pb">s.d:</label>
-					<input name="pb" type="text" class="form-control" id="pb" role="datepicker" value="<?=date('m/Y')?>">
-				</div>
+<div class="col-lg-12 mc" >
 
-				<button name="proses" type="submit" class="btn btn-info" value="yes">Proses</button>
+	<div class="row">
+		<div class="col-md-6">
+			<form action="<?=site_url('apppayroll/report/payslip')?>" method="post" class="report">
+				<div class="form-group row">
+						<label for="pa" class="col-md-2">Periode:</label>
+						<div class="col-md-3"><input name="pa" type="text" class="form-control" id="pa" role="datepicker" value="<?=date('m/Y')?>"></div>
+						<label class="col-md-2" for="pb" style="width: 48px">s.d:</label>
+						<div class="col-md-3"><input name="pb" type="text" class="form-control" id="pb" role="datepicker" value="<?=date('m/Y')?>"></div>
+						<div class="col-md-2">
+							<button name="proses" type="submit" class="btn btn-info" value="yes">Proses</button>
+						</div>
+				</div>
 			</form>
 			</div>
-		<div class="col-md-10">
+		<div class="col-md-6">
 			
 		</div>
 		
@@ -33,7 +33,22 @@
 		</div>
 	</div>
 </div>
+<style type="text/css">
+	.mc{
+		margin-top: 1em
+	}
+	.mc > .row{
+		margin-right: -28px !important;
+		margin-left: -28px !important;
+	}
+	form.report  label{
+		line-height: 32px;
+	}
+	input[role=datepicker]{
+		text-align: center;
+	}
 
+</style>
 <script type="text/javascript">
 
 	$(document).ready(function(){
