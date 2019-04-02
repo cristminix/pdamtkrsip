@@ -83,9 +83,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="r in report_data">
-								<td v-text="r.id"></td>
-								<td v-html="'-/'+r.empl_id+'<br/>'+r.job_title+'<br/>'+r.base_sal+r.mar_stat+' ' + r.child_cnt"></td>
+							<tr v-for="(r, index) in report_data">
+								<td v-text="index+1"></td>
+								<td v-html="'-/'+r.empl_id+'<br/>'+r.job_title+'<br/>'+r.base_sal+' '+r.mar_stat+' ' + r.child_cnt"></td>
 								<td v-text="r.attn_s"></td>
 								<td v-text="r.attn_i"></td>
 								<td v-text="r.attn_a"></td>
