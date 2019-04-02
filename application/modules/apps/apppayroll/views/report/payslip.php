@@ -84,24 +84,28 @@
 						</thead>
 						<tbody>
 							<tr v-for="(r, index) in report_data">
-								<td v-text="index+1"></td>
-								<td v-html="r.empl_name+'<br/>'+'-/'+r.empl_id+'<br/>'+r.job_title+'<br/>'+r.base_sal+' '+r.mar_stat+' ' + r.child_cnt"></td>
-								<td v-text="r.attn_s"></td>
-								<td v-text="r.attn_i"></td>
-								<td v-text="r.attn_a"></td>
-								<td v-text="r.attn_l"></td>
-								<td v-text="r.attn_c"></td>
+								<td class="tc" v-text="index+1"></td>
+								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' '+(r.mar_stat!=''?'Kawin':'')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
+								<td class="tc" v-text="r.attn_s"></td>
+								<td class="tc" v-text="r.attn_i"></td>
+								<td class="tc" v-text="r.attn_a"></td>
+								<td class="tc" v-text="r.attn_l"></td>
+								<td class="tc" v-text="r.attn_c"></td>
 
 
-								<td v-html="r.alw_mar+'<br/>'+r.alw_ch+'<br/>'+r.alw_rc+'<br/>'+r.alw_wt"></td>
-								<td v-html="r.alw_jt+'<br/>'+r.alw_prf+'<br/>'+r.alw_ot+'<br/>'+r.alw_adv"></td>
-								<td v-html="r.alw_rs+'<br/>'+r.alw_tr+'<br/>'+r.alw_vhc_rt+'<br/>'+r.alw_fd"></td>
-								<td v-html="r.alw_sh+'<br/>'+r.alw_tpp+'<br/>'+r.alw_pph21"></td>
-								<td v-html="r.ddc_pph21+'<br/>'+r.ddc_bpjs_ket+'<br/>'+r.ddc_aspen+'<br/>'+r.ddc_f_kp"></td>
-								<td v-html="r.ddc_wc+'<br/>'+r.ddc_wcl+'<br/>'+r.ddc_dw+'<br/>'+r.ddc_tptgr"></td>
-								<td v-html="r.bpjs_kes+'<br/>'+r.ddc_wb"></td>
-								<td v-html="r.ddc_zk+'<br/>'+r.ddc_shd"></td>
+								<td class="tr" v-html="r.alw_mar+'<br/>'+r.alw_ch+'<br/>'+r.alw_rc+'<br/>'+r.alw_wt"></td>
+								<td class="tr" v-html="r.alw_jt+'<br/>'+r.alw_prf+'<br/>'+r.alw_ot+'<br/>'+r.alw_adv"></td>
+								<td class="tr" v-html="r.alw_rs+'<br/>'+r.alw_tr+'<br/>'+r.alw_vhc_rt+'<br/>'+r.alw_fd"></td>
+								<td class="tr" v-html="r.alw_sh+'<br/>'+r.alw_tpp+'<br/>'+r.alw_pph21"></td>
+								<td class="tr" v-html="r.gross_sal"></td>
 
+								<td class="tr" v-html="r.ddc_pph21+'<br/>'+r.ddc_bpjs_ket+'<br/>'+r.ddc_aspen+'<br/>'+r.ddc_f_kp"></td>
+								<td class="tr" v-html="r.ddc_wc+'<br/>'+r.ddc_wcl+'<br/>'+r.ddc_dw+'<br/>'+r.ddc_tpt"></td>
+								<td class="tr" v-html="r.ddc_bpjs_kes+'<br/>'+r.ddc_wb"></td>
+								<td class="tr" v-html="r.ddc_zk+'<br/>'+r.ddc_shd"></td>
+								<td class="tr" v-html="r.ddc_amt"></td>
+								<td class="tr" v-html="r.net_pay"></td>
+								<td>&nbsp;</td>
 							</tr>
 						</tbody>
 					</table>
@@ -143,7 +147,15 @@
 		margin: 0 auto;
 		overflow: auto;
 	}
-
+	table.table-lap td.tc{
+		text-align: center !important;
+	}
+	table.table-lap td.tl{
+		text-align: left !important;
+	}
+	table.table-lap td.tr{
+		text-align: right !important;
+	}
 </style>
 <script type="text/javascript">
 	var RP={};
@@ -180,6 +192,7 @@
 				onProcessForm:function(){
 					var prxy_url = '<?=site_url('apppayroll/report/payslip')?>';
 					this.button_pressed = true;
+					this.report_data = [];
 					var postData = {
 						id_unor : this.id_unor,
 						periode : this.periode,
