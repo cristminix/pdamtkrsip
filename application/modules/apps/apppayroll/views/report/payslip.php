@@ -46,7 +46,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="content" style="padding: 1em;margin: 1em -1em">
-				<div v-bind:class="{'alert alert-info':button_pressed,'alert alert-warning':!button_pressed}">
+				<div v-bind:class="{'alert alert-info':button_pressed,'alert alert-warning':!button_pressed}" v-if="false">
 					Button <span v-text="button_pressed?'Is':'Not'"></span> Pressed !
 				</div>
 				<div class="grid">
@@ -85,7 +85,7 @@
 						<tbody>
 							<tr v-for="(r, index) in report_data">
 								<td class="tc" v-text="index+1"></td>
-								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' '+(r.mar_stat!=''?'Kawin':'')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
+								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/>'+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
 								<td class="tc" v-text="r.attn_s"></td>
 								<td class="tc" v-text="r.attn_i"></td>
 								<td class="tc" v-text="r.attn_a"></td>
@@ -106,6 +106,9 @@
 								<td class="tr" v-html="r.ddc_amt"></td>
 								<td class="tr" v-html="r.net_pay"></td>
 								<td>&nbsp;</td>
+							</tr>
+							<tr v-if="!button_pressed">
+								<td colspan="19">Tidak ada data</td>
 							</tr>
 						</tbody>
 					</table>
