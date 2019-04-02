@@ -36,7 +36,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6">
-			<button name="proses" type="submit" class="btn btn-info" value="yes" @click="onProcessForm()"><i v-bind:class="{'fa fa-search':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Proses</button>
+			<button :disabled="button_pressed" name="proses" type="submit" class="btn btn-info" value="yes" @click="onProcessForm()"><i v-bind:class="{'fa fa-search':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Proses</button>
 		</div>
 		<div class="col-md-6">
 		</div>
@@ -77,7 +77,7 @@
 								<th class="tc vt">SHIFT<br/>TPP<br/>PPH21</th>
 								<th class="tc vt">PPH21<br/>ASTEK<br/>ASPEN<br/>FKP</th>
 								<th class="tc vt">KOPERASI<br/>KOP. WAJIB<br/>D. WANITA<br/>TPTGR</th>
-								<th class="tc vt">REK. AIR</th>
+								<th class="tc vt">ASKES<br/>REK. AIR</th>
 								<th class="tc vt">ZAKAT<br/>SHDQ</th>
 
 							</tr>
@@ -85,7 +85,7 @@
 						<tbody>
 							<tr v-for="(r, index) in report_data">
 								<td v-text="index+1"></td>
-								<td v-html="'-/'+r.empl_id+'<br/>'+r.job_title+'<br/>'+r.base_sal+' '+r.mar_stat+' ' + r.child_cnt"></td>
+								<td v-html="r.empl_name+'<br/>'+'-/'+r.empl_id+'<br/>'+r.job_title+'<br/>'+r.base_sal+' '+r.mar_stat+' ' + r.child_cnt"></td>
 								<td v-text="r.attn_s"></td>
 								<td v-text="r.attn_i"></td>
 								<td v-text="r.attn_a"></td>
@@ -99,7 +99,7 @@
 								<td v-html="r.alw_sh+'<br/>'+r.alw_tpp+'<br/>'+r.alw_pph21"></td>
 								<td v-html="r.ddc_pph21+'<br/>'+r.ddc_bpjs_ket+'<br/>'+r.ddc_aspen+'<br/>'+r.ddc_f_kp"></td>
 								<td v-html="r.ddc_wc+'<br/>'+r.ddc_wcl+'<br/>'+r.ddc_dw+'<br/>'+r.ddc_tptgr"></td>
-								<td v-text="r.ddc_wb"></td>
+								<td v-html="r.bpjs_kes+'<br/>'+r.ddc_wb"></td>
 								<td v-html="r.ddc_zk+'<br/>'+r.ddc_shd"></td>
 
 							</tr>
@@ -188,6 +188,7 @@
 					var self = this;
 					axios.post(prxy_url,postData).then(function (response) {
 					    self.report_data = response.data;
+					    self.button_pressed = false;
 					  })
 					  .catch(function (error) {
 					    console.log(error);
