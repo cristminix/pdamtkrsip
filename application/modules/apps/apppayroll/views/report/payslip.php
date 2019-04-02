@@ -82,6 +82,28 @@
 
 							</tr>
 						</thead>
+						<tbody>
+							<tr v-for="r in report_data">
+								<td v-text="r.id"></td>
+								<td v-html="'-/'+r.empl_id+'<br/>'+r.job_title+'<br/>'+r.base_sal+r.mar_stat+' ' + r.child_cnt"></td>
+								<td v-text="r.attn_s"></td>
+								<td v-text="r.attn_i"></td>
+								<td v-text="r.attn_a"></td>
+								<td v-text="r.attn_l"></td>
+								<td v-text="r.attn_c"></td>
+
+
+								<td v-html="r.alw_mar+'<br/>'+r.alw_ch+'<br/>'+r.alw_rc+'<br/>'+r.alw_wt"></td>
+								<td v-html="r.alw_jt+'<br/>'+r.alw_prf+'<br/>'+r.alw_ot+'<br/>'+r.alw_adv"></td>
+								<td v-html="r.alw_rs+'<br/>'+r.alw_tr+'<br/>'+r.alw_vhc_rt+'<br/>'+r.alw_fd"></td>
+								<td v-html="r.alw_sh+'<br/>'+r.alw_tpp+'<br/>'+r.alw_pph21"></td>
+								<td v-html="r.ddc_pph21+'<br/>'+r.ddc_bpjs_ket+'<br/>'+r.ddc_aspen+'<br/>'+r.ddc_f_kp"></td>
+								<td v-html="r.ddc_wc+'<br/>'+r.ddc_wcl+'<br/>'+r.ddc_dw+'<br/>'+r.ddc_tptgr"></td>
+								<td v-text="r.ddc_wb"></td>
+								<td v-html="r.ddc_zk+'<br/>'+r.ddc_shd"></td>
+
+							</tr>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -135,7 +157,8 @@
 				periode : '<?=$periode?>',
 				bulan : '<?=$bulan?>',
 				tahun : '<?=$tahun?>',
-				button_pressed: <?=$button_pressed?'true':'false'?>
+				button_pressed: <?=$button_pressed?'true':'false'?>,
+				report_data:[]
 			},
 			mounted(){
 				$('input#periode').datepicker({
@@ -162,9 +185,9 @@
 						periode : this.periode,
 						proses : 'yes'
 					};
-
+					var self = this;
 					axios.post(prxy_url,postData).then(function (response) {
-					    console.log(response);
+					    self.report_data = response.data;
 					  })
 					  .catch(function (error) {
 					    console.log(error);
