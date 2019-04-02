@@ -1,10 +1,15 @@
 <script type="text/javascript" src=""></script>
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+<script type="text/javascript" src="<?=base_url()?>assets/jspdf/jspdf.debug.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/jspdf/jspdf.plugin.autotable.js"></script>
+
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/locales/bootstrap-datepicker.id.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/vuejs2/vue.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/vuejs2/axios.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/excellentexport/excellentexport.js"></script>
+
 
 <div class="col-lg-12 mc" id="app">
 	<form action="<?=site_url('apppayroll/report/payslip')?>" method="post" class="report">
@@ -36,7 +41,8 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6">
-			<button :disabled="button_pressed" name="proses" type="submit" class="btn btn-info" value="yes" @click="onProcessForm()"><i v-bind:class="{'fa fa-search':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Proses</button>
+			<button :disabled="button_pressed" name="proses"  class="btn btn-info" value="yes" @click="onProcessForm()"><i v-bind:class="{'fa fa-search':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Proses</button>
+			<button v-show="report_data.length>0" name="export_pdf" class="btn btn-warning"  @click="onExportPdf()"><i class="fa fa-file-pdf-o"></i> Export PDF</button>
 		</div>
 		<div class="col-md-6">
 		</div>
@@ -49,7 +55,7 @@
 				<div v-bind:class="{'alert alert-info':button_pressed,'alert alert-warning':!button_pressed}" v-if="false">
 					Button <span v-text="button_pressed?'Is':'Not'"></span> Pressed !
 				</div>
-				<div class="grid">
+				<div class="grid" id="grid">
 					<table class="table table-bordered table-lap">
 						<thead>
 							<tr>
@@ -161,6 +167,42 @@
 	}
 </style>
 <script type="text/javascript">
+	var PDF = {
+		build:function() {
+	var doc = new jsPDF();
+    
+    // From HTML
+    doc.autoTable({html: '.table'});
+    
+    // From Javascript
+    let finalY = doc.previousAutoTable.finalY;
+    doc.text("From javascript arrays", 14, finalY + 15);
+    doc.autoTable({
+        startY: finalY + 20,
+        head: [
+            ['ID', 'Name', 'Email', 'Country', 'IP-address'],
+        ],
+        body: [
+            ['1', 'Donna', 'dmoore0@furl.net', 'China', '211.56.242.221'],
+            ['2', 'Janice', 'jhenry1@theatlantic.com', 'Ukraine', '38.36.7.199'],
+            ['3', 'Ruth', 'rwells2@constantcontact.com', 'Trinidad and Tobago', '19.162.133.184'],
+            ['4', 'Jason', 'jray3@psu.edu', 'Brazil', '10.68.11.42'],
+            ['5', 'Jane', 'jstephens4@go.com', 'United States', '47.32.129.71'],
+            ['6', 'Adam', 'anichols5@com.com', 'Canada', '18.186.38.37']
+        ],
+    });
+
+    finalY = doc.previousAutoTable.finalY;
+    doc.text("From HTML with CSS", 14, finalY + 15);
+    doc.autoTable({
+        startY: finalY + 20,
+        html: '.table',
+        useCss: true,
+    });
+    
+    return doc;
+		}
+	}
 	var RP={};
 	$(document).ready(function(){
 		
@@ -207,10 +249,12 @@
 					    self.button_pressed = false;
 					  })
 					  .catch(function (error) {
-					    console.log(error);
+					    alert(error);
 					  });
 				},
-
+				onExportPdf: function(){
+					return PDF.build(this.report_data);
+				}
 			}
 		});
 		//
