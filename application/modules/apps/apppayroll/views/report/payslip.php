@@ -85,7 +85,7 @@
 						<tbody>
 							<tr v-for="(r, index) in report_data">
 								<td class="tc" v-text="index+1"></td>
-								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/>'+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
+								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/>'+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
 								<td class="tc" v-text="r.attn_s"></td>
 								<td class="tc" v-text="r.attn_i"></td>
 								<td class="tc" v-text="r.attn_a"></td>
