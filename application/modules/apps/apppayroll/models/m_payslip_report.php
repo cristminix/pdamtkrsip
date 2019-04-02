@@ -8,9 +8,17 @@ if (!defined('BASEPATH'))
 class M_payslip_report extends  CI_Model
 {
 	
-	public function get_list($bulan,$tahun)
+	public function get_report_data($bulan,$tahun,$id_unor)
 	{
-		# code...
+		$lastdate  = date('t', strtotime("{$tahun}-{$bulan}-01"));
+		$print_dt = "{$tahun}-{$bulan}-{$lastdate}"; 
+		if(!empty($id_unor)){
+			$this->db->where('id_unor',$id_unor);
+
+		}
+		return $this->db->where('print_dt',$print_dt)->order_by('empl_name','asc')->get('apr_sv_payslip')
+					 
+					 ->result();
 	}
 	public function get_unor_list()
 	{

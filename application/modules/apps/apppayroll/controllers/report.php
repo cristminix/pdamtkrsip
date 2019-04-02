@@ -42,18 +42,24 @@ class Report extends Apppayroll_Frontctl {
         $proses  = $this->input->post('proses');
         $periode = $this->input->post('periode');
         $id_unor = $this->input->post('id_unor');
-       
+        
+        $payload = json_decode(file_get_contents('php://input'));
+        if(is_object($payload)){
+            $proses = $payload->proses;
+            $periode = $payload->periode;
+            $id_unor = $payload->id_unor;
+        }
 
         $button_pressed = false;
+        $report_data = [];
+
         $tpl = __FUNCTION__;
         $mdl = 'm_payslip_report';
         $this->load_mdl($mdl);
 
         $this->set_page_title("Laporan Payslip");
             
-        if($proses == 'yes'){
-            $button_pressed = true;
-        }    
+
 
         if(empty($periode)){
             $periode = date('m/Y');
@@ -64,15 +70,22 @@ class Report extends Apppayroll_Frontctl {
         $periode_a = explode('/', $periode);
         $bulan     = $periode_a[0];
         $tahun     = $periode_a[1];
-
+        if($proses == 'yes'){
+            $button_pressed = true;
+            $report_data = $this->{$mdl}->get_report_data($bulan,$tahun,$id_unor);
+            $this->output->set_content_type('application/json')
+                         ->set_output(json_encode($report_data))
+                         ->_display();
+            exit();
+        }  
         $data = [
             'unor_list' => [''=>'All']+$this->{$mdl}->get_unor_list(),
             'button_pressed' => $button_pressed,
             'periode' => $periode,
-            'list' => $this->{$mdl}->get_list($bulan,$tahun,$id_unor),
             'bulan' => $bulan,
             'tahun' => $tahun,
-            'id_unor' => $id_unor
+            'id_unor' => $id_unor,
+            'report_data' => $report_data
         ];    
         $this->set_data($data);
         $this->print_page($tpl);

@@ -3,6 +3,7 @@
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/locales/bootstrap-datepicker.id.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/vuejs2/vue.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/vuejs2/axios.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/excellentexport/excellentexport.js"></script>
 
 <div class="col-lg-12 mc" id="app">
@@ -48,7 +49,41 @@
 				<div v-bind:class="{'alert alert-info':button_pressed,'alert alert-warning':!button_pressed}">
 					Button <span v-text="button_pressed?'Is':'Not'"></span> Pressed !
 				</div>
-				
+				<div class="grid">
+					<table class="table table-bordered table-lap">
+						<thead>
+							<tr>
+								<th rowspan="2" class="tc vm">NO</th>
+								<th>NAMA</th>
+								<th colspan="5" class="tc">ABSENSI</th>
+								<th colspan="4" class="tc">TUNJANGAN - TUNJANGAN</th>
+								<th rowspan="2" class="tc vm">GAJI<br/>KOTOR</th>
+								<th colspan="4" class="tc">POTONGAN - POTONGAN</th>
+								<th rowspan="2" class="tc vm">JUMLAH<br/>POTONGAN</th>
+								<th rowspan="2" class="tc vm">GAJI<br/>BERSIH</th>
+								<th rowspan="2" class="tc vm">TANDA TANGAN</th>
+
+							</tr>
+							<tr>
+								<th>REKENING NO. / EMPID<br/>JABATAN<br/>GAJI POKOK<br/>P-M-STATUS</th>
+								<th class="tc vt">S</th>
+								<th class="tc vt">I</th>
+								<th class="tc vt">A</th>
+								<th class="tc vt">L</th>
+								<th class="tc vt">C</th>
+								<th class="tc vt">ISTRI<br/>ANAK<br/>BERAS<br/>AIR</th>
+								<th class="tc vt">JABATAN<br/>PRESTASI<br/>LEMBUR<br/>KHUSUS</th>
+								<th class="tc vt">PERUMAHAN<br/>TRANSPORT<br/>KENDARAAN<br/>MAKAN</th>
+								<th class="tc vt">SHIFT<br/>TPP<br/>PPH21</th>
+								<th class="tc vt">PPH21<br/>ASTEK<br/>ASPEN<br/>FKP</th>
+								<th class="tc vt">KOPERASI<br/>KOP. WAJIB<br/>D. WANITA<br/>TPTGR</th>
+								<th class="tc vt">REK. AIR</th>
+								<th class="tc vt">ZAKAT<br/>SHDQ</th>
+
+							</tr>
+						</thead>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -66,6 +101,25 @@
 	}
 	input[role=datepicker]{
 		text-align: center;
+	}
+	table.table-lap th.tc{
+		text-align: center !important;
+	}
+	table.table-lap th.vm{
+		vertical-align: middle !important;
+
+	}
+	table.table-lap th.vt{
+		vertical-align: top !important;
+
+	}
+	table.table-lap th{
+		white-space: nowrap !important;
+	} 
+	.grid{
+		width: 99%;
+		margin: 0 auto;
+		overflow: auto;
 	}
 
 </style>
@@ -101,9 +155,22 @@
 			},
 			methods:{
 				onProcessForm:function(){
-					console.log(arguments);
+					var prxy_url = '<?=site_url('apppayroll/report/payslip')?>';
 					this.button_pressed = true;
-				}
+					var postData = {
+						id_unor : this.id_unor,
+						periode : this.periode,
+						proses : 'yes'
+					};
+
+					axios.post(prxy_url,postData).then(function (response) {
+					    console.log(response);
+					  })
+					  .catch(function (error) {
+					    console.log(error);
+					  });
+				},
+
 			}
 		});
 		//
