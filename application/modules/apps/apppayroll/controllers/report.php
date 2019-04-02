@@ -9,6 +9,7 @@ require_once 'apppayroll_frontctl.php';
 
 class Report extends Apppayroll_Frontctl {
     public $ibl_bjb_mdl_name = 'report_ibl_bjb_mdl';
+    // public $m_payslip_report = 'm_payslip_report';
     public function index() {        
         $this->print_page();
     }
@@ -38,10 +39,14 @@ class Report extends Apppayroll_Frontctl {
     
     public function payslip()
     {
-        $proses = $this->input->post('proses');
+        $proses  = $this->input->post('proses');
+        $periode = $this->input->post('periode');
+        $id_unor = $this->input->post('id_unor');
+       
+
         $button_pressed = false;
         $tpl = __FUNCTION__;
-        $mdl = $this->ibl_bjb_mdl_name;
+        $mdl = 'm_payslip_report';
         $this->load_mdl($mdl);
 
         $this->set_page_title("Laporan Payslip");
@@ -50,8 +55,24 @@ class Report extends Apppayroll_Frontctl {
             $button_pressed = true;
         }    
 
+        if(empty($periode)){
+            $periode = date('m/Y');
+        }
+         if(empty($id_unor)){
+            $id_unor = '';
+        }
+        $periode_a = explode('/', $periode);
+        $bulan     = $periode_a[0];
+        $tahun     = $periode_a[1];
+
         $data = [
-            'button_pressed' => $button_pressed
+            'unor_list' => [''=>'All']+$this->{$mdl}->get_unor_list(),
+            'button_pressed' => $button_pressed,
+            'periode' => $periode,
+            'list' => $this->{$mdl}->get_list($bulan,$tahun,$id_unor),
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'id_unor' => $id_unor
         ];    
         $this->set_data($data);
         $this->print_page($tpl);
