@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 
 <script type="text/javascript" src="<?=base_url()?>assets/jspdf/jspdf.debug.js"></script>
-<script type="text/javascript" src="<?=base_url()?>assets/jspdf/jspdf.plugin.autotable.js"></script>
+<!-- <script type="text/javascript" src="<?=base_url()?>assets/jspdf/jspdf.plugin.autotable.js"></script> -->
 
 <script type="text/javascript" src="<?=base_url()?>assets/bootstrap-datepicker/locales/bootstrap-datepicker.id.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>assets/vuejs2/vue.min.js"></script>
@@ -54,8 +54,8 @@
 			<div class="content" style="padding: 1em;margin: 1em -1em">
 				<div v-bind:class="{'alert alert-info':button_pressed,'alert alert-warning':!button_pressed}" v-if="false">
 					Button <span v-text="button_pressed?'Is':'Not'"></span> Pressed !
-				</div>
-				<div class="grid" id="grid">
+				</div> 
+				<div class="grid">
 					<table class="table table-bordered table-lap">
 						<thead>
 							<tr>
@@ -123,6 +123,7 @@
 		</div>
 	</div>
 </div>
+<iframe style="display: none" id="ifr"></iframe>
 <style type="text/css">
 	.mc{
 		margin-top: 1em
@@ -169,38 +170,21 @@
 <script type="text/javascript">
 	var PDF = {
 		build:function() {
-	var doc = new jsPDF();
-    
-    // From HTML
-    doc.autoTable({html: '.table'});
-    
-    // From Javascript
-    let finalY = doc.previousAutoTable.finalY;
-    doc.text("From javascript arrays", 14, finalY + 15);
-    doc.autoTable({
-        startY: finalY + 20,
-        head: [
-            ['ID', 'Name', 'Email', 'Country', 'IP-address'],
-        ],
-        body: [
-            ['1', 'Donna', 'dmoore0@furl.net', 'China', '211.56.242.221'],
-            ['2', 'Janice', 'jhenry1@theatlantic.com', 'Ukraine', '38.36.7.199'],
-            ['3', 'Ruth', 'rwells2@constantcontact.com', 'Trinidad and Tobago', '19.162.133.184'],
-            ['4', 'Jason', 'jray3@psu.edu', 'Brazil', '10.68.11.42'],
-            ['5', 'Jane', 'jstephens4@go.com', 'United States', '47.32.129.71'],
-            ['6', 'Adam', 'anichols5@com.com', 'Canada', '18.186.38.37']
-        ],
-    });
+			var doc = new jsPDF();
+			var specialElementHandlers = {
+			    '#editor': function (element, renderer) {
+			        return true;
+			    }
+			};
 
-    finalY = doc.previousAutoTable.finalY;
-    doc.text("From HTML with CSS", 14, finalY + 15);
-    doc.autoTable({
-        startY: finalY + 20,
-        html: '.table',
-        useCss: true,
-    });
-    
-    return doc;
+
+		    doc.fromHTML($('#content').html(), 15, 15, {
+		        'width': 170,
+		        'elementHandlers': specialElementHandlers
+		    });
+		    
+		    
+		    return doc;
 		}
 	}
 	var RP={};
@@ -253,7 +237,9 @@
 					  });
 				},
 				onExportPdf: function(){
-					return PDF.build(this.report_data);
+					var prxy_url = '<?=site_url('apppayroll/report/payslip/pdf')?>'+'/'+this.periode+'/'+this.id_unor;
+					// $('#ifr').prop('src',prxy_url);
+					window.open(prxy_url);
 				}
 			}
 		});
