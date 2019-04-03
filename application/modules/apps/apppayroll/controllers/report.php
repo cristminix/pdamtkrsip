@@ -1,5 +1,5 @@
 <?php
-
+use Dompdf\Dompdf;
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -106,62 +106,19 @@ class Report extends Apppayroll_Frontctl {
     private function _payslip_pdf_report($report_data){
         $content = $this->load->view('report/payslip_pdf',['report_data'=>$report_data],true);
         //
-        require_once(APPPATH.'/libraries/TCPDF/config/tcpdf_config.php');
-        require_once(APPPATH.'/libraries/TCPDF/tcpdf.php');
-        
 
-        // create new PDF document
-        $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($content);
 
-        // set document information
-        $pdf->SetCreator(PDF_CREATOR);
-        // $pdf->SetAuthor('Nicola Asuni');
-        // $pdf->SetTitle('TCPDF Example 048');
-        // $pdf->SetSubject('TCPDF Tutorial');
-        // $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
 
-        // set default header data
-        // $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 048', PDF_HEADER_STRING);
+        // Render the HTML as PDF
+        $dompdf->render();
 
-        // set header and footer fonts
-        // $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        // $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-        // set default monospaced font
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-        // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-        // set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-        // set image scale factor
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-         
-
-        // ---------------------------------------------------------
-
-        // set font
-        $pdf->SetFont('helvetica', 'B', 20);
-
-        // add a page
-        $pdf->AddPage();
-
-        // $pdf->Write(0, 'Example of HTML tables', '', 0, 'L', true, 0, false, false, 0);
-
-        $pdf->SetFont('helvetica', '', 8);
-
-
-        $pdf->writeHTML($content, true, false, false, false, '');
-
-        // -----------------------------------------------------------------------------
-
-        //Close and output PDF document
-        $pdf->Output('Laporan_Payslip.pdf', 'I');
+        // Output the generated PDF to Browser
+        $dompdf->stream();
         exit();
         //
     }

@@ -24,7 +24,7 @@ class M_payslip_report extends  CI_Model
 			'alw_mar','alw_ch','alw_rc','alw_rs','alw_tr','alw_fd','alw_adv','alw_wt',
 			'alw_jt','alw_ot','alw_prf','alw_sh','alw_vhc_rt','alw_tpp','alw_pph21',
 			'alw_amt','ddc_amt',
-			'ddc_pph21','ddc_bpjs_ket','ddc_bpjs_kes','ddc_aspen','ddc_wt','ddc_f_kp','ddc_wc','ddc_wcl',
+			'ddc_pph21','ddc_bpjs_ket','ddc_bpjs_kes','ddc_aspen','ddc_wb','ddc_f_kp','ddc_wc','ddc_wcl',
 			'ddc_dw','ddc_zk','ddc_shd','ddc_tpt',
 		];			 
 		foreach ($result as &$r) {

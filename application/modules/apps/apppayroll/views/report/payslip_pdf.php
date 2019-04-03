@@ -1,8 +1,8 @@
-<table class="table table-bordered table-lap" border="1">
+<table class="table table-bordered table-lap" border="1" cellpadding="2px" colspacing="2px">
 		<thead>
 			<tr>
 				<th rowspan="2" class="tc vm">NO</th>
-				<th>NAMA</th>
+				<th width="40px">NAMA</th>
 				<th colspan="5" class="tc">ABSENSI</th>
 				<th colspan="4" class="tc">TUNJANGAN - TUNJANGAN</th>
 				<th rowspan="2" class="tc vm">GAJI<br/>KOTOR</th>
