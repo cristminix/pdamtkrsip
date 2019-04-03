@@ -38,6 +38,7 @@ class M_payslip_report extends  CI_Model
 	public function get_unor_list()
 	{
 		$rs = $this->db->select('id_unor,nama_unor')
+				 ->where('LENGTH(kode_unor) = 5',null,false)
 				 ->get('m_unor')
 				 ->result();
 		$result = [];
