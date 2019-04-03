@@ -25,7 +25,7 @@ class Apppayroll_Frontctl extends MX_Controller {
         $this->load_main_mdl();
         $this->load_main_menu();
         if (ENVIRONMENT == 'development' || ENVIRONMENT == 'testing') {
-            $this->output->enable_profiler(TRUE);
+            // $this->output->enable_profiler(TRUE);
         }
         $this->{$this->main_mdl}->is_has_access();
         if (method_exists($this->{$this->main_mdl}, 'buildDB')) {
