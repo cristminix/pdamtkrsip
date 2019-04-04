@@ -1085,7 +1085,6 @@ UPDATE;
     public function update_base_sal($filter = null)
     {
 
-
         $t_date = date('Y-m-t', strtotime(sprintf('%s-%s-01', $this->rs_cf_cur_year, $this->rs_cf_cur_month)));
 
         $this->db->where('print_dt', $t_date);

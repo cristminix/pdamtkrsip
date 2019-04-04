@@ -24,17 +24,21 @@ class dashboard_mdl extends Apppayroll_Frontmdl {
         $filters = $this->get_filter_by_group($group_name, $print_dt);
 
         $tbl     = 'apr_sv_payslip';
-        $this->db->select('print_dt,(base_sal+alw_amt-alw_pph21) ptp', false);
+        $this->db->select('empl_name,print_dt,(gross_sal-alw_pph21) ptp', false);
 //        debug($filters);die();
         $this->db->where($filters,null, false);
-        $this->db->group_by('print_dt');
+        $this->db->where('print_dt',$print_dt);
+        $this->db->order_by('gross_sal','desc');
+        $this->db->limit('1');
         $this->db->from($tbl);
 
-        $res = $this->db->get()->result();
+        $res = $this->db->get()->row();
+        // echo json_encode($res);
+        // echo $this->db->last_query();
         // $res[0]->ptp = round($res[0]->gross_sal) - round($res[0]->alw_pph21);
         // echo json_encode($res) . "\n";
         // exit();
-        return $res[0];
+        return $res;
     }
 
     public function get_total($group_name, $print_dt = null) {
