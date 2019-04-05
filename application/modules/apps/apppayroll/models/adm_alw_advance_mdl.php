@@ -267,7 +267,19 @@ class Adm_Alw_Advance_Mdl extends Apppayroll_Frontmdl {
         // die('-------------------------');
         return $this->db->affected_rows();
     }
+    public function delete_alw_adv($id) {
 
+        $this->db->where('id', $id);
+        $this->db->set('alw_adv', 0);
+        $this->db->update($this->tbl);
+        $this->load->model('payslip_mdl');
+        $row = $this->db->where('id', $id)->get('apr_sv_payslip')->row();
+        $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+
+
+                //$this->_update_payslip();
+            return array('success' => lang('Delete success'));
+    }
     public function update_alw_adv($id, $alw_adv) {
 
 //        $this->db->select('COUNT(id) as cid', false);
