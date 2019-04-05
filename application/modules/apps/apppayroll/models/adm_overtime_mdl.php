@@ -259,6 +259,10 @@ class Adm_Overtime_Mdl extends Apppayroll_Frontmdl {
         $this->db->set('alw_ot', NULL);
         $this->db->set('modified', $now);
         $this->db->update($this->tbl);
+        $this->load->model('payslip_mdl');
+        $row = $this->db->where('id', $id)->get('apr_sv_payslip')->row();
+        $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+
         if ($this->db->affected_rows()) {
             return array('success' => lang('Delete success'));
         }
@@ -267,6 +271,15 @@ class Adm_Overtime_Mdl extends Apppayroll_Frontmdl {
 
     public function update_batch_overtime($data, $key) {
         $this->db->update_batch($this->tbl, $data, $key);
+        $this->load->model('payslip_mdl');
+        foreach($data as $item){
+            $row = $this->db->where('empl_id', $item['empl_id'])->get('apr_sv_payslip')->row();
+            // echo json_encode($row) . "\n";
+            if(!empty($row)){
+                $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+            }
+        }
+        // die('-------------------------');
         return $this->db->affected_rows();
     }
     
