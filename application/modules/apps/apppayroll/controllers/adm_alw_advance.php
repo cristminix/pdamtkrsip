@@ -54,7 +54,7 @@ class Adm_Alw_Advance extends Apppayroll_Frontctl {
             $flash_message['error'] = lang('Invalid transaction ID');
             return $flash_message;
         }
-
+        
         return $this->{$mdl}->delete_alw_adv($del_id);
     }
 
@@ -142,6 +142,9 @@ class Adm_Alw_Advance extends Apppayroll_Frontctl {
         if (!$error) {
 
             $do_update = $this->{$mdl}->update_alw_adv($edit_id, $alw_adv);
+            $row = $this->db->where('id', $edit_id)->get('apr_sv_payslip')->row();
+            $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+
             if ($do_update) {
                 $flash_message['success'] = lang('Data has been saved');
                 $this->session->set_userdata('flash_message', $flash_message);

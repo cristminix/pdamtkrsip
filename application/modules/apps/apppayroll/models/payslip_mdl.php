@@ -1479,6 +1479,8 @@ UPDATE;
             
             
             $ai = ($o + $p + $q + $x) * 0.05;//$r->ddc_aspen;  // POTOGAN ASPEN, =(SUM(O4:Q4)+X4)*5%
+
+            
             if($empl_stat == 'Kontrak' || $empl_stat == 'Capeg'){
                 $ai = 0;
             }

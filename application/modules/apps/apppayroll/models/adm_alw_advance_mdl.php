@@ -256,6 +256,15 @@ class Adm_Alw_Advance_Mdl extends Apppayroll_Frontmdl {
 
     public function update_batch_alw_adv($data, $key) {
         $this->db->update_batch($this->tbl, $data, $key);
+        $this->load->model('payslip_mdl');
+        foreach($data as $item){
+            $row = $this->db->where('empl_id', $item['empl_id'])->get('apr_sv_payslip')->row();
+            // echo json_encode($row) . "\n";
+            if(!empty($row)){
+                $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+            }
+        }
+        // die('-------------------------');
         return $this->db->affected_rows();
     }
 
