@@ -934,7 +934,34 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
             }
         }
     }
+    public function get_deduction_var($print_dt)
+    {
+        $deduction_var_list = [];
 
+        $sql_apr_payslip_group = "SELECT
+            apgr.apr_payslip_group_id 
+            FROM
+            apr_payslip_group_register AS apgr
+            WHERE
+            apgr.active_status = 1 AND
+            (apgr.start_date <= '{$print_dt}' AND
+            (apgr.term_date IS NULL OR
+            apgr.term_date >= '{$print_dt}'))
+            ORDER BY
+            apgr.created DESC,
+            apgr.start_date DESC
+            LIMIT 1";
+
+        $apr_payslip_group_id = $this->db->query($sql_apr_payslip_group)->row()->apr_payslip_group_id;
+
+        if(empty($apr_payslip_group_id)){
+            return $deduction_var_list;
+        }
+        //apr_payslip_group_id = 4
+
+
+
+    }
     public function get_update_all_deduction()
     {
         $sqlstr = "SELECT *
@@ -1518,6 +1545,17 @@ UPDATE;
             $an = round($row->ddc_tpt); // TPTGR
             $ao = round($row->ddc_wb); // REK AER
             $ap = ($ae * 0.025);  // ZAKAT , 2.5%*AE4
+
+            // CEK ZAKAT
+            $where_date_is_valid = "(eff_date <= '".$row->print_dt."' AND (term_date IS NULL OR term_date >= '".$row->print_dt."'))";
+
+            $zk_must_set = $this->db->where('empl_id',$row->empl_id)
+                                    ->where($where_date_is_valid,null,false)
+                                    ->get('apr_empl_zk')
+                                    ->num_rows() > 0;
+            if(!$zk_must_set){
+                $ap = 0;
+            }                        
             if($row->empl_gr == 'Dewan Pengawas'){
                 $ap = 0;
             }
