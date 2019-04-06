@@ -171,21 +171,39 @@
 </style>
 <script type="text/javascript">
 	var PDF = {
-		build:function() {
+		build:function(report_data) {
 			var b = [true, true, true, true];
-			var fc = '#eeeeee';
+			var fc = '#fff';
 
 			var dd = {
 				pageSize: 'A4',
 				pageMargins: [ 4, 4, 4, 4 ],
 				pageOrientation: 'landscape',
-
+				styles: {
+					default: {
+						fontSize:9,
+						alignment:'center',
+					},
+					tl:{
+						alignment:'left'
+					},
+					tc:{
+						alignment:'center'
+					},
+					tr:{
+						alignment:'right'
+					},
+					vmid:{
+						alignment:'center',
+						margin: [3,0,0,0]
+					}
+				},
 				content:[
 					{
-						style: 'tableExample',
+						style: 'default',
 						table: {
 							body: [
-									[{border: b, fillColor: fc, text: 'NO', rowSpan:2 }, 
+									[{border: b, fillColor: fc, text: "\n\n\nNO", rowSpan:2 }, 
 									 {border: b, fillColor: fc, text: 'NAMA'                                                    }, 
 									 {border: b, fillColor: fc, text: 'ABSENSI', colSpan:5 },
 									 ''                                    ,
@@ -196,31 +214,31 @@
 									 '',                                                                     
 									 ''                                                                           ,
 									 '',                                                    
-									 {border: b, fillColor: fc, text: 'GAJI KOTOR', rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: "\n\nGAJI KOTOR", rowSpan:2 }, 
 									 {border: b, fillColor: fc, text: 'POTONGAN - POTONGAN', colSpan:4 }, 
 									 ''                                                                            ,
 									 ''                                                 , 
 									 ''                                                                           ,  
-									 {border: b, fillColor: fc, text: 'JUMLAH POTONGAN', rowSpan:2 }, 
-									 {border: b, fillColor: fc, text: 'GAJI BERSIH', rowSpan:2 }, 
-									 {border: b, fillColor: fc, text: 'TANDA TANGAN', rowSpan:2 } 
+									 {border: b, fillColor: fc, text: "\n\nJUMLAH POTONGAN", rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: "\n\nGAJI BERSIH", rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: "\n\nTANDA TANGAN", rowSpan:2 } 
 									],
 									['',                                                 
-									 {border: b, fillColor: fc, text: "REKENING NO. / EMPID \nJABATAN\n GAJI POKOK \nP-M-STATUS"}, 
+									 {border: b, fillColor: fc, text: "REKENING NO. / EMPID\nJABATAN\nGAJI POKOK\nP-M-STATUS",style:'tl'}, 
 									 {border: b, fillColor: fc, text: 'S'                  }, 
 									 {border: b, fillColor: fc, text: 'I'}, 
 									 {border: b, fillColor: fc, text: 'A'}, 
 									 {border: b, fillColor: fc, text: 'L'}, 
 									 {border: b, fillColor: fc, text: 'C'}, 
-									 {border: b, fillColor: fc, text: "ISTRI \nANAK \nBERAS \nAIR"       }, 
-									 {border: b, fillColor: fc, text: "JABATAN \nPRESTASI \nLEMBUR \nKHUSUS"}, 
-									 {border: b, fillColor: fc, text: "PERUMAHAN \nTRANSPORT \nKENDARAAN \nMAKAN"},
+									 {border: b, fillColor: fc, text: "ISTRI\nANAK\nBERAS\nAIR"       }, 
+									 {border: b, fillColor: fc, text: "JABATAN\nPRESTASI\nLEMBUR\nKHUSUS"}, 
+									 {border: b, fillColor: fc, text: "PERUMAHAN\nTRANSPORT\nKENDARAAN\nMAKAN"},
 									 {border: b, fillColor: fc, text: "SHIFT\nTPP\nPPH21\n"}, 
 									 '',                                            
-									 {border: b, fillColor: fc, text: "PPH21 \nASTEK \nASPEN \nFKP"    }, 
+									 {border: b, fillColor: fc, text: "PPH21\nASTEK\nASPEN\nFKP"    }, 
 									 {border: b , fillColor: fc, text: "KOPERASI \nKOP. WAJIB \nD. WANITA \nTPTGR"},
 									 {border: b, fillColor: fc, text: "ASKES\nREK. AIR"},
-									 {border: b, fillColor: fc, text: "ZAKAT \nSHDQ"},
+									 {border: b, fillColor: fc, text: "ZAKAT\nSHDQ"},
 									 '',
 									 '',
 									 ''
@@ -233,7 +251,45 @@
 					}
 				]
 			};
-			console.log(dd);
+			// console.log(dd);
+			$.each(report_data,function(i,r){
+				var no = i+1;
+				var _1ColText = r.empl_name+"\n"+'-/'+r.empid+"\n"+r.job_title+"\n"+r.base_sal+"\n"+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'');
+				var _7ColText = r.alw_mar+"\n"+r.alw_ch+"\n"+r.alw_rc+"\n"+r.alw_wt;
+				var _8ColText = r.alw_jt+"\n"+r.alw_prf+"\n"+r.alw_ot+"\n"+r.alw_adv;
+
+				var _9ColText = r.alw_rs+"\n"+r.alw_tr+"\n"+r.alw_vhc_rt+"\n"+r.alw_fd;
+				var _10ColText = r.alw_sh+"\n"+r.alw_tpp+"\n"+r.alw_pph21;
+				var _12ColText = r.ddc_pph21+"\n"+r.ddc_bpjs_ket+"\n"+r.ddc_aspen+"\n"+r.ddc_f_kp;
+				var _13ColText = r.ddc_wc+"\n"+r.ddc_wcl+"\n"+r.ddc_dw+"\n"+r.ddc_tpt ;
+				var _14ColText = r.ddc_bpjs_kes+"\n"+r.ddc_wb;
+				var _15ColText = r.ddc_zk+"\n"+r.ddc_shd;
+				// var _9ColText = ;
+				var row = [
+					{border: b, fillColor: fc, text: no }, 
+					{border: b, fillColor: fc, text: _1ColText, style: 'tl' }, 
+					{border: b, fillColor: fc, text: r.attn_s }, 
+					{border: b, fillColor: fc, text: r.attn_i }, 
+					{border: b, fillColor: fc, text: r.attn_a }, 
+					{border: b, fillColor: fc, text: r.attn_l }, 
+					{border: b, fillColor: fc, text: r.attn_c }, 
+					{border: b, fillColor: fc, text: _7ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _8ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _9ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _10ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: r.gross_sal, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _12ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _13ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _14ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: _15ColText, style: 'tr' }, 
+					{border: b, fillColor: fc, text: r.ddc_amt, style: 'tr' }, 
+					{border: b, fillColor: fc, text: r.net_pay, style: 'tr' }, 
+					{border: b, fillColor: fc, text: '', style: 'tr' }, 
+					 
+				];
+
+				dd.content[0].table.body.push(row);
+			});
 			//11.69x8.50 inch
 			pdfMake.createPdf(dd).open();
 			
@@ -289,7 +345,7 @@
 					  });
 				},
 				onExportPdf: function(){
-					PDF.build();
+					PDF.build(this.report_data);
 				}
 			}
 		});
