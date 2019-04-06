@@ -93,7 +93,7 @@
 						<tbody>
 							<tr v-for="(r, index) in report_data">
 								<td class="tc" v-text="index+1"></td>
-								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/>'+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
+								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/>'+(r.empl_stat=='Kontrak'?'0':r.kode_peringkat)+' - '+ (r.empl_stat=='Kontrak'?'0':r.los) +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
 								<td class="tc" v-text="r.attn_s"></td>
 								<td class="tc" v-text="r.attn_i"></td>
 								<td class="tc" v-text="r.attn_a"></td>
@@ -176,7 +176,7 @@
 			var fc = '#fff';
 			var headerTitle = title;
 			var dd = {
-				pageSize: 'A4',
+				pageSize: 'Folio',
 				pageMargins: [ 4, 4, 4, 4 ],
 				pageOrientation: 'landscape',
 				styles: {
@@ -257,6 +257,10 @@
 			// console.log(dd);
 			$.each(report_data,function(i,r){
 				var no = i+1;
+				if(r.empl_stat == 'Kontrak'){
+					r.kode_peringkat = 0;
+					r.los = 0;
+				}
 				var _1ColText = r.empl_name+"\n"+'-/'+r.empid+"\n"+r.job_title+"\n"+r.base_sal+"\n"+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'');
 				var _7ColText = r.alw_mar+"\n"+r.alw_ch+"\n"+r.alw_rc+"\n"+r.alw_wt;
 				var _8ColText = r.alw_jt+"\n"+r.alw_prf+"\n"+r.alw_ot+"\n"+r.alw_adv;
