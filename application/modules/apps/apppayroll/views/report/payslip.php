@@ -69,7 +69,7 @@
 								<th colspan="4" class="tc">POTONGAN - POTONGAN</th>
 								<th rowspan="2" class="tc vm">JUMLAH<br/>POTONGAN</th>
 								<th rowspan="2" class="tc vm">GAJI<br/>BERSIH</th>
-								<th rowspan="2" class="tc vm">TANDA TANGAN</th>
+								<!-- <th rowspan="2" class="tc vm">TANDA TANGAN</th> -->
 
 							</tr>
 							<tr>
@@ -113,7 +113,7 @@
 								<td class="tr" v-html="r.ddc_zk+'<br/>'+r.ddc_shd"></td>
 								<td class="tr" v-html="r.ddc_amt"></td>
 								<td class="tr" v-html="r.net_pay"></td>
-								<td>&nbsp;</td>
+								<!-- <td>&nbsp;</td> -->
 							</tr>
 							<tr v-if="!button_pressed">
 								<td colspan="19">Tidak ada data</td>
@@ -171,10 +171,10 @@
 </style>
 <script type="text/javascript">
 	var PDF = {
-		build:function(report_data) {
+		build:function(report_data,title) {
 			var b = [true, true, true, true];
 			var fc = '#fff';
-
+			var headerTitle = title;
 			var dd = {
 				pageSize: 'A4',
 				pageMargins: [ 4, 4, 4, 4 ],
@@ -193,17 +193,20 @@
 					tr:{
 						alignment:'right'
 					},
-					vmid:{
-						alignment:'center',
-						margin: [3,0,0,0]
-					}
+					header: {
+						fontSize: 18,
+						bold: true,
+						margin: [0, 0, 0, 10],
+						alignment:'center'
+					},
 				},
 				content:[
+					{text: headerTitle, style: 'header'},
 					{
 						style: 'default',
 						table: {
 							body: [
-									[{border: b, fillColor: fc, text: "\n\n\nNO", rowSpan:2 }, 
+									[{border: b, fillColor: fc, text: "\n\nNO", rowSpan:2 }, 
 									 {border: b, fillColor: fc, text: 'NAMA'                                                    }, 
 									 {border: b, fillColor: fc, text: 'ABSENSI', colSpan:5 },
 									 ''                                    ,
@@ -236,8 +239,8 @@
 									 {border: b, fillColor: fc, text: "SHIFT\nTPP\nPPH21\n"}, 
 									 '',                                            
 									 {border: b, fillColor: fc, text: "PPH21\nASTEK\nASPEN\nFKP"    }, 
-									 {border: b , fillColor: fc, text: "KOPERASI \nKOP. WAJIB \nD. WANITA \nTPTGR"},
-									 {border: b, fillColor: fc, text: "ASKES\nREK. AIR"},
+									 {border: b , fillColor: fc, text: "KOPERASI\nKOP.WAJIB\nD.WANITA\nTPTGR"},
+									 {border: b, fillColor: fc, text: "ASKES\nREK.AIR"},
 									 {border: b, fillColor: fc, text: "ZAKAT\nSHDQ"},
 									 '',
 									 '',
@@ -288,7 +291,7 @@
 					 
 				];
 
-				dd.content[0].table.body.push(row);
+				dd.content[1].table.body.push(row);
 			});
 			//11.69x8.50 inch
 			pdfMake.createPdf(dd).open();
@@ -345,7 +348,8 @@
 					  });
 				},
 				onExportPdf: function(){
-					PDF.build(this.report_data);
+					var title = "Laporan Payslip";
+					PDF.build(this.report_data,title);
 				}
 			}
 		});
