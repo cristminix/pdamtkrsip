@@ -185,8 +185,46 @@
 						style: 'tableExample',
 						table: {
 							body: [
-									[{border: b, fillColor: fc, text: 'NO', rowSpan:2 }, {border: b, fillColor: fc, text: 'NAMA'                                                    }, {border: b, fillColor: fc, text: 'ABSENSI', colSpan:5 },''                                    ,''                                    ,''                                    ,''                                    , {border: b, fillColor: fc, text: 'TUNJANGAN - TUNJANGAN', colSpan:4 }, '',                                                                     , ''                                                                           ,'',                                            , {border: b, fillColor: fc, text: 'GAJI KOTOR', rowSpan:2 }, {border: b, fillColor: fc, text: 'POTONGAN - POTONGAN', colSpan:4 }, ''                                                                            ,''                                                 , ''                                                                           ,  {border: b, fillColor: fc, text: 'JUMLAH POTONGAN', rowSpan:2 }, {border: b, fillColor: fc, text: 'GAJI BERSIH', rowSpan:2 }, {border: b, fillColor: fc, text: 'TANDA TANGAN', rowSpan:2 } ],
-									['',                                                 {border: b, fillColor: fc, text: "REKENING NO. / EMPID \nJABATAN\n GAJI POKOK \nP-M-STATUS"}, {border: b, fillColor: fc, text: 'S'                  }, {border: b, fillColor: fc, text: 'I'}, {border: b, fillColor: fc, text: 'A'}, {border: b, fillColor: fc, text: 'L'}, {border: b, fillColor: fc, text: 'C'}, {border: b, fillColor: fc, text: "ISTRI \nANAK \nBERAS \nAIR"       }, {border: b, fillColor: fc, text: "JABATAN \nPRESTASI \nLEMBUR \nKHUSUS"}, {border: b, fillColor: fc, text: "PERUMAHAN \nTRANSPORT \nKENDARAAN \nMAKAN"},{"SHIFT\nTPP\nPPH21\n"}                        , '',                                                       , {border: b, fillColor: fc, text: "PPH21 \nASTEK \nASPEN \nFKP"    }, {border: b , fillColor: fc, text: "KOPERASI \nKOP. WAJIB \nD. WANITA \nTPTGR"},{border: b, fillColor: fc, text: "ASKES\nREK. AIR"},{border: b, fillColor: fc, text: "ZAKAT \nSHDQ"}]
+									[{border: b, fillColor: fc, text: 'NO', rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: 'NAMA'                                                    }, 
+									 {border: b, fillColor: fc, text: 'ABSENSI', colSpan:5 },
+									 ''                                    ,
+									 ''                                    ,
+									 ''                                    ,
+									 ''                                    , 
+									 {border: b, fillColor: fc, text: 'TUNJANGAN - TUNJANGAN', colSpan:4 }, 
+									 '',                                                                     
+									 ''                                                                           ,
+									 '',                                                    
+									 {border: b, fillColor: fc, text: 'GAJI KOTOR', rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: 'POTONGAN - POTONGAN', colSpan:4 }, 
+									 ''                                                                            ,
+									 ''                                                 , 
+									 ''                                                                           ,  
+									 {border: b, fillColor: fc, text: 'JUMLAH POTONGAN', rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: 'GAJI BERSIH', rowSpan:2 }, 
+									 {border: b, fillColor: fc, text: 'TANDA TANGAN', rowSpan:2 } 
+									],
+									['',                                                 
+									 {border: b, fillColor: fc, text: "REKENING NO. / EMPID \nJABATAN\n GAJI POKOK \nP-M-STATUS"}, 
+									 {border: b, fillColor: fc, text: 'S'                  }, 
+									 {border: b, fillColor: fc, text: 'I'}, 
+									 {border: b, fillColor: fc, text: 'A'}, 
+									 {border: b, fillColor: fc, text: 'L'}, 
+									 {border: b, fillColor: fc, text: 'C'}, 
+									 {border: b, fillColor: fc, text: "ISTRI \nANAK \nBERAS \nAIR"       }, 
+									 {border: b, fillColor: fc, text: "JABATAN \nPRESTASI \nLEMBUR \nKHUSUS"}, 
+									 {border: b, fillColor: fc, text: "PERUMAHAN \nTRANSPORT \nKENDARAAN \nMAKAN"},
+									 {border: b, fillColor: fc, text: "SHIFT\nTPP\nPPH21\n"}, 
+									 '',                                            
+									 {border: b, fillColor: fc, text: "PPH21 \nASTEK \nASPEN \nFKP"    }, 
+									 {border: b , fillColor: fc, text: "KOPERASI \nKOP. WAJIB \nD. WANITA \nTPTGR"},
+									 {border: b, fillColor: fc, text: "ASKES\nREK. AIR"},
+									 {border: b, fillColor: fc, text: "ZAKAT \nSHDQ"},
+									 '',
+									 '',
+									 ''
+								   ]
 								]
 						},
 						layout: {
