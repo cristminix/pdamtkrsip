@@ -403,7 +403,7 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         $this->db->where('name', $this->ptp_config_name);
         $this->db->where('active_status', 1);
         $this->db->where('menu_code', $group_name);
-        $this->db->where('lock', 1);
+        // $this->db->where('lock', 1);
         $this->db->where('print_dt', $print_dt);
         $q   = $this->db->get();
         $res = $q->result();
@@ -424,19 +424,23 @@ class Payslip_Mdl extends Apppayroll_Frontmdl
         if ($affected) {
             return $affected;
         }
-
-        $this->db->set('value', $ptp->ptp);
-        $this->db->set('created', 'NOW()', false);
-        $this->db->set('name', $this->ptp_config_name);
-        $this->db->set('active_status', 1);
-        $this->db->set('menu_code', $group_name);
-        $this->db->where('lock', 0);
-        $this->db->set('print_dt', $print_dt);
-        $q        = $this->db->insert($tbl);
-        $affected = $this->db->affected_rows();
-        if ($affected) {
-            return $affected;
+        // $this->db->where('print_dt', $print_dt)->delete($tbl);
+        if(empty($res)){
+            $this->db->set('value', $ptp->ptp);
+            $this->db->set('created', 'NOW()', false);
+            $this->db->set('name', $this->ptp_config_name);
+            $this->db->set('active_status', 1);
+            $this->db->set('menu_code', $group_name);
+            $this->db->where('lock', 0);
+            $this->db->set('print_dt', $print_dt);
+            $q        = $this->db->insert($tbl);
+            $affected = $this->db->affected_rows();
+            if ($affected) {
+                return $affected;
+            }
         }
+        return 1;
+        
     }
 
     public function custom_filter_result(&$db)

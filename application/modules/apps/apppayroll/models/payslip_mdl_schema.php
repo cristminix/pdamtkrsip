@@ -60,6 +60,7 @@ class Payslip_Mdl_Schema {
                 grade,
                 empl_stat,
                 created,
+                kode_unor,
                 modified 
             )
                 SELECT
@@ -79,6 +80,7 @@ class Payslip_Mdl_Schema {
     rpg.nama_pangkat,
     rp.status_pegawai,
     NOW( ),
+    rkp.kode_unor,
     NOW( ) 
 FROM
     r_pegawai rp
@@ -140,6 +142,8 @@ $sql_kontrak = <<<SQL
                 grade,
                 empl_stat,
                 created,
+                kode_unor,
+
                 modified
             )
                 SELECT
@@ -159,6 +163,8 @@ $sql_kontrak = <<<SQL
                     'Kontrak',
                     'Kontrak',
                     NOW(),
+                    rkp.kode_unor,
+
                     NOW()
                 FROM r_pegawai rp  
                 LEFT JOIN r_peg_kontrak AS rpk ON rp.id_pegawai = rpk.id_pegawai   

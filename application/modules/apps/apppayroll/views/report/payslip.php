@@ -28,6 +28,17 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
+			<div class="form-group row">
+		<label for="pa" class="col-md-2">Status Peg.:</label>
+		<div class="col-md-4"><?= form_dropdown('empl_stat',[''=>'All','Tetap'=>'Tetap','Capeg'=>'Capeg','Kontrak'=>'Kontrak','Khusus'=>'Khusus'],$id_unor,'class="form-control" v-model="empl_stat"')?></div>
+	</div>
+		</div>
+		<div class="col-md-4">
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-8">
 			
 				<div class="form-group row">
 						<label for="pa" class="col-md-2">Periode:</label>
@@ -93,7 +104,7 @@
 						<tbody>
 							<tr v-for="(r, index) in report_data">
 								<td class="tc" v-text="index+1"></td>
-								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/>'+(r.empl_stat=='Kontrak'?'0':r.kode_peringkat)+' - '+ (r.empl_stat=='Kontrak'?'0':r.los) +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
+								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/> '+(r.empl_stat=='Kontrak'?'0':r.kode_peringkat)+' - '+ (r.empl_stat=='Kontrak'?'0':r.los) +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
 								<td class="tc" v-text="r.attn_s"></td>
 								<td class="tc" v-text="r.attn_i"></td>
 								<td class="tc" v-text="r.attn_a"></td>
@@ -333,6 +344,7 @@
 				periode : '<?=$periode?>',
 				bulan : '<?=$bulan?>',
 				tahun : '<?=$tahun?>',
+				empl_stat:'',
 				button_pressed: <?=$button_pressed?'true':'false'?>,
 				report_data:[]
 			},
@@ -360,7 +372,8 @@
 					var postData = {
 						id_unor : this.id_unor,
 						periode : this.periode,
-						proses : 'yes'
+						proses : 'yes',
+						empl_stat:this.empl_stat
 					};
 					var self = this;
 					axios.post(prxy_url,postData).then(function (response) {

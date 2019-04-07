@@ -143,6 +143,8 @@ class Adm_Alw_Advance extends Apppayroll_Frontctl {
 
             $do_update = $this->{$mdl}->update_alw_adv($edit_id, $alw_adv);
             $row = $this->db->where('id', $edit_id)->get('apr_sv_payslip')->row();
+            $this->load->model('payslip_mdl');
+            
             $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
 
             if ($do_update) {

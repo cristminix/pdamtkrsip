@@ -8,15 +8,22 @@ if (!defined('BASEPATH'))
 class M_payslip_report extends  CI_Model
 {
 	
-	public function get_report_data($bulan,$tahun,$id_unor)
+	public function get_report_data($bulan,$tahun,$id_unor,$empl_stat)
 	{
 		$lastdate  = date('t', strtotime("{$tahun}-{$bulan}-01"));
 		$print_dt = "{$tahun}-{$bulan}-{$lastdate}"; 
 		if(!empty($id_unor)){
-			$this->db->where('id_unor',$id_unor);
+			$this->db->like('p.kode_unor',$id_unor);
 
 		}
-		$result = $this->db->where('print_dt',$print_dt)->order_by('empl_name','asc')->get('apr_sv_payslip')
+		if(!empty($empl_stat)){
+			$this->db->where('p.empl_stat',$empl_stat);
+
+		}
+		$result = $this->db->select('p.*')
+						   ->where('p.print_dt',$print_dt)
+						   // ->join('m_unor u','u.id_unor = p.id_unor','left')
+						   ->order_by('p.empl_name','asc')->get('apr_sv_payslip p')
 
 					 ->result();
 		$fmt_num_kys = [
@@ -38,14 +45,14 @@ class M_payslip_report extends  CI_Model
 	}
 	public function get_unor_list()
 	{
-		$rs = $this->db->select('id_unor,nama_unor')
+		$rs = $this->db->select('kode_unor,nama_unor')
 				 ->where('LENGTH(kode_unor) = 5',null,false)
 				 ->get('m_unor')
 				 ->result();
 		$result = [];
 		
 		foreach ($rs as $u) {
-	 		$result[$u->id_unor]=$u->nama_unor;
+	 		$result[$u->kode_unor]=$u->nama_unor;
 	    }
 	    return $result;		 
 	}

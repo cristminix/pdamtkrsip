@@ -42,12 +42,14 @@ class Report extends Apppayroll_Frontctl {
         $proses  = $this->input->post('proses');
         $periode = $this->input->post('periode');
         $id_unor = $this->input->post('id_unor');
+        $empl_stat = $this->input->post('empl_stat');
         
         $payload = json_decode(file_get_contents('php://input'));
         if(is_object($payload)){
             $proses = $payload->proses;
             $periode = $payload->periode;
             $id_unor = $payload->id_unor;
+            $empl_stat = $payload->empl_stat;
         }
 
         $button_pressed = false;
@@ -57,7 +59,7 @@ class Report extends Apppayroll_Frontctl {
         $mdl = 'm_payslip_report';
         $this->load_mdl($mdl);
 
-        $this->set_page_title("Laporan Payslip");
+        $this->set_page_title("DAFTAR GAJI PEGAWAI");
             
 
 
@@ -80,7 +82,7 @@ class Report extends Apppayroll_Frontctl {
         }
         if($proses == 'yes'){
             $button_pressed = true;
-            $report_data = $this->{$mdl}->get_report_data($bulan,$tahun,$id_unor);
+            $report_data = $this->{$mdl}->get_report_data($bulan,$tahun,$id_unor,$empl_stat);
 
             if($content_type == 'pdf'){
                 return $this->_payslip_pdf_report($report_data);
