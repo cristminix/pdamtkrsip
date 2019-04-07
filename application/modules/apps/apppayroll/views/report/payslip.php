@@ -385,10 +385,11 @@
 					  });
 				},
 				onExportPdf: function(){
-					var bulan = ['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+					var bulan = ['','JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
 					var nama_bulan = bulan[this.bulan.replace(/^0/,'')];
 					var tahun = this.tahun;
-					var title = "DAFTAR GAJI PEGAWAI PDAM TIRTA KERTA RAHARJA KABUPATEN TANGERANG\nPERIODE " + nama_bulan + " " + tahun + "\nCabang Serpong";
+					var nama_unor = this.id_unor!=''? this.unor_list[this.id_unor]:'';
+					var title = "DAFTAR GAJI PEGAWAI"+(this.empl_stat!=''?' '+this.empl_stat.toUpperCase():"")+" PDAM TIRTA KERTA RAHARJA KABUPATEN TANGERANG\nPERIODE " + nama_bulan + " " + tahun + "\n"+nama_unor;
 					PDF.build(this.report_data,title);
 				}
 			}
