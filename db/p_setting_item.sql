@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 01/04/2019 12:33:03
+ Date: 07/04/2019 21:51:41
 */
 
 SET NAMES utf8mb4;
@@ -482,7 +482,7 @@ INSERT INTO `p_setting_item` VALUES (808, 2, 'DLL', 73, 4, '{\"path_menu\":\"cms
 INSERT INTO `p_setting_item` VALUES (809, 3, '', 0, 0, '{\"id_menu\":\"808\",\"group_id\":\"4\"}');
 INSERT INTO `p_setting_item` VALUES (810, 2, 'Setting Item Dashboard', 808, 1, '{\"path_menu\":\"cmssetting/dashboard\",\"icon_menu\":\"\",\"keterangan\":\"-\"}');
 INSERT INTO `p_setting_item` VALUES (811, 3, '', 0, 0, '{\"id_menu\":\"810\",\"group_id\":\"4\"}');
-INSERT INTO `p_setting_item` VALUES (812, 111, '', 0, 0, '{\"text\":\"ABSENSI\",\"color\":\"rgb(12, 93, 197)\",\"module\":\"\",\"path\":\"admin/module/widget/absensi/dashboard\",\"note\":\"Data Absensi Pegawai\",\"icon\":\"fa-user\",\"status\":\"1\",\"idd\":\"644\"}');
+INSERT INTO `p_setting_item` VALUES (812, 111, '', 0, 0, '{\"text\":\"ABSENSI\",\"color\":\"rgb(12, 93, 197)\",\"module\":\"\",\"path\":\"#\",\"note\":\"Data Absensi Pegawai\",\"icon\":\"fa-user\",\"status\":\"1\",\"idd\":\"812\"}');
 INSERT INTO `p_setting_item` VALUES (813, 111, '', 0, 0, '{\"text\":\"Kenaikan Berkala\",\"color\":\"rgb(235, 146, 7)\",\"module\":\"widget/kenaikan_berkala/param:0,widget/kenaikan_berkala/param:1,widget/kenaikan_berkala/param:2\",\"path\":\"#\",\"note\":\"Kenaikan Berkala Pegawai\",\"icon\":\"fa-forward\",\"status\":\"1\",\"idd\":\"645\"}');
 INSERT INTO `p_setting_item` VALUES (814, 111, '', 0, 0, '{\"text\":\"Kenaikan Peringkat\",\"color\":\"rgb(203, 102, 12)\",\"module\":\"widget/kenaikan_peringkat/param:0,widget/kenaikan_peringkat/param:1,widget/kenaikan_peringkat/param:2,\",\"path\":\"#\",\"note\":\"Kenaikan Peringkat Pegawai\",\"icon\":\"fa-search-plus\",\"status\":\"1\",\"idd\":\"646\"}');
 INSERT INTO `p_setting_item` VALUES (815, 111, '', 0, 0, '{\"text\":\"Pensiun\",\"color\":\"rgb(135, 135, 134)\",\"module\":\"widget/pensiun/param:0,widget/pensiun/param:1,widget/pensiun/param:2,\",\"path\":\"#\",\"note\":\"\",\"icon\":\"fa-power-off\",\"status\":\"1\",\"idd\":\"647\"}');
@@ -566,9 +566,9 @@ INSERT INTO `p_setting_item` VALUES (904, 3, '', 0, 0, '{\"id_menu\":\"743\",\"g
 INSERT INTO `p_setting_item` VALUES (905, 3, '', 0, 0, '{\"id_menu\":\"792\",\"group_id\":\"828\"}');
 INSERT INTO `p_setting_item` VALUES (910, 2, 'Dashboard', 0, 33, '{\"path_menu\":\"apppayroll/dashboard/index\",\"icon_menu\":\"fa fa-desktop fa-fw\",\"keterangan\":\"Pay Roll App - Dashboard\"}');
 INSERT INTO `p_setting_item` VALUES (912, 3, '', 0, 0, '{\"id_menu\":\"910\",\"group_id\":\"828\"}');
-INSERT INTO `p_setting_item` VALUES (973, 2, 'Laporan Payslip', 658, 2, '{\"path_menu\":\"apppayroll/report/payslip\",\"icon_menu\":\"fa fa-bar-chart\",\"keterangan\":\"Menu Laporan Payslip\"}');
+INSERT INTO `p_setting_item` VALUES (973, 2, 'Daftar Gaji', 658, 2, '{\"path_menu\":\"apppayroll/report/payslip\",\"icon_menu\":\"fa fa-bar-chart\",\"keterangan\":\"Menu Laporan Payslip\"}');
 INSERT INTO `p_setting_item` VALUES (974, 3, '', 0, 0, '{\"id_menu\":\"973\",\"group_id\":\"828\"}');
-INSERT INTO `p_setting_item` VALUES (975, 2, 'Rekap Payslip', 658, 3, '{\"path_menu\":\"apppayroll/report/payslip_rekap\",\"icon_menu\":\"fa fa-file-pdf-o\",\"keterangan\":\"Laporan Rekapitulasi Payslip\"}');
+INSERT INTO `p_setting_item` VALUES (975, 2, 'Rekap Daftar Gaji', 658, 3, '{\"path_menu\":\"apppayroll/report/payslip_rekap\",\"icon_menu\":\"fa fa-file-pdf-o\",\"keterangan\":\"Laporan Rekapitulasi Payslip\"}');
 INSERT INTO `p_setting_item` VALUES (976, 3, '', 0, 0, '{\"id_menu\":\"975\",\"group_id\":\"828\"}');
 
 SET FOREIGN_KEY_CHECKS = 1;
