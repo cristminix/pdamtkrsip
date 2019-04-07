@@ -227,8 +227,10 @@
 					{
 						style: 'default',
 						table: {
+							widths: [ 'auto','*','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','*'],
 							headerRows: 2,
 								keepWithHeaderRows: 1,
+							dontBreakRows: true, 
 							body: [
 									[{border: b, fillColor: fc, text: "NO", rowSpan:2 ,margin:[3,16,3,3]}, 
 									 {border: [true,true,false,false],style:{alignment:'left'}, fillColor: fc, text: 'NAMA'  ,margin:[3,3,3,3]                                                  }, 
@@ -327,6 +329,11 @@
 				];
 
 				dd.content[0].table.body.push(row);
+				// if(no%9==0){
+				// 	var pbreak=[{text: '', pageBreak: 'before',colSpan:19}];
+				// 	dd.content[0].table.body.push(pbreak);
+
+				// }
 			});
 			//11.69x8.50 inch
 			pdfMake.createPdf(dd).open();
