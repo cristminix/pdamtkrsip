@@ -174,15 +174,26 @@
 		build:function(report_data,title) {
 			var b = [true, true, true, true];
 			var fc = '#fff';
+			var fb = '#ddd';
 			var headerTitle = title;
 			var dd = {
-				pageSize: 'Folio',
-				pageMargins: [ 4, 4, 4, 4 ],
+				header: function(currentPage, pageCount) {
+					        var columnText = [
+					        
+					        ];
+					        columnText.push( "Halaman: " + currentPage + " - " + pageCount); 
+					        return [{text: headerTitle, style: {fontSize:10,alignment:'center',bold:true},margin:[0,30,0,0]},
+					                          { text: columnText[0], alignment: 'left', margin: [35,3,0,0],  style:{ fontSize: 7} }]; 
+					    },
+					    pageMargins: [35,80,35,30],
+				pageSize: 'A4',
+				// pageMargins: [ 8, 8, 8, 8 ],
 				pageOrientation: 'landscape',
 				styles: {
 					default: {
-						fontSize:9,
+						fontSize:6,
 						alignment:'center',
+						
 					},
 					tl:{
 						alignment:'left'
@@ -201,47 +212,49 @@
 					},
 				},
 				content:[
-					{text: headerTitle, style: 'header'},
+					
 					{
 						style: 'default',
 						table: {
+							headerRows: 2,
+								keepWithHeaderRows: 1,
 							body: [
-									[{border: b, fillColor: fc, text: "\n\nNO", rowSpan:2 }, 
-									 {border: b, fillColor: fc, text: 'NAMA'                                                    }, 
-									 {border: b, fillColor: fc, text: 'ABSENSI', colSpan:5 },
+									[{border: b, fillColor: fc, text: "NO", rowSpan:2 ,margin:[3,16,3,3]}, 
+									 {border: [true,true,false,false],style:{alignment:'left'}, fillColor: fc, text: 'NAMA'  ,margin:[3,3,3,3]                                                  }, 
+									 {border: b, fillColor: fc, text: 'ABSENSI', colSpan:5 ,margin:[3,3,3,3]},
 									 ''                                    ,
 									 ''                                    ,
 									 ''                                    ,
 									 ''                                    , 
-									 {border: b, fillColor: fc, text: 'TUNJANGAN - TUNJANGAN', colSpan:4 }, 
+									 {border: b, fillColor: fc, text: 'TUNJANGAN - TUNJANGAN', colSpan:4 ,margin:[3,3,3,3]}, 
 									 '',                                                                     
 									 ''                                                                           ,
 									 '',                                                    
-									 {border: b, fillColor: fc, text: "\n\nGAJI KOTOR", rowSpan:2 }, 
-									 {border: b, fillColor: fc, text: 'POTONGAN - POTONGAN', colSpan:4 }, 
+									 {border: b, fillColor: fc, text: "GAJI\nKOTOR", rowSpan:2 ,margin:[3,16,3,3]}, 
+									 {border: b, fillColor: fc, text: 'POTONGAN - POTONGAN', colSpan:4 ,margin:[3,3,3,3]}, 
 									 ''                                                                            ,
 									 ''                                                 , 
 									 ''                                                                           ,  
-									 {border: b, fillColor: fc, text: "\n\nJUMLAH POTONGAN", rowSpan:2 }, 
-									 {border: b, fillColor: fc, text: "\n\nGAJI BERSIH", rowSpan:2 }, 
-									 {border: b, fillColor: fc, text: "\n\nTANDA TANGAN", rowSpan:2 } 
+									 {border: b, fillColor: fc, text: "JUMLAH\nPOTONGAN", rowSpan:2,margin:[3,16,3,3] }, 
+									 {border: b, fillColor: fc, text: "GAJI\nBERSIH", rowSpan:2 ,margin:[3,16,3,3]}, 
+									 {border: b, fillColor: fc, text: "TANDA TANGAN", rowSpan:2,margin:[3,16,3,3] } 
 									],
 									['',                                                 
-									 {border: b, fillColor: fc, text: "REKENING NO. / EMPID\nJABATAN\nGAJI POKOK\nP-M-STATUS",style:'tl'}, 
-									 {border: b, fillColor: fc, text: 'S'                  }, 
-									 {border: b, fillColor: fc, text: 'I'}, 
-									 {border: b, fillColor: fc, text: 'A'}, 
-									 {border: b, fillColor: fc, text: 'L'}, 
-									 {border: b, fillColor: fc, text: 'C'}, 
-									 {border: b, fillColor: fc, text: "ISTRI\nANAK\nBERAS\nAIR"       }, 
-									 {border: b, fillColor: fc, text: "JABATAN\nPRESTASI\nLEMBUR\nKHUSUS"}, 
-									 {border: b, fillColor: fc, text: "PERUMAHAN\nTRANSPORT\nKENDARAAN\nMAKAN"},
-									 {border: b, fillColor: fc, text: "SHIFT\nTPP\nPPH21\n"}, 
+									 {border: [false,false,false,false], fillColor: fc,margin:[3,3,3,3] , text: "REKENING NO. / EMPID\nJABATAN\nGAJI POKOK\nP-M-STATUS",style:'tl'}, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: 'S'                  }, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: 'I'}, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: 'A'}, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: 'L'}, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: 'C'}, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "ISTRI\nANAK\nBERAS\nAIR"       }, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "JABATAN\nPRESTASI\nLEMBUR\nKHUSUS"}, 
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "PERUMAHAN\nTRANSPORT\nKENDARAAN\nMAKAN"},
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "SHIFT\nTPP\nPPH21\n"}, 
 									 '',                                            
-									 {border: b, fillColor: fc, text: "PPH21\nASTEK\nASPEN\nFKP"    }, 
-									 {border: b , fillColor: fc, text: "KOPERASI\nKOP.WAJIB\nD.WANITA\nTPTGR"},
-									 {border: b, fillColor: fc, text: "ASKES\nREK.AIR"},
-									 {border: b, fillColor: fc, text: "ZAKAT\nSHDQ"},
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "PPH21\nASTEK\nASPEN\nFKP"    }, 
+									 {border: b ,margin:[3,3,3,3]  , fillColor: fc, text: "KOPERASI\nKOP.WAJIB\nD.WANITA\nTPTGR"},
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "ASKES\nREK.AIR"},
+									 {border: b,margin:[3,3,3,3],  fillColor: fc, text: "ZAKAT\nSHDQ"},
 									 '',
 									 '',
 									 ''
@@ -250,7 +263,14 @@
 						},
 						layout: {
 							defaultBorder: false,
-						}
+							hLineWidth: function(i, node) {
+      return (i === 0 || i === node.table.body.length) ? 0.1 : 0.1;
+    },
+    vLineWidth: function(i, node) {
+      return (i === 0 || i === node.table.widths.length) ? 0.1 : 0.1;
+    }
+						},
+
 					}
 				]
 			};
@@ -273,29 +293,29 @@
 				var _15ColText = r.ddc_zk+"\n"+r.ddc_shd;
 				// var _9ColText = ;
 				var row = [
-					{border: b, fillColor: fc, text: no }, 
-					{border: b, fillColor: fc, text: _1ColText, style: 'tl' }, 
-					{border: b, fillColor: fc, text: r.attn_s }, 
-					{border: b, fillColor: fc, text: r.attn_i }, 
-					{border: b, fillColor: fc, text: r.attn_a }, 
-					{border: b, fillColor: fc, text: r.attn_l }, 
-					{border: b, fillColor: fc, text: r.attn_c }, 
-					{border: b, fillColor: fc, text: _7ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _8ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _9ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _10ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: r.gross_sal, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _12ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _13ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _14ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: _15ColText, style: 'tr' }, 
-					{border: b, fillColor: fc, text: r.ddc_amt, style: 'tr' }, 
-					{border: b, fillColor: fc, text: r.net_pay, style: 'tr' }, 
-					{border: b, fillColor: fc, text: '', style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: no }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _1ColText, style: 'tl' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.attn_s }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.attn_i }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.attn_a }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.attn_l }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.attn_c }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _7ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _8ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _9ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _10ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.gross_sal, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _12ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _13ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _14ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: _15ColText, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.ddc_amt, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: r.net_pay, style: 'tr' }, 
+					{border: b,margin:[3,3,3,3],  fillColor: fc, text: '', style: 'tr' }, 
 					 
 				];
 
-				dd.content[1].table.body.push(row);
+				dd.content[0].table.body.push(row);
 			});
 			//11.69x8.50 inch
 			pdfMake.createPdf(dd).open();
@@ -304,7 +324,7 @@
 };
 	var RP={};
 	$(document).ready(function(){
-		
+		$('.main > h3').html('DAFTAR GAJI PEGAWAI');		
 		RP = new Vue({
 			el:'#app',
 			data : {
@@ -352,7 +372,10 @@
 					  });
 				},
 				onExportPdf: function(){
-					var title = "Laporan Payslip";
+					var bulan = ['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+					var nama_bulan = bulan[this.bulan.replace(/^0/,'')];
+					var tahun = this.tahun;
+					var title = "DAFTAR GAJI PEGAWAI PDAM TIRTA KERTA RAHARJA KABUPATEN TANGERANG\nPERIODE " + nama_bulan + " " + tahun + "\nCabang Serpong";
 					PDF.build(this.report_data,title);
 				}
 			}

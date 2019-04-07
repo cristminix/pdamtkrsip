@@ -30,6 +30,7 @@ class M_payslip_report extends  CI_Model
 		foreach ($result as &$r) {
 		 	$r->empid = substr($r->nipp, -4);
 		 	foreach ($fmt_num_kys as $prop) {
+		 		$r->{$prop} = $r->{$prop} + 0;
 		 		$r->{$prop} = number_format($r->{$prop}, 0, ",", ".");
 		 	}
 		 }			 
