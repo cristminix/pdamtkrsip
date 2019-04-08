@@ -104,7 +104,7 @@
 						<tbody>
 							<tr v-for="(r, index) in report_data">
 								<td class="tc" v-text="index+1"></td>
-								<td class="tl" v-html="r.empl_name+'<br/>'+'-/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/> '+(r.empl_stat=='Kontrak'?'0':r.kode_peringkat)+' - '+ (r.empl_stat=='Kontrak'?'0':r.los) +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
+								<td class="tl" v-html="r.empl_name+'<br/>'+r.acc_number+'/'+r.empid+'<br/>'+r.job_title+'<br/>'+r.base_sal+' <br/> '+(r.empl_stat=='Kontrak'?'0':r.kode_peringkat)+' - '+ (r.empl_stat=='Kontrak'?'0':r.los) +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'')"></td>
 								<td class="tc" v-text="r.attn_s"></td>
 								<td class="tc" v-text="r.attn_i"></td>
 								<td class="tc" v-text="r.attn_a"></td>
@@ -277,7 +277,7 @@
 						layout: {
 							defaultBorder: false,
 							hLineWidth: function(i, node) {
-      return (i === 0 || i === node.table.body.length) ? 0.1 : 0.1;
+      return (i === 0 || i === node.table.body.length) ? 1 : 1;
     },
     vLineWidth: function(i, node) {
       return (i === 0 || i === node.table.widths.length) ? 0.1 : 0.1;
@@ -294,7 +294,7 @@
 					r.kode_peringkat = 0;
 					r.los = 0;
 				}
-				var _1ColText = r.empl_name+"\n"+'-/'+r.empid+"\n"+r.job_title+"\n"+r.base_sal+"\n"+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'');
+				var _1ColText = r.empl_name+"\n"+r.acc_number+'/'+r.empid+"\n"+r.job_title+"\n"+r.base_sal+"\n"+r.kode_peringkat+' - '+ r.los +' - '+(r.mar_stat!=''?'Kawin':'Belum Kawin')+' ' + (r.child_cnt>0?'Anak ' + r.child_cnt:'');
 				var _7ColText = r.alw_mar+"\n"+r.alw_ch+"\n"+r.alw_rc+"\n"+r.alw_wt;
 				var _8ColText = r.alw_jt+"\n"+r.alw_prf+"\n"+r.alw_ot+"\n"+r.alw_adv;
 

@@ -1567,6 +1567,16 @@ UPDATE;
             }
             $row->ddc_zk = $ap;
 
+            $acc_number = $this->db->where('empl_id',$row->empl_id)
+                                    ->where($where_date_is_valid,null,false)
+                                    ->order_by('eff_date','desc')
+                                    ->get('apr_ref_acc_number')
+                                    ->row();
+            if(!empty($acc_number)){
+                $row->acc_number = $acc_number->text;
+            }                        
+            
+                                    
             $aq = round($row->ddc_shd);  // SHODAQOH
 
             $ar   = $af + $ag + $ah + $ai + $aj + $ak + $al + $am + $an + $ao + $ap + $aq; // JUMLAH POTONGAN , =SUM(AF4:AQ4)
