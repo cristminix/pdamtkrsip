@@ -323,6 +323,8 @@ class Adm_Zakat extends Apppayroll_Frontctl {
         if (!$error) {
 
             $do_update = $this->{$this->main_mdl}->update_benefactor($edit_id, $eff_date, $term_date);
+           
+            
             if ($do_update) {
                 $flash_message['success'] = lang('Data has been saved');
                 $this->session->set_userdata('flash_message', $flash_message);

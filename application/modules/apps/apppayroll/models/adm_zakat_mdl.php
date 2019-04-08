@@ -94,18 +94,26 @@ class Adm_Zakat_Mdl extends Apppayroll_Frontmdl {
     }
 
     protected function _set_benefactor($empl_id, $eff_date, $term_date) {
-        $tbl_payslip = $this->tbl_payslip;
-        $sqlquery    = "UPDATE {$tbl_payslip} ";
-        $sqlquery    .= " SET ";
-        $sqlquery    .= " modified=NOW()";
-        $sqlquery    .= ", empl_zk=1";
-        $sqlquery    .= " WHERE empl_id='{$empl_id}'";
-        $sqlquery    .= " AND `lock`= 0";
-        $sqlquery    .= " AND `print_dt` >= '{$eff_date}'";
+        // $tbl_payslip = $this->tbl_payslip;
+        // $sqlquery    = "UPDATE {$tbl_payslip} ";
+        // $sqlquery    .= " SET ";
+        // $sqlquery    .= " modified=NOW()";
+        // $sqlquery    .= ", empl_zk=1";
+        $where    .= "empl_id='{$empl_id}'";
+        // $sqlquery    .= " AND `lock`= 0";
+        $where    .= " AND `print_dt` >= '{$eff_date}'";
         if ($term_date) {
-            $sqlquery .= " AND `print_dt` < '{$term_date}'";
+            $where .= " AND `print_dt` < '{$term_date}'";
         }
-        $this->db->query($sqlquery);
+        // $this->db->query($sqlquery);
+         $row = $this->db->where($where,null,false)->get('apr_sv_payslip')->row();
+
+         if(!empty($row)){
+            $this->load->model('payslip_mdl');
+            
+            $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+         }
+            
     }
 
     protected function _unset_benefactor($empl_id, $eff_date, $term_date) {

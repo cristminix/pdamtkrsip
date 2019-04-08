@@ -96,33 +96,44 @@ class Ref_Acc_Number_Mdl extends Apppayroll_Frontmdl {
     }
 
     protected function _set_benefactor($empl_id, $eff_date, $term_date, $text) {
-        $tbl_payslip = $this->tbl_payslip;
-        $sqlquery    = "UPDATE {$tbl_payslip} ";
-        $sqlquery    .= " SET ";
-        $sqlquery    .= " modified=NOW()";
-        $sqlquery    .= ", acc_number='{$text}'";
-        $sqlquery    .= " WHERE empl_id='{$empl_id}'";
-        $sqlquery    .= " AND `lock`= 0";
-        $sqlquery    .= " AND `print_dt` >= '{$eff_date}'";
+        // $tbl_payslip = $this->tbl_payslip;
+        // $sqlquery    = "UPDATE {$tbl_payslip} ";
+        // $sqlquery    .= " SET ";
+        // $sqlquery    .= " modified=NOW()";
+        // $sqlquery    .= ", acc_number='{$text}'";
+        // $sqlquery    .= " WHERE empl_id='{$empl_id}'";
+        // $sqlquery    .= " AND `lock`= 0";
+        // $sqlquery    .= " AND `print_dt` >= '{$eff_date}'";
+        // if ($term_date) {
+        //     $sqlquery .= " AND `print_dt` < '{$term_date}'";
+        // }
+        // $this->db->query($sqlquery);
+        $where    .= "empl_id='{$empl_id}'";
+        // $sqlquery    .= " AND `lock`= 0";
+        $where    .= " AND `print_dt` >= '{$eff_date}'";
         if ($term_date) {
-            $sqlquery .= " AND `print_dt` < '{$term_date}'";
+            $where .= " AND `print_dt` < '{$term_date}'";
         }
-        $this->db->query($sqlquery);
+        // $this->db->query($sqlquery);
+         $row = $this->db->where($where,null,false)->update('apr_sv_payslip',['acc_number'=>$text]);
+
+         // if(!empty($row)){
+         //    $this->load->model('payslip_mdl');
+            
+         //    $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+         // }
     }
 
     protected function _unset_benefactor($empl_id, $eff_date, $term_date) {
-        $tbl_payslip = $this->tbl_payslip;
-        $sqlquery    = "UPDATE {$tbl_payslip} ";
-        $sqlquery    .= " SET ";
-        $sqlquery    .= " modified=NOW()";
-        $sqlquery    .= ", acc_number=''";
-        $sqlquery    .= " WHERE empl_id='{$empl_id}'";
-        $sqlquery    .= " AND `lock`= 0";
-        $sqlquery    .= " AND `print_dt` >= '{$eff_date}'";
+        $where    .= "empl_id='{$empl_id}'";
+        // $sqlquery    .= " AND `lock`= 0";
+        $where    .= " AND `print_dt` >= '{$eff_date}'";
         if ($term_date) {
-            $sqlquery .= " AND `print_dt` < '{$term_date}'";
+            $where .= " AND `print_dt` < '{$term_date}'";
         }
-        $this->db->query($sqlquery);
+        // $this->db->query($sqlquery);
+         $row = $this->db->where($where,null,false)->update('apr_sv_payslip',['acc_number'=>'']);
+         return true;
     }
 
     public function fetch_total_rows_unsigned() {

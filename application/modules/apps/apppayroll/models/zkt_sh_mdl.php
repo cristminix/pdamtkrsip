@@ -34,7 +34,7 @@ class Zkt_Sh_Mdl extends Apppayroll_Frontmdl {
         'Length of Service',
     );
     public $rs_use_form_filter   = 'apr_sv_empl_zs';
-    public $rs_select            = "*,  CONCAT(TIMESTAMPDIFF(YEAR, hire_date, NOW()), ' thn') as `los`";
+    public $rs_select            = "*";
     public $rs_order_by          = null;
     public $rs_common_views      = array(
         /* call_user_func */
