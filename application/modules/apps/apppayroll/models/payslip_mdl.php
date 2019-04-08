@@ -1562,9 +1562,9 @@ UPDATE;
             if(!$zk_must_set){
                 $ap = 0;
             }                        
-            if($row->empl_gr == 'Dewan Pengawas'){
-                $ap = 0;
-            }
+            // if($row->empl_gr == 'Dewan Pengawas'){
+            //     $ap = 0;
+            // }
             $row->ddc_zk = $ap;
 
             $acc_number = $this->db->where('empl_id',$row->empl_id)
