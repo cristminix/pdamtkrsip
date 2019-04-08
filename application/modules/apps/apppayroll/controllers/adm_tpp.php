@@ -81,7 +81,16 @@ class Adm_Tpp extends Apppayroll_Frontctl {
             'alw_tpp',
             'alw_tpp_remark',
         );
-
+        if(empty($detail->alw_tpp) || empty($detail->alw_tpp_remark)){
+            $rowx = $this->db->where("apr_sv_payslip_id='{$id}'  AND print_dt = '{$detail->print_dt}'",null,false)
+                            ->get('apr_adm_tpp')
+                            ->row();
+            // die($this->db->last_query());                
+            if(!empty($rowx)){
+                $detail->alw_tpp = $rowx->alw_tpp;
+                $detail->alw_tpp_remark = $rowx->alw_tpp_remark;
+            }
+        }
         foreach ($rs_form_inputs as $item) {
             $md5                       = md5($item);
             $rs_form_input[md5($item)] = array(

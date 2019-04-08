@@ -267,6 +267,25 @@ class Adm_Tpp_Mdl extends Apppayroll_Frontmdl {
     }
 
     public function delete_tpp($id) {
+        $rowx = $this->db->where('apr_sv_payslip_id',$id)
+                            ->get($this->tbl_app)
+                            ->row();
+            // die($this->db->last_query());                
+        if(!empty($rowx)){
+            $data = [];
+            $data['alw_tpp'] = 0;
+            $data['alw_tpp_remark'] = '';
+
+            $this->db->where("id='{$id}'  AND print_dt = '{$rowx->print_dt}'",null,false)->update($this->tbl,$data);
+            $row = $this->db->where("id='{$id}'  AND print_dt = '{$rowx->print_dt}'",null,false)->get($this->tbl)->row();
+            if(!empty($row)){
+                $this->load->model('payslip_mdl');
+                
+                $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+             }
+
+        }
+
         $this->db->where('apr_sv_payslip_id', $id);
         $this->db->delete($this->tbl_app);
         if ($this->db->affected_rows()) {
@@ -277,7 +296,11 @@ class Adm_Tpp_Mdl extends Apppayroll_Frontmdl {
 
     public function update_batch_tpp($data, $key) {
         $this->db->update_batch($this->tbl, $data, $key);
-        return $this->db->affected_rows();
+        $this->load->model('payslip_mdl');
+        foreach ($data as $row) {
+            $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+        }
+        return 1;
     }
 
     public function update_tpp($id, $alw_tpp, $alw_tpp_remark) {
@@ -308,6 +331,12 @@ class Adm_Tpp_Mdl extends Apppayroll_Frontmdl {
         }
         $empl_id = $res->empl_id;
         $now     = date('Y-m-d H:i:s');
+        $data = ['alw_tpp'=>$alw_tpp,'alw_tpp_remark'=>$alw_tpp_remark];
+
+        $this->db->where("id='{$id}' AND print_dt = '{$print_dt}'",null,false)
+                 ->update($this->tbl,$data);
+
+         // echo $this->db->last_query();        
 
         $this->db->set('alw_tpp', $alw_tpp);
         $this->db->set('alw_tpp_remark', $alw_tpp_remark);
@@ -322,6 +351,16 @@ class Adm_Tpp_Mdl extends Apppayroll_Frontmdl {
             $this->db->set('empl_id', $empl_id);
             $this->db->insert($this->tbl_app);
         }
+
+
+        $row = $this->db->where("id='{$id}'  AND print_dt = '{$print_dt}'",null,false)->get($this->tbl)->row();
+        // print_r($row);
+        // die();
+        if(!empty($row)){
+            $this->load->model('payslip_mdl');
+            
+            $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+         }
         return $this->db->affected_rows();
     }
 
