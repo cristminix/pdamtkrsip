@@ -81,6 +81,20 @@ class Adm_Tptgr extends Apppayroll_Frontctl {
             'ddc_tpt',
             'ddc_tpt_remark',
         );
+        // echo $this->db->last_query();
+        // print_r($detail);
+        // die();
+
+        if(empty($detail->ddc_tpt) || empty($detail->ddc_tpt_remark)){
+            $rowx = $this->db->where("apr_sv_payslip_id='{$id}'  AND print_dt = '{$detail->print_dt}'",null,false)
+                            ->get('apr_adm_tptgr')
+                            ->row();
+            // die($this->db->last_query());                
+            if(!empty($rowx)){
+                $detail->ddc_tpt = $rowx->ddc_tpt;
+                $detail->ddc_tpt_remark = $rowx->ddc_tpt_remark;
+            }
+        }
 
         foreach ($rs_form_inputs as $item) {
             $md5                       = md5($item);

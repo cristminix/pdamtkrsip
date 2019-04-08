@@ -93,12 +93,13 @@ class Adm_Tptgr_Mdl extends Apppayroll_Frontmdl {
         }
         $this->db->where('id', $id);
 
-        $rs = $this->db->get();
-        if ($rs->num_rows() <= 0) {
+        $rs = $this->db->get()->row();
+        if (empty($rs)) {
             return array();
         }
-        $res = $rs->row();
-        return $res;
+        
+        
+        return $rs;
     }
 
     public function fetch_ids_by_empl_id_print_dt($empls_id, $print_dt) {
@@ -277,10 +278,15 @@ class Adm_Tptgr_Mdl extends Apppayroll_Frontmdl {
 
     public function update_batch_tptgr($data, $key) {
         $this->db->update_batch($this->tbl, $data, $key);
+        // foreach ($data as $r) {
+            // $cond= "empl_id='{$r->id}'  AND `print_dt` >= '{$print_dt}'";
+            // $row = $this->db->where($cond,null,false)->update($this->tbl,$data);
+        // }
         return $this->db->affected_rows();
     }
 
     public function update_tptgr($id, $ddc_tpt, $ddc_tpt_remark) {
+
 
         $this->db->select('COUNT(id) as cid', false);
         $this->db->where('apr_sv_payslip_id', $id);
@@ -290,6 +296,7 @@ class Adm_Tptgr_Mdl extends Apppayroll_Frontmdl {
         $this->db->select('print_dt, empl_id');
         $this->db->where('id', $id);
         $res = $this->db->get($this->tbl)->row();
+
         if (!$res) {
             return false;
         }
@@ -309,19 +316,32 @@ class Adm_Tptgr_Mdl extends Apppayroll_Frontmdl {
         $empl_id = $res->empl_id;
         $now     = date('Y-m-d H:i:s');
 
-        $this->db->set('ddc_tpt', $ddc_tpt);
-        $this->db->set('ddc_tpt_remark', $ddc_tpt_remark);
-        $this->db->set('modified', $now);
+        $data = [
+            'ddc_tpt' => $ddc_tpt,
+            'ddc_tpt_remark'=> $ddc_tpt_remark,
+            
+        ];
+        // $cond= "empl_id='{$id}'  AND print_dt >= '{$print_dt}'";
+        $row = $this->db->where('id',$id)->update($this->tbl,$data);
         if ($update) {
-            $this->db->where('apr_sv_payslip_id', $id);
-            $this->db->update($this->tbl_app);
+            $data['modified'] = $now;
+            $this->db->where("apr_sv_payslip_id='{$id}'  AND print_dt = '{$print_dt}'",null,false)
+                     ->update($this->tbl_app,$data);
+          
+           
         } else {
-            $this->db->set('apr_sv_payslip_id', $id);
-            $this->db->set('created', $now);
-            $this->db->set('print_dt', $print_dt);
-            $this->db->set('empl_id', $empl_id);
-            $this->db->insert($this->tbl_app);
+           
+            $data['apr_sv_payslip_id'] = $id;
+            $data['created']=$now;
+            $data['print_dt'] = $print_dt;
+            $data['empl_id'] = $empl_id;
+            $this->db->insert($this->tbl_app,$data);
         }
+        
+     
+        // $this->db->query($sqlquery);
+         
+
         return $this->db->affected_rows();
     }
 
