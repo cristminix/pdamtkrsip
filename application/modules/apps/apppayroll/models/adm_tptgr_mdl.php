@@ -268,6 +268,18 @@ class Adm_Tptgr_Mdl extends Apppayroll_Frontmdl {
     }
 
     public function delete_tptgr($id) {
+        $rowx = $this->db->where('apr_sv_payslip_id',$id)
+                            ->get('apr_adm_tptgr')
+                            ->row();
+            // die($this->db->last_query());                
+        if(!empty($rowx)){
+            $data = [];
+            $data['ddc_tpt'] = 0;
+            $data['ddc_tpt_remark'] = '';
+
+            $row = $this->db->where("id='{$id}'  AND print_dt = '{$rowx->print_dt}'",null,false)->update($this->tbl,$data);
+        }
+
         $this->db->where('apr_sv_payslip_id', $id);
         $this->db->delete($this->tbl_app);
         if ($this->db->affected_rows()) {
