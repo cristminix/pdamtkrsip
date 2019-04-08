@@ -11,7 +11,7 @@
  Target Server Version : 50560
  File Encoding         : 65001
 
- Date: 07/04/2019 21:24:17
+ Date: 08/04/2019 11:12:06
 */
 
 SET NAMES utf8mb4;
@@ -121,6 +121,7 @@ CREATE TABLE `apr_sv_payslip`  (
   `lama_kontrak` int(1) NULL DEFAULT NULL,
   `base_sal_tmp` double NULL DEFAULT NULL,
   `kode_unor` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `acc_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `print_dt`(`print_dt`) USING BTREE,
   INDEX `empl_id`(`empl_id`) USING BTREE,
