@@ -143,7 +143,7 @@ class Ref_Acc_Number extends Apppayroll_Frontctl {
         ${$var} = filter_var($data[md5($var)], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if (!$error) {
-            die($text);
+            // die($text);
             $do_update = $this->{$mdl}->add_new_benefactor($empl_id, $eff_date, $term_date, $text);
             if ($do_update) {
                 $flash_message['success'] = lang('Data has been saved');
