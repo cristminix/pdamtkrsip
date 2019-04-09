@@ -258,18 +258,27 @@ UPDATE;
         
         $now = date('Y-m-d H:i:s');
         $this->db->set('modified', $now);
-        if($where){
-            foreach($where as $set){
-                if(!isset( $set[2])){
-                    $this->db->where($set[0], $set[1]);
-                    continue;
-                }
-                
-                $this->db->where($set[0], $set[1], $set[2]);
-            }
-        }
+        $this->db->where($where);
         $this->db->where('id', $id);
         $this->db->update($this->tbl, $data);
+
+        //
+
+        $row = $this->db->where($where)
+                        ->where('id',$id)
+                        ->get($this->tbl)
+                        ->row();
+        if(!empty($row)){
+            $data = [
+                'ddc_zk'   => $row->zakat_amt,
+                'ddc_shd'  => $row->shodaqoh_amt
+            ];
+
+            $this->db->where('print_dt',$row->print_dt)
+                     ->where('empl_id',$row->empl_id)
+                     ->update('apr_sv_payslip', $data);
+            return 1;
+        }
     }
 
 }

@@ -22,7 +22,7 @@ class Zkt_Sh extends Apppayroll_Frontctl {
         if (!$detail) {
             return $this->print_page($tpl);
         }
-        $back_url = $this->session->userdata(__FILE__ . 'back');
+        $back_url = $this->session->userdata(__FILE__ . 'back-zk_sh');
 
         $rs_form_input                   = array(
             'back_url' => $back_url
@@ -65,10 +65,9 @@ class Zkt_Sh extends Apppayroll_Frontctl {
             'shodaqoh_amt' => $shq,
         );
         $where    = array(
-            array(
-                'print_dt',
-                $print_dt
-            )
+           
+                'print_dt'=>$print_dt
+           
         );
         $this->{$mdl}->update_row_by_id($id, $data, $where);
     }
@@ -81,7 +80,7 @@ class Zkt_Sh extends Apppayroll_Frontctl {
         if ($id) {
             return $this->_do_edit($mdl, $id);
         }
-        $this->session->set_userdata(__FILE__ . 'back', base_url(uri_string()));
+        $this->session->set_userdata(__FILE__ . 'back-zk_sh', base_url(uri_string()));
         $this->set_custom_filter($mdl);
         $this->set_common_views($mdl);
         $this->set_form_filter($mdl);
