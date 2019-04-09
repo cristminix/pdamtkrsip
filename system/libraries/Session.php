@@ -700,28 +700,43 @@ class CI_Session {
 	 * @param	array
 	 * @return	string
 	 */
-	function _serialize($data)
-	{
-		if (is_array($data))
-		{
-			foreach ($data as $key => $val)
-			{
-				if (is_string($val))
-				{
-					$data[$key] = str_replace('\\', '{{slash}}', $val);
-				}
-			}
-		}
-		else
-		{
-			if (is_string($data))
-			{
-				$data = str_replace('\\', '{{slash}}', $data);
-			}
-		}
+	// function _serialize($data)
+	// {
+	// 	if (is_array($data))
+	// 	{
+	// 		foreach ($data as $key => $val)
+	// 		{
+	// 			if (is_string($val))
+	// 			{
+	// 				$data[$key] = str_replace('\\', '{{slash}}', $val);
+	// 			}
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		if (is_string($data))
+	// 		{
+	// 			$data = str_replace('\\', '{{slash}}', $data);
+	// 		}
+	// 	}
 
-		return serialize($data);
-	}
+	// 	return serialize($data);
+	// }
+	function _serialize($data) {
+    return base64_encode(serialize($data));
+}
+
+// --------------------------------------------------------------------
+
+/**
+ * Unserialize
+ *
+ * This function unserializes a data string. I first base64_decodes
+ * the data from memcached storage.
+ */
+function _unserialize($data) {
+    return unserialize(base64_decode($data));
+}
 
 	// --------------------------------------------------------------------
 
@@ -735,25 +750,25 @@ class CI_Session {
 	 * @param	array
 	 * @return	string
 	 */
-	function _unserialize($data)
-	{
-		$data = @unserialize(strip_slashes($data));
+	// function _unserialize($data)
+	// {
+	// 	$data = @unserialize(strip_slashes($data));
 
-		if (is_array($data))
-		{
-			foreach ($data as $key => $val)
-			{
-				if (is_string($val))
-				{
-					$data[$key] = str_replace('{{slash}}', '\\', $val);
-				}
-			}
+	// 	if (is_array($data))
+	// 	{
+	// 		foreach ($data as $key => $val)
+	// 		{
+	// 			if (is_string($val))
+	// 			{
+	// 				$data[$key] = str_replace('{{slash}}', '\\', $val);
+	// 			}
+	// 		}
 
-			return $data;
-		}
+	// 		return $data;
+	// 	}
 
-		return (is_string($data)) ? str_replace('{{slash}}', '\\', $data) : $data;
-	}
+	// 	return (is_string($data)) ? str_replace('{{slash}}', '\\', $data) : $data;
+	// }
 
 	// --------------------------------------------------------------------
 

@@ -83,7 +83,7 @@ extract($rs_form_input);
             echo '<hr>';
             ?>
             <div class="form-group">
-                <label class="col-lg-2 col-sm-2 control-label"><a class="btn" href="<?php echo $rs_form_input['back_url'];?>"><span class="fa fa-arrow-left"></span> <?php echo lang('back'); ?></a>  </label>
+                <label class="col-lg-2 col-sm-2 control-label"><a class="btn" href="<?php echo site_url('apppayroll/zkt_sh/edit')?>"><span class="fa fa-arrow-left"></span> <?php echo lang('back'); ?></a>  </label>
                 
                 <div class="col-sm-8 col-lg-8">
                     <input class="btn btn-primary" type="submit" value="<?php echo lang('save'); ?>"/>
