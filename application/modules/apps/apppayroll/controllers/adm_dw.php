@@ -204,7 +204,7 @@ class Adm_Dw extends Apppayroll_Frontctl {
         if (!$detail) {
             return $this->print_page($tpl);
         }
-        $back_url       = $this->session->userdata(md5(__FILE__ . 'back-loan'));
+        $back_url       = $this->session->userdata(md5(__FILE__ . 'back-dw'));
         $rs_form_input  = array(
             'back_url' => $back_url
         );
@@ -434,7 +434,7 @@ class Adm_Dw extends Apppayroll_Frontctl {
             return $flash_message;
         }
 
-        return $this->{$mdl}->delete_row_by_id($del_id);
+        return $this->adm_dw_mdl->delete_row_by_id($del_id);
     }
 
     public function _download_ddc_template() {
@@ -536,7 +536,7 @@ class Adm_Dw extends Apppayroll_Frontctl {
             }
         }
 
-        $back_url       = $this->session->userdata(md5(__FILE__ . 'back-loan'));
+        $back_url       = $this->session->userdata(md5(__FILE__ . 'back-dw'));
         $rs_form_input  = array(
             'back_url' => $back_url
         );
@@ -664,7 +664,7 @@ class Adm_Dw extends Apppayroll_Frontctl {
         if ($do_update) {
             $flash_message['success'] = lang('Data has been saved') . sprintf(' (%d)', $do_update);
             $this->session->set_userdata('flash_message', $flash_message);
-            $back_url                 = $this->session->userdata(md5(__FILE__ . 'back-loan'));
+            $back_url                 = $this->session->userdata(md5(__FILE__ . 'back-dw'));
             return redirect($back_url);
         }
         $flash_message['error'] = lang('error_saving');
@@ -755,15 +755,21 @@ class Adm_Dw extends Apppayroll_Frontctl {
         $this->load_mdl($mdl);
 
         if ($id) {
+            if ($id == md5('del' . date('ymd'))) {
+                if ($cur_page) {
+                    return $this->_do_del($mdl, $cur_page);
+                }
+            }
             if ($id == md5('dl-ddc-tpl' . date('ymd'))) {
                 return $this->_download_ddc_template($mdl);
             }
             if ($id == md5('import' . date('ymd'))) {
                 return $this->_ddc_import($mdl);
             }
+           
             return $this->_do_edit_ddc($mdl, $id);
         }
-        $this->session->set_userdata(md5(__FILE__ . 'back-loan'), base_url(uri_string()));
+        $this->session->set_userdata(md5(__FILE__ . 'back-dw'), base_url(uri_string()));
         $this->set_custom_filter($mdl);
         $this->set_common_views($mdl);
         $this->set_form_filter($mdl);

@@ -235,24 +235,19 @@ class Adm_Dw_Mdl extends Apppayroll_Frontmdl {
     public function delete_row_by_id($id) {
         $detail = $this->fetch_detail($id);
 
-        $this->db->trans_begin();
+     
         $this->db->where('id', $id);
         $this->db->set('active_status', 0);
         $this->db->update($this->tbl);
 
         if ($this->db->affected_rows()) {
-            if ($this->db->trans_status() === FALSE) {
-                $this->db->trans_rollback();
-
-                return array('error' => lang('Delete has failed'));
-            } else {
+            
                 $this->_unset_member($detail->empl_id, $detail->member_since, $detail->member_term);
-                $this->db->trans_commit();
+                // $this->db->trans_commit();
                 //$this->_update_payslip();
                 return array('success' => lang('Delete success'));
-            }
+            
         }
-        $this->db->trans_rollback();
         return array('error' => lang('Delete has failed'));
     }
 
@@ -264,7 +259,7 @@ class Adm_Dw_Mdl extends Apppayroll_Frontmdl {
         $sqlstr1 .= " SELECT empl_id FROM {$tbl} WHERE active_status=1";
         //
         $sqlstr2 = "INSERT INTO {$tbl} (empl_id, nipp, member_pos, member_status, member_since,`name`, active_status, `created`) ";
-        $sqlstr2 .= " SELECT id_pegawai empl_id, nip_baru nipp, 'Anggota' member_pos, 1 member_status, tgl_terima member_since, nama_pegawai `name`, 1 active_status, NOW() `created`";
+        $sqlstr2 .= " SELECT id_pegawai empl_id, nip_baru nipp, 'Anggota' member_pos, 1 member_status, IFNULL(tgl_terima,DATE(NOW())) member_since, nama_pegawai `name`, 1 active_status, NOW() `created`";
         $sqlstr2 .= " FROM {$tbl_rpeg} ";
         $sqlstr2 .= " WHERE id_pegawai NOT IN (";
         $sqlstr2 .= " SELECT empl_id FROM tmp_dw";
