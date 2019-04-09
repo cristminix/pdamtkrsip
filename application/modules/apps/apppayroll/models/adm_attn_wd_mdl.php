@@ -67,6 +67,15 @@ class Adm_Attn_Wd_Mdl extends Apppayroll_Frontmdl {
         $this->db->where('lock', 0);
         $this->db->where('print_dt', $print_dt);
         $this->db->update($this->tbl_payslip);
+        $this->load->model('payslip_mdl');
+        $records = $this->db->where('print_dt',$print_dt)
+                            ->where('lock', 0)
+                            ->get($this->tbl_payslip)
+                            ->result();
+        foreach ($records as &$row) {
+            $this->payslip_mdl->fix_pph21($row,$row->empl_stat);
+        }
+
     }
 
     protected function _set_all_work_day() {

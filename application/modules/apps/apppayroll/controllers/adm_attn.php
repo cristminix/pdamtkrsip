@@ -322,7 +322,7 @@ echo json_encode($row) . "\n";
         if (!$detail) {
             return $this->print_page($tpl);
         }
-        $back_url       = $this->session->userdata(md5(__FILE__ . 'back-wd'));
+        $back_url       = $this->session->userdata(md5(__FILE__ . 'back-admattn'));
         $rs_form_input  = array(
             'back_url' => $back_url
         );
@@ -605,7 +605,7 @@ echo json_encode($row) . "\n";
             }
             return $this->_do_edit_wd($mdl, $id);
         }
-        $this->session->set_userdata(md5(__FILE__ . 'back-wd'), base_url(uri_string()));
+        $this->session->set_userdata(md5(__FILE__ . 'back-admattn'), base_url(uri_string()));
         $this->set_wd_year_filter($mdl);
         $this->set_common_views($mdl);
         if (!$cur_page) {
