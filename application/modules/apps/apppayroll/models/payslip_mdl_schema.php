@@ -210,7 +210,7 @@ SQL;
                     a.mk_peringkat,
                     a.status
                 FROM `{$tbl_join}`  a
-
+                WHERE a.status = 'aktif'
 
             ) ab
             ON r.los = ab.mk_peringkat
@@ -226,7 +226,7 @@ SQL;
                 AND `lock` = '0';
 SQL;
 
-echo $sql."\n";
+// echo $sql."\n";
     }
 
     // TODO: add documentation

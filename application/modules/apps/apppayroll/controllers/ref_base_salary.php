@@ -287,7 +287,9 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
         $tpl = __FUNCTION__;
         $mdl = $this->main_mdl;
         $this->load_mdl($mdl);
-
+        if($id=='kenaikan_gaji'){
+            return $this->_kenaikan_gaji($cur_page,$per_page,$order_by,$sort_order);
+        }
         if ($id) {
             $golongan_mdl             = $this->golongan_mdl;
             $masa_kerja_mdl           = $this->masa_kerja_mdl;
@@ -341,5 +343,8 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
         $this->set_data(compact('ls'));
         $this->print_page($tpl);
     }
-
+    public function _kenaikan_gaji($a='',$b='',$c='',$d='',$e='',$f='')
+    {
+        # code...
+    }
 }

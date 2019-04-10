@@ -68,13 +68,16 @@ class Apppayroll_Frontctl extends MX_Controller {
             DIRECTORY_SEPARATOR .
             $this->page_content_tpl .
             EXT;
+              
         $use_scaff = false;
         if (!file_exists($fn)) {
             $tpl       = 'elements/scaffolding/' . $this->page_content_tpl;
             $use_scaff = true;
+
         }
         if (!$use_scaff) {
             $this->page_body['page_content'] = $this->load->view($tpl, $this->page_content, true);
+            
             return;
         }
         $fn = $view_dir .
@@ -84,6 +87,7 @@ class Apppayroll_Frontctl extends MX_Controller {
             DIRECTORY_SEPARATOR .
             $this->page_content_tpl .
             EXT;
+
         if (!file_exists($fn)) {
             $tpl = 'elements/scaffolding/index';
         }

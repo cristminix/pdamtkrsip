@@ -277,10 +277,10 @@
 						layout: {
 							defaultBorder: false,
 							hLineWidth: function(i, node) {
-      return (i === 0 || i === node.table.body.length) ? 1 : 1;
-    },
-    vLineWidth: function(i, node) {
-      return (i === 0 || i === node.table.widths.length) ? 0.1 : 0.1;
+						      return (i === 0 || i === node.table.body.length) ? 1 : 1;
+						    },
+						    vLineWidth: function(i, node) {
+						      return (i === 0 || i === node.table.widths.length) ? 0.1 : 0.1;
     }
 						},
 
