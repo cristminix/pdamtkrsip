@@ -57,8 +57,9 @@
                         <th style="text-align: right;width: 120px">Gaji Pokok</th>
                         <th style="text-align: right;width: 120px">Penambahan</th>
                         <th style="text-align: right;width: 120px">Gaji Pokok Baru</th>
-                        <th> NAMA PANGKAT</th>
                         <th style="text-align: center;" width="30px">Tahun</th>
+                        <th> NAMA PANGKAT</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -69,8 +70,9 @@
                         <td style="text-align: right;"><span v-text="r.gaji_pokok_before"></span></td>
                         <td style="text-align: right;"><span v-text="r.gaji_pokok_add"></span></td>
                         <td style="text-align: right;"><span v-text="r.gaji_pokok"></span></td>
-                        <td><span v-text="r.nama_pangkat"></span></td>
                         <td style="text-align: center;"><span v-text="r.tahun"></span></td>
+                        <td><span v-text="r.nama_pangkat"></span></td>
+                        
                     </tr>
                     <tr v-show="salaries.data.length == 0">
                         <td colspan="8"> Tidak Ada Data.</td>

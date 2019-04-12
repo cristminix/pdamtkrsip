@@ -372,10 +372,10 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
                     unset($list[$index]);
                     continue;
                 }
-                $rw->gaji_pokok_add = ($rw->gaji_pokok + 0) * ($prosentase/100);
-                $rw->gaji_pokok_add = number_format($rw->gaji_pokok_add, 0, ",", ".");
+                $rw->gaji_pokok_add_uf = ($rw->gaji_pokok + 0) * ($prosentase/100);
+                $rw->gaji_pokok_add = number_format($rw->gaji_pokok_add_uf, 0, ",", ".");
                 $rw->gaji_pokok_before = number_format($rw->gaji_pokok, 0, ",", ".");
-                $rw->gaji_pokok = number_format($rw->gaji_pokok + $rw->gaji_pokok_add, 0, ",", ".");
+                $rw->gaji_pokok = number_format($rw->gaji_pokok + $rw->gaji_pokok_add_uf, 0, ",", ".");
 
             }
             $data = [
