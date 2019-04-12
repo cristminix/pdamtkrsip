@@ -92,6 +92,11 @@
             <div class="form-group row">
         <label for="pa" class="col-md-2">Prosentase :</label>
         <div class="col-md-4"><?= form_input('prosentase',$prosentase,'class="form-control" v-model="prosentase"')?></div>
+        <div class="col-md-6">
+             <button :disabled="button_pressed" name="proses"  class="btn btn-info" value="yes" @click="onProcessForm()"><i v-bind:class="{'fa fa-search':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Proses</button>
+             &nbsp;
+             <button :disabled="salaries.data.length <= 0 || selected_rows.length <= 0 || button_pressed" name="save"  class="btn btn-danger" value="yes" @click="onSaveForm()"><i v-bind:class="{'fa fa-save':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Simpan</button>
+        </div>
     </div>
         </div>
         <div class="col-md-4">
@@ -102,26 +107,49 @@
    
     <div class="row">
         <div class="col-md-6">
-            <button :disabled="button_pressed" name="proses"  class="btn btn-info" value="yes" @click="onProcessForm()"><i v-bind:class="{'fa fa-search':!button_pressed,'fa fa-spinner fa-spin':button_pressed}"></i> Proses</button>
+           
             
         </div>
         <div class="col-md-6">
-            <pagination
+            
+           
+        </div>
+
+    </div>
+    <div class="row" style="padding-top: 1em">
+            <div class="col-md-6">
+                <!-- <label class="col-md-3">
+                    Per Page
+                </label> -->
+                <div class="col-md-3" style="padding-left: 0">
+                    <select class="form-control" v-model="salaries.per_page">
+                    <option value="10" selected="selected">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="250">250</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                </select>
+                </div>
+                
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+                 <pagination
    :total-pages="salaries.total_pages"
    :total="salaries.total_rows"
    :per-page="salaries.per_page"
    :current-page="salaries.page"
    @pagechanged="onPageChange"
  ></pagination>
+            </div>
         </div>
-        
-    </div>
     <div class="row">
         <div class="col-md-12" style="padding-top: 1em">
             <table id="grid" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="width: 30px"><input type="checkbox" name="ck_all" v-model='ck_all' @click=onToggleSelectAll()></th>
+                        <th style="width: 30px"><input type="checkbox" name="ck_all" v-model='ck_all' @click="onToggleSelectAll()"></th>
                         <th style="text-align: right;width: 120px">Kode Peringkat</th>
                         <th style="text-align: right;width: 120px">MK Peringkat</th>
                         <th style="text-align: right;width: 120px">Gaji Pokok</th>
@@ -134,7 +162,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="r in salaries.data">
-                        <td style="text-align: center;"><input type="checkbox" v-model="r.selected"></td>
+                        <td style="text-align: center;"><input type="checkbox" v-model="r.selected" @click="onToggleSelectRow(r)"></td>
                         <td style="text-align: right;"><span v-text="r.kode_golongan"></span></td>
                         <td style="text-align: right;"><span v-text="r.mk_peringkat"></span></td>
                         <td style="text-align: right;"><span v-text="r.gaji_pokok_before"></span></td>
@@ -297,7 +325,8 @@
                 tahun : '<?=$tahun?>',
                 button_pressed: <?=$button_pressed?'true':'false'?>,
                 salaries:{data:[],tahun:0,prosentase:0,total_pages:0,total_rows:0,page:1,per_page:10},
-                ck_all:false
+                ck_all:false,
+                selected_rows:[]
             },
             mounted(){
                 $("form.kenaikan_gaji").submit(function(e){
@@ -311,13 +340,58 @@
                   this.ck_all = false;
                   this.onProcessForm();
                 },
+                onToggleSelectRow:function(rw){
+                    rw.selected = !rw.selected;
+                    var index = this.selected_rows.indexOf(rw.id_gaji_pokok);
+                    // console.log(rw);
+                    if(rw.selected){
+                        this.selected_rows.push(rw.id_gaji_pokok);
+                    }else{
+                        if (index > -1) {
+                           this.selected_rows.splice(index, 1);
+                        }
+                    }
+                },
+                onSaveForm:function(){
+                    var prxy_url = '<?=site_url('apppayroll/ref_base_salary/edit/kenaikan_gaji')?>';
+                    this.button_pressed = true;
+                    // this.salaries.data=[];
+                    var postData = {
+                        tahun : this.tahun,
+                        prosentase : this.prosentase,
+                        proses : 'yes',
+                        cmd:'save_rows',
+                        ids: this.selected_rows
+                    };
+                    var self = this;
+                    axios.post(prxy_url,postData).then(function (response) {
+                        self.salaries.page = 1;
+                        // self.button_pressed = false;
+                        self.ck_all = false;
+                        self.selected_rows = [];
+                        alert('OK');
+                        self.onProcessForm();
+                      })
+                      .catch(function (error) {
+                        alert(error);
+                      });
+                },
                 onToggleSelectAll:function(){
                     
                     this.ck_all = !this.ck_all;
-                    console.log(this.ck_all);
+                    // console.log(this.ck_all);
+                    this.selected_rows = [];
                     self = this;
                     $.each(this.salaries.data,function(i,rw){
                         rw.selected = self.ck_all;
+                        var index = self.selected_rows.indexOf(rw.id_gaji_pokok);
+                        if(rw.selected){
+                            self.selected_rows.push(rw.id_gaji_pokok);
+                        }else{
+                            if (index > -1) {
+                               self.selected_rows.splice(index, 1);
+                            }
+                        }
                     });
                 },
                 onProcessForm:function(){
@@ -336,6 +410,9 @@
                     axios.post(prxy_url,postData).then(function (response) {
                         self.salaries = response.data;
                         self.button_pressed = false;
+                        self.ck_all = false;
+                        self.selected_rows = [];
+
                       })
                       .catch(function (error) {
                         alert(error);

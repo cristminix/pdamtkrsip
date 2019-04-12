@@ -359,6 +359,7 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
             $cmd = $payload->cmd;
             $page = $payload->page;
             $per_page = $payload->per_page;
+            $ids = $payload->ids;
 
             if(empty($page)){
                 $page = 1;
@@ -367,7 +368,35 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
                 $per_page = 10;
             }
         }
+        if($cmd == 'save_rows'){
+            $new_ids = [];
+            $tahun = date('Y');
+            $list = $this->db->where_in('id_gaji_pokok',$ids)
+                             ->get('m_gaji_pokok')
+                             ->result();
+            foreach ($list as $rw) {
+                $pk = $rw->id_gaji_pokok;
+                unset($rw->id_gaji_pokok);
+                $rw->tahun = $tahun;
+                $add = ($rw->gaji_pokok + 0) * ($prosentase/100);
+                $rw->gaji_pokok = $rw->gaji_pokok + $add;
+                $this->db->insert('m_gaji_pokok',$rw);
+                $new_ids[]=$this->db->insert_id();
+                
+            }   
 
+            // unset active
+            $this->db->where_in('id_gaji_pokok',$ids)->update('m_gaji_pokok',['status'=>'tidak aktif']);              
+            $data = [
+                'success'=>true,
+                'ids' => $ids,
+                'new_ids' => $new_ids
+            ];                 
+            $this->output->set_content_type('text/javascript')
+                         ->set_output(json_encode($data))
+                         ->_display();
+            exit;                 
+        }   
         if($cmd == 'get_list'){
             $cond = [
                 'tahun'=> $tahun,
