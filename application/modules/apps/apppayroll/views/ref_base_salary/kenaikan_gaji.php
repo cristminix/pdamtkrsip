@@ -95,13 +95,7 @@
     </div>
         </div>
         <div class="col-md-4">
-            <pagination
-   :total-pages="salaries.total_pages"
-   :total="salaries.total_rows"
-   :per-page="salaries.per_page"
-   :current-page="salaries.page"
-   @pagechanged="onPageChange"
- ></pagination>
+            
         </div>
 
     </div>
@@ -112,7 +106,13 @@
             
         </div>
         <div class="col-md-6">
-            
+            <pagination
+   :total-pages="salaries.total_pages"
+   :total="salaries.total_rows"
+   :per-page="salaries.per_page"
+   :current-page="salaries.page"
+   @pagechanged="onPageChange"
+ ></pagination>
         </div>
         
     </div>
@@ -308,6 +308,7 @@
                 onPageChange(page) {
                   console.log(page)
                   this.salaries.page = page;
+                  this.ck_all = false;
                   this.onProcessForm();
                 },
                 onToggleSelectAll:function(){
