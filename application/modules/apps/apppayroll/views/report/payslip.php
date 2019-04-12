@@ -181,6 +181,7 @@
 	}
 </style>
 <script type="text/javascript">
+
 	var PDF = {
 		build:function(report_data,title) {
 			var b = [true, true, true, true];

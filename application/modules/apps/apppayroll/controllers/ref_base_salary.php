@@ -357,21 +357,42 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
             $tahun = $payload->tahun;
             $data = $payload->data;
             $cmd = $payload->cmd;
+            $page = $payload->page;
+            $per_page = $payload->per_page;
+
+            if(empty($page)){
+                $page = 1;
+            }
+            if(empty($per_page)){
+                $per_page = 10;
+            }
         }
 
         if($cmd == 'get_list'){
-
-            $list = $this->db->where('tahun',$tahun)
-                             ->where('status','aktif')
+            $cond = [
+                'tahun'=> $tahun,
+                'status'=>'aktif'
+            ];
+            $total_rows =  $this->db->where($cond)
+                                ->select('COUNT(id_gaji_pokok) total')
+                                ->get('m_gaji_pokok')
+                                ->row()->total + 0;
+            $total_pages = ceil($total_rows / $per_page);
+            $offset = ($page - 1) * $per_page;
+                                
+            $list = $this->db->where($cond)
                              ->order_by('kode_golongan','asc')
                              ->order_by('mk_peringkat','asc')
-                             ->get('m_gaji_pokok')
+                             ->get('m_gaji_pokok',$per_page,$offset)
                              ->result();
+
+
             foreach ($list as $index => &$rw) {
                 if($rw->kode_golongan == '97'){
                     unset($list[$index]);
                     continue;
                 }
+                $rw->selected = false;
                 $rw->gaji_pokok_add_uf = ($rw->gaji_pokok + 0) * ($prosentase/100);
                 $rw->gaji_pokok_add = number_format($rw->gaji_pokok_add_uf, 0, ",", ".");
                 $rw->gaji_pokok_before = number_format($rw->gaji_pokok, 0, ",", ".");
@@ -379,6 +400,10 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
 
             }
             $data = [
+                'page' => $page,
+                'per_page' => $per_page,
+                'total_pages' => $total_pages,
+                'total_rows' => $total_rows,
                 'data' => $list,
                 'tahun' => $tahun,
                 'prosentase' => $prosentase
