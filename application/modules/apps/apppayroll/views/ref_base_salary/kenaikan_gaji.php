@@ -21,7 +21,7 @@
         type="button" 
         @click="onClickFirstPage"
         :disabled="isInFirstPage"
-        aria-label="Go to first page"
+        aria-label="Go to first page" class="btn" 
       >
         First
       </button>
@@ -33,9 +33,9 @@
         type="button" 
         @click="onClickPreviousPage"
         :disabled="isInFirstPage"
-        aria-label="Go to previous page"
+        aria-label="Go to previous page" class="btn" 
       >
-        Previous
+        <i class="fa fa-caret-left"></i>
       </button>
         </li>
         <li v-for="page in pages" class="pagination-item">
@@ -44,7 +44,7 @@
         @click="onClickPage(page.name)"
         :disabled="page.isDisabled"
         :class="{ active: isPageActive(page.name) }"
-        :aria-label="`Go to page number ${page.name}`"
+        :aria-label="`Go to page number ${page.name}`" class="btn" 
         
       >
         {{ page.name }}
@@ -55,9 +55,9 @@
         type="button" 
         @click="onClickNextPage"
         :disabled="isInLastPage"
-        aria-label="Go to next page"
+        aria-label="Go to next page" class="btn" 
       >
-        Next
+        <i class="fa  fa-caret-right"></i>
       </button>
         </li>
         <li class="pagination-item">
@@ -65,7 +65,7 @@
         type="button" 
         @click="onClickLastPage"
         :disabled="isInLastPage"
-        aria-label="Go to last page"
+        aria-label="Go to last page" class="btn" 
       >
         Last
       </button>
