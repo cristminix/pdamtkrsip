@@ -28,6 +28,7 @@ class M_Gaji_Pokok_Mdl extends Apppayroll_Frontmdl {
         $this->db->where('kode_golongan', $kode_golongan);
         $this->db->where('mk_peringkat', $mk_peringkat);
         $this->db->where('tahun', $tahun);
+        // $this->db->where('status', 'aktif');
         $this->db->select('COUNT(id_gaji_pokok) cgp', false);
         if ($not_id) {
             $this->db->not_like('id_gaji_pokok', $not_id, 'none');

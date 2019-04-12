@@ -336,6 +336,7 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
 
         $this->set_common_views($mdl);
         $this->set_form_filter($mdl);
+        // $this->db->where('status','aktif');
         $ls = $this->{$mdl}->fetch_data($cur_page, $per_page, $order_by, $sort_order);
         $this->set_page_title(lang("Base Salary Master"));
         $this->set_pagination($mdl);
@@ -345,6 +346,79 @@ class Ref_Base_Salary extends Apppayroll_Frontctl {
     }
     public function _kenaikan_gaji($a='',$b='',$c='',$d='',$e='',$f='')
     {
-        # code...
+        $tpl = __FUNCTION__;
+        $mdl = $this->main_mdl;
+        $this->load_mdl($mdl);
+
+        $payload = json_decode(file_get_contents('php://input'));
+        if(is_object($payload)){
+            $proses = $payload->proses;
+            $prosentase = $payload->prosentase;
+            $tahun = $payload->tahun;
+            $data = $payload->data;
+            $cmd = $payload->cmd;
+        }
+
+        if($cmd == 'get_list'){
+
+            $list = $this->db->where('tahun',$tahun)
+                             ->where('status','aktif')
+                             ->order_by('kode_golongan','asc')
+                             ->order_by('mk_peringkat','asc')
+                             ->get('m_gaji_pokok')
+                             ->result();
+            foreach ($list as $index => &$rw) {
+                if($rw->kode_golongan == '97'){
+                    unset($list[$index]);
+                    continue;
+                }
+                $rw->gaji_pokok_add = ($rw->gaji_pokok + 0) * ($prosentase/100);
+                $rw->gaji_pokok_add = number_format($rw->gaji_pokok_add, 0, ",", ".");
+                $rw->gaji_pokok_before = number_format($rw->gaji_pokok, 0, ",", ".");
+                $rw->gaji_pokok = number_format($rw->gaji_pokok + $rw->gaji_pokok_add, 0, ",", ".");
+
+            }
+            $data = [
+                'data' => $list,
+                'tahun' => $tahun,
+                'prosentase' => $prosentase
+            ];
+
+            $this->output->set_content_type('text/javascript')
+                         ->set_output(json_encode($data))
+                         ->_display();
+            exit;
+        }
+        
+
+        $p_tahun = $this->db->select("MIN(tahun) min_tahun, MAX(tahun) max_tahun")->get('m_gaji_pokok')->row();
+
+        $tahun_list = [];
+
+        $i_tahun = $p_tahun->min_tahun;
+        
+        
+        if(empty($tahun)){
+            $tahun = $i_tahun;
+        }
+        if(empty($prosentase)){
+            $prosentase = 10;
+        }
+        while( $i_tahun <= $p_tahun->max_tahun){
+
+            $tahun_list[$i_tahun] = $i_tahun;
+            $i_tahun += 1;
+        }
+        $data = [
+            'tahun_list' => $tahun_list,
+            'tahun' => $tahun,
+            'button_pressed' => false,
+            'prosentase' => $prosentase
+        ];
+
+        $this->set_data($data);
+        $this->print_page('kenaikan_gaji');
+
+
     }
 }
