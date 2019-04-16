@@ -1495,7 +1495,9 @@ UPDATE;
                 $ag = 0;
                 $ah = 0;
             }
-
+            if($ah > 47250){
+            	$ah = 47250;
+            }
             $row->ddc_bpjs_ket = $ag;
             $row->ddc_aspen = round($ai);
             $row->ddc_bpjs_kes = $ah;
