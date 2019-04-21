@@ -101,8 +101,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(r, index) in report_data">
-								<td class="tc" v-text="index+1"></td>
+							
+							<tr v-for="(r, index) in report_data.list_group">
 								<td class="tl" v-html="r.nama_unor"></td>
 								<td class="tc" v-text="r.attn_s"></td>
 								<td class="tc" v-text="r.attn_i"></td>
@@ -342,7 +342,7 @@
 };
 	var RP={};
 	$(document).ready(function(){
-		$('.main > h3').html('DAFTAR GAJI PEGAWAI');		
+		$('.main > h3').html('DAFTAR REKAP GAJI PEGAWAI');		
 		RP = new Vue({
 			el:'#app',
 			data : {
@@ -373,7 +373,7 @@
 			},
 			methods:{
 				onProcessForm:function(){
-					var prxy_url = '<?=site_url('apppayroll/report/payslip')?>';
+					var prxy_url = '<?=site_url('apppayroll/report/payslip_rekap')?>';
 					this.button_pressed = true;
 					this.report_data = [];
 					var postData = {

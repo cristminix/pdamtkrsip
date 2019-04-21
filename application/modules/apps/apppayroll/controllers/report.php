@@ -127,13 +127,69 @@ class Report extends Apppayroll_Frontctl {
     public function payslip_rekap()
     {
         $tpl = __FUNCTION__;
-        $mdl = $this->ibl_bjb_mdl_name;
+        $mdl = 'm_payslip_report';
+
+        $proses  = $this->input->post('proses');
+        $periode = $this->input->post('periode');
+        $id_unor = $this->input->post('id_unor');
+        $empl_stat = $this->input->post('empl_stat');
+        
+        $payload = json_decode(file_get_contents('php://input'));
+        if(is_object($payload)){
+            $proses = $payload->proses;
+            $periode = $payload->periode;
+            $id_unor = $payload->id_unor;
+            $empl_stat = $payload->empl_stat;
+        }
+
+        $button_pressed = false;
+        $report_data = [];
+
         $this->load_mdl($mdl);
 
-        $this->set_page_title("Laporan Payslip");
+        $this->set_page_title("DAFTAR REKAP GAJI PEGAWAI");
+            
+
+
+        if(empty($periode)){
+            $periode = date('m/Y');
+        }
+        if(empty($id_unor)){
+            $id_unor = '';
+        }
+
+        $periode_a = explode('/', $periode);
+        $bulan     = $periode_a[0];
+        $tahun     = $periode_a[1];
+
+        if(!empty($content_type) && !empty($b) && !empty($t) ){
+            $bulan = $b;
+            $tahun = $t;
+            $id_unor = $id_unor;
+            $proses = 'yes';
+        }
+        if($proses == 'yes'){
+            $button_pressed = true;
+            $report_data = $this->{$mdl}->get_rekap_data($bulan,$tahun,$id_unor,$empl_stat);
+
+            // if($content_type == 'pdf'){
+            //     return $this->_payslip_pdf_report($report_data);
+            // }
+
+            $this->output->set_content_type('application/json')
+                         ->set_output(json_encode($report_data))
+                         ->_display();
+            exit();
+        } 
         
         $data = [
-            
+            'unor_list' => [''=>'All']+$this->{$mdl}->get_unor_list(),
+            'button_pressed' => $button_pressed,
+            'periode' => $periode,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'id_unor' => $id_unor,
+            'report_data' => $report_data
         ];    
         $this->set_data($data);
         $this->print_page($tpl);

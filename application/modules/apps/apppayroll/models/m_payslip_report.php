@@ -80,11 +80,14 @@ class M_payslip_report extends  CI_Model
 			Sum(p.alw_rs) AS alw_rs,
 			Sum(p.alw_ot) AS alw_ot,
 			Sum(p.alw_tr) AS alw_tr,
+			Sum(p.alw_vhc_rt) AS alw_vhc_rt,
 			Sum(p.alw_prf) AS alw_prf,
 			Sum(p.alw_sh) AS alw_sh,
 			Sum(p.alw_tpp) AS alw_tpp,
 			Sum(p.alw_pph21) AS alw_pph21,
 			Sum(p.alw_amt) AS alw_amt,
+			Sum(p.ddc_pph21) AS ddc_pph21,
+
 			Sum(p.ddc_bpjs_ket) AS ddc_bpjs_ket,
 			Sum(p.ddc_bpjs_kes) AS ddc_bpjs_kes,
 			Sum(p.ddc_aspen) AS ddc_aspen,
@@ -110,41 +113,58 @@ class M_payslip_report extends  CI_Model
 				 ->get()
 				 ->result();
 		$list_group = [
-			'pusat' => [],
-			'wilayah_cabang_ikk' => []
-		];		 
+			'pusat' => [$this->_empty_rekap_str_row('PUSAT')],
+			'wilayah_cabang_ikk' => [$this->_empty_rekap_str_row('WILAYAH/CABANG/IKK')]
+		];		
+		
 		$group = [
 			'pusat' => explode(',','03.01,05.01,02.01,04.01,14.01,15.01,21.01,17.01,22.01,19.01,24.01,18.01,20.01,25.01'),
 			'wilayah_cabang_ikk'=>explode(',', '10.01,09.01,06.01,07.01,08.01,12.01,11.01')
 		];
 		$group_total = [
-			'pusat' => (object)['attn_s'=>0,'attn_i'=>0,'attn_a'=>0,'attn_l'=>0,'attn_c'=>0,'base_sal'=>0,'gross_sal'=>0,'net_pay'=>0,'alw_mar'=>0,'alw_ch'=>0,'alw_rc'=>0,'alw_adv'=>0,'alw_wt'=>0,'alw_jt'=>0,'alw_fd'=>0,'alw_rs'=>0,'alw_ot'=>0,'alw_tr'=>0,'alw_prf'=>0,'alw_sh'=>0,'alw_tpp'=>0,'alw_pph21'=>0,'alw_amt'=>0,'ddc_bpjs_kes'=>0,'ddc_bpjs_ket'=>0,'ddc_aspen'=>0,'ddc_f_kp'=>0,'ddc_wcl'=>0,'ddc_wc'=>0,'ddc_dw'=>0,'ddc_zk'=>0,'ddc_shd'=>0,'ddc_tpt'=>0,'ddc_wb'=>0,'ddc_amt'=>0],
-			'wilayah_cabang_ikk' => (object)['attn_s'=>0,'attn_i'=>0,'attn_a'=>0,'attn_l'=>0,'attn_c'=>0,'base_sal'=>0,'gross_sal'=>0,'net_pay'=>0,'alw_mar'=>0,'alw_ch'=>0,'alw_rc'=>0,'alw_adv'=>0,'alw_wt'=>0,'alw_jt'=>0,'alw_fd'=>0,'alw_rs'=>0,'alw_ot'=>0,'alw_tr'=>0,'alw_prf'=>0,'alw_sh'=>0,'alw_tpp'=>0,'alw_pph21'=>0,'alw_amt'=>0,'ddc_bpjs_kes'=>0,'ddc_bpjs_ket'=>0,'ddc_aspen'=>0,'ddc_f_kp'=>0,'ddc_wcl'=>0,'ddc_wc'=>0,'ddc_dw'=>0,'ddc_zk'=>0,'ddc_shd'=>0,'ddc_tpt'=>0,'ddc_wb'=>0,'ddc_amt'=>0],
-			'all' => (object)['attn_s'=>0,'attn_i'=>0,'attn_a'=>0,'attn_l'=>0,'attn_c'=>0,'base_sal'=>0,'gross_sal'=>0,'net_pay'=>0,'alw_mar'=>0,'alw_ch'=>0,'alw_rc'=>0,'alw_adv'=>0,'alw_wt'=>0,'alw_jt'=>0,'alw_fd'=>0,'alw_rs'=>0,'alw_ot'=>0,'alw_tr'=>0,'alw_prf'=>0,'alw_sh'=>0,'alw_tpp'=>0,'alw_pph21'=>0,'alw_amt'=>0,'ddc_bpjs_kes'=>0,'ddc_bpjs_ket'=>0,'ddc_aspen'=>0,'ddc_f_kp'=>0,'ddc_wcl'=>0,'ddc_wc'=>0,'ddc_dw'=>0,'ddc_zk'=>0,'ddc_shd'=>0,'ddc_tpt'=>0,'ddc_wb'=>0,'ddc_amt'=>0]
+			'pusat' => $this->_empty_rekap_row('JUMLAH TOTAL : PUSAT'),
+			'wilayah_cabang_ikk' => $this->_empty_rekap_row("JUMLAH TOTAL\nWILAYAH/CABANG/IKK"),
+			'total' =>  $this->_empty_rekap_row('JUMLAH TOTAL : ')
 		];
 		foreach ($list_tmp as $rec) {
 			$kode_unor = $rec->kode_unor;
 			$key = 'pusat';
-			// if(in_array($kode_unor, $group_unor[])){
-			// 	$list_group['pusat'][]=$rec;
-			// }
-			if(in_array($kode_unor, $group_unor['wilayah_cabang_ikk'])){
+		 
+			if(in_array($kode_unor, $group['wilayah_cabang_ikk'])){
 				$key = 'wilayah_cabang_ikk';
 			}
-			$list_group[$key] = $rec;
+			else if(in_array($kode_unor, $group['pusat'])){
+				$key = 'pusat';
+			}
+			else {
+				continue;
+			}
+			$list_group[$key][] = $rec;
 
 			foreach ($rec as $prop => $value) {
 				if(in_array($prop,['kode_unor','nama_unor'])){
 					continue;
 				}
 				$group_total[$key]->{$prop} += 0 + $value;
-				$group_total['all']->{$prop} += 0 + $value;
+				$group_total['total']->{$prop} += 0 + $value;
 			}
 		}
 
+		$list_group['pusat'][] = $group_total['pusat'];
+		$list_group['wilayah_cabang_ikk'][] = $group_total['wilayah_cabang_ikk'];
+		$list_group['wilayah_cabang_ikk'][] = $group_total['total'];
 		return [
-			'list_group'  => $list_group,
-			'group_total' => $group_total
+			'list_group'  => array_merge($list_group['pusat']  , $list_group['wilayah_cabang_ikk'] ),
+			'group_total' => $group_total,
+			'group'=>$group
 		];
+	}
+
+	public function _empty_rekap_row($nama_unor){
+		return (object)['nama_unor'=>$nama_unor,'attn_s'=>0,'attn_i'=>0,'attn_a'=>0,'attn_l'=>0,'attn_c'=>0,'base_sal'=>0,'gross_sal'=>0,'net_pay'=>0,'alw_mar'=>0,'alw_ch'=>0,'alw_rc'=>0,'alw_adv'=>0,'alw_wt'=>0,'alw_jt'=>0,'alw_fd'=>0,'alw_rs'=>0,'alw_ot'=>0,'alw_tr'=>0,'alw_prf'=>0,'alw_sh'=>0,'alw_tpp'=>0,'alw_pph21'=>0,'alw_amt'=>0,'ddc_bpjs_kes'=>0,'ddc_bpjs_ket'=>0,'ddc_aspen'=>0,'ddc_f_kp'=>0,'ddc_wcl'=>0,'ddc_wc'=>0,'ddc_dw'=>0,'ddc_zk'=>0,'ddc_shd'=>0,'ddc_tpt'=>0,'ddc_wb'=>0,'ddc_amt'=>0,'alw_vhc_rt'=>0,'ddc_pph21'=>0];
+	}
+	public function _empty_rekap_str_row($nama_unor)
+	{
+		return (object)['nama_unor'=>$nama_unor,'kode_unor'=>'', 'attn_s'=>'','attn_i'=>'','attn_a'=>'','attn_l'=>'','attn_c'=>'','base_sal'=>'','gross_sal'=>'','net_pay'=>'','alw_mar'=>'','alw_ch'=>'','alw_rc'=>'','alw_adv'=>'','alw_wt'=>'','alw_jt'=>'','alw_fd'=>'','alw_rs'=>'','alw_ot'=>'','alw_tr'=>'','alw_prf'=>'','alw_sh'=>'','alw_tpp'=>'','alw_pph21'=>'','alw_amt'=>'','ddc_bpjs_kes'=>'','ddc_bpjs_ket'=>'','ddc_aspen'=>'','ddc_f_kp'=>'','ddc_wcl'=>'','ddc_wc'=>'','ddc_dw'=>'','ddc_zk'=>'','ddc_shd'=>'','ddc_tpt'=>'','ddc_wb'=>'','ddc_amt'=>'','alw_vhc_rt'=>'','ddc_pph21'=>'']; 
 	}
 }
