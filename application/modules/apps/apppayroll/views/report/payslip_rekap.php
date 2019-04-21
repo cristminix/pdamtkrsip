@@ -111,23 +111,23 @@
 								<td class="tc" v-text="r.attn_c"></td>
 
 
-								<td class="tr" v-html="r.alw_mar+'<br/>'+r.alw_ch+'<br/>'+r.alw_rc+'<br/>'+r.alw_wt"></td>
-								<td class="tr" v-html="r.alw_jt+'<br/>'+r.alw_prf+'<br/>'+r.alw_ot+'<br/>'+r.alw_adv"></td>
-								<td class="tr" v-html="r.alw_rs+'<br/>'+r.alw_tr+'<br/>'+r.alw_vhc_rt+'<br/>'+r.alw_fd"></td>
-								<td class="tr" v-html="r.alw_sh+'<br/>'+r.alw_tpp+'<br/>'+r.alw_pph21"></td>
+								<td class="tr" v-html="r.t=='r'?(r.alw_mar+'<br/>'+r.alw_ch+'<br/>'+r.alw_rc+'<br/>'+r.alw_wt):''"></td>
+								<td class="tr" v-html="r.t=='r'?(r.alw_jt+'<br/>'+r.alw_prf+'<br/>'+r.alw_ot+'<br/>'+r.alw_adv):''"></td>
+								<td class="tr" v-html="r.t=='r'?(r.alw_rs+'<br/>'+r.alw_tr+'<br/>'+r.alw_vhc_rt+'<br/>'+r.alw_fd):''"></td>
+								<td class="tr" v-html="r.t=='r'?(r.alw_sh+'<br/>'+r.alw_tpp+'<br/>'+r.alw_pph21):''"></td>
 								<td class="tr" v-html="r.gross_sal"></td>
 
-								<td class="tr" v-html="r.ddc_pph21+'<br/>'+r.ddc_bpjs_ket+'<br/>'+r.ddc_aspen+'<br/>'+r.ddc_f_kp"></td>
-								<td class="tr" v-html="r.ddc_wc+'<br/>'+r.ddc_wcl+'<br/>'+r.ddc_dw+'<br/>'+r.ddc_tpt"></td>
-								<td class="tr" v-html="r.ddc_bpjs_kes+'<br/>'+r.ddc_wb"></td>
-								<td class="tr" v-html="r.ddc_zk+'<br/>'+r.ddc_shd"></td>
+								<td class="tr" v-html="r.t=='r'?(r.ddc_pph21+'<br/>'+r.ddc_bpjs_ket+'<br/>'+r.ddc_aspen+'<br/>'+r.ddc_f_kp):''"></td>
+								<td class="tr" v-html="r.t=='r'?(r.ddc_wc+'<br/>'+r.ddc_wcl+'<br/>'+r.ddc_dw+'<br/>'+r.ddc_tpt):''"></td>
+								<td class="tr" v-html="r.t=='r'?(r.ddc_bpjs_kes+'<br/>'+r.ddc_wb):''"></td>
+								<td class="tr" v-html="r.t=='r'?(r.ddc_zk+'<br/>'+r.ddc_shd):''"></td>
 								<td class="tr" v-html="r.ddc_amt"></td>
 								<td class="tr" v-html="r.net_pay"></td>
 								<!-- <td>&nbsp;</td> -->
 							</tr>
-							<tr v-if="!button_pressed">
+							<!-- <tr v-if="!button_pressed">
 								<td colspan="18">Tidak ada data</td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 				</div>
